@@ -31,8 +31,10 @@ class RecipeComparisonWidget(QWidget):
         row1 = QHBoxLayout()
         self.recipe_a = QComboBox()
         self.recipe_a.setMinimumWidth(250)
+        self.recipe_a.setToolTip("Selecciona la primera receta para comparar (Receta A)")
         self.recipe_b = QComboBox()
         self.recipe_b.setMinimumWidth(250)
+        self.recipe_b.setToolTip("Selecciona la segunda receta para comparar (Receta B)")
         self.recipe_a.addItem("— Receta A —", None)
         self.recipe_b.addItem("— Receta B —", None)
         row1.addWidget(QLabel("Comparar:"))
@@ -44,6 +46,7 @@ class RecipeComparisonWidget(QWidget):
             "background-color: #FF9800; color: white; font-weight: bold; padding: 6px;"
         )
         self.compare_btn.clicked.connect(self._run_comparison)
+        self.compare_btn.setToolTip("Ejecuta la comparación lado a lado: composición, propiedades y análisis completo")
         row1.addWidget(self.compare_btn)
         row1.addStretch()
         layout.addLayout(row1)
@@ -60,6 +63,7 @@ class RecipeComparisonWidget(QWidget):
             "Componente", "Receta A (%)", "Receta B (%)", "Diferencia", "Notas"
         ])
         self.comp_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
+        self.comp_table.setToolTip("Comparación de composición: componente a componente con diferencias y notas")
         comp_layout.addWidget(self.comp_table)
         self.tabs.addTab(comp_widget, "Composición")
 
@@ -70,6 +74,7 @@ class RecipeComparisonWidget(QWidget):
         self.prop_table.setColumnCount(3)
         self.prop_table.setHorizontalHeaderLabels(["Propiedad", "Receta A", "Receta B"])
         self.prop_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
+        self.prop_table.setToolTip("Comparación de propiedades físico-químicas entre ambas recetas")
         prop_layout.addWidget(self.prop_table)
         self.tabs.addTab(prop_widget, "Propiedades")
 
@@ -82,6 +87,7 @@ class RecipeComparisonWidget(QWidget):
         vis_layout.addWidget(self.result_b)
         self.tabs.addTab(vis_widget, "Análisis Completo")
 
+        self.tabs.setToolTip("Resultados de la comparación:\n• Composición — tabla de ingredientes\n• Propiedades — tabla de propiedades\n• Análisis Completo — análisis lado a lado")
         layout.addWidget(self.tabs)
 
     def set_recipes(self, recipes: List[LacquerRecipe]):

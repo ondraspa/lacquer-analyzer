@@ -48,31 +48,37 @@ class PigmentSearchWidget(QWidget):
             "<i>Ej: T67, PV 23, dioxazine, phthalocyanine, DPP</i>"
         )
         info.setWordWrap(True)
+        info.setToolTip("Busca pigmentos en la base de datos local por nombre, C.I. o clase química")
         layout.addWidget(info)
 
         search_row = QHBoxLayout()
         self.search_input = QLineEdit()
         self.search_input.setPlaceholderText("Buscar pigmento (nombre comercial, C.I., clase)...")
+        self.search_input.setToolTip("Escribe al menos 2 caracteres para buscar pigmentos")
         self.search_input.textChanged.connect(self._search)
         search_row.addWidget(self.search_input)
 
         clear_btn = QPushButton("Limpiar")
+        clear_btn.setToolTip("Limpia el campo de búsqueda y la lista de resultados")
         clear_btn.clicked.connect(lambda: (self.search_input.clear(), self.results_list.clear()))
         search_row.addWidget(clear_btn)
         layout.addLayout(search_row)
 
         self.results_list = QListWidget()
+        self.results_list.setToolTip("Resultados de la búsqueda de pigmentos. Haz clic para ver detalles.")
         self.results_list.itemClicked.connect(self._show_detail)
         layout.addWidget(self.results_list)
 
         self.detail_text = QTextEdit()
         self.detail_text.setReadOnly(True)
         self.detail_text.setMaximumHeight(300)
+        self.detail_text.setToolTip("Propiedades detalladas del pigmento seleccionado")
         self.detail_text.setPlaceholderText("Selecciona un pigmento para ver sus propiedades...")
         layout.addWidget(self.detail_text)
 
         button_row = QHBoxLayout()
         self.add_btn = QPushButton("Añadir a la receta")
+        self.add_btn.setToolTip("Abre el editor de ingredientes con los datos del pigmento para añadirlo a la receta")
         self.add_btn.setEnabled(False)
         self.add_btn.clicked.connect(self._add_to_recipe)
         button_row.addStretch()
@@ -194,14 +200,17 @@ class SpecialChemSearchWidget(QWidget):
             "<i>Ej: BYK-307, Tinuvin 400, T67, PV 23, titanium dioxide</i>"
         )
         info.setWordWrap(True)
+        info.setToolTip("Busca ingredientes en 4 fuentes simultáneamente: pigmentos locales, PubChem, Wikipedia y SpecialChem")
         layout.addWidget(info)
 
         cookie_row = QHBoxLayout()
         self.cookie_status = QLabel("")
         self.cookie_status.setStyleSheet("font-size: 11px;")
+        self.cookie_status.setToolTip("Estado de las cookies de SpecialChem. Sin cookies, los resultados de SpecialChem no están disponibles.")
         cookie_row.addWidget(self.cookie_status)
         cookie_row.addStretch()
         self.cookie_btn = QPushButton("🔑 Configurar cookies de SpecialChem")
+        self.cookie_btn.setToolTip("Abre un navegador para iniciar sesión en SpecialChem y guardar las cookies. Necesario para buscar en SpecialChem.")
         self.cookie_btn.clicked.connect(self._configure_cookies)
         cookie_row.addWidget(self.cookie_btn)
         layout.addLayout(cookie_row)
@@ -209,28 +218,34 @@ class SpecialChemSearchWidget(QWidget):
         row = QHBoxLayout()
         self.search_input = QLineEdit()
         self.search_input.setPlaceholderText("Nombre comercial, químico o pigmento...")
+        self.search_input.setToolTip("Escribe el nombre del ingrediente, químico o pigmento a buscar (mín. 2 caracteres)")
         self.search_input.returnPressed.connect(self._search)
         row.addWidget(self.search_input)
 
         self.search_btn = QPushButton("Buscar")
+        self.search_btn.setToolTip("Inicia la búsqueda multi-fuente")
         self.search_btn.clicked.connect(self._search)
         row.addWidget(self.search_btn)
         layout.addLayout(row)
 
         self.source_label = QLabel("")
         self.source_label.setStyleSheet("color: #666; font-size: 11px;")
+        self.source_label.setToolTip("Resumen de resultados por fuente (pigmentos, PubChem, Wikipedia, SpecialChem)")
         layout.addWidget(self.source_label)
 
         self.results_list = QListWidget()
+        self.results_list.setToolTip("Resultados de la búsqueda. Cada elemento muestra la fuente y el nombre. Haz clic para ver detalles.")
         self.results_list.itemClicked.connect(self._show_detail)
         layout.addWidget(self.results_list)
 
         self.detail_text = QTextEdit()
         self.detail_text.setReadOnly(True)
+        self.detail_text.setToolTip("Información detallada del resultado seleccionado (propiedades, estructura, usos)")
         self.detail_text.setPlaceholderText("Selecciona un resultado para ver detalles...")
         layout.addWidget(self.detail_text)
 
         self.add_btn = QPushButton("Añadir a la receta")
+        self.add_btn.setToolTip("Abre el editor de ingredientes pre-cargado con los datos de este resultado para añadirlo a tu receta")
         self.add_btn.setEnabled(False)
         self.add_btn.clicked.connect(self._add_to_recipe)
         layout.addWidget(self.add_btn)
@@ -506,6 +521,7 @@ class CuttingStageWidget(QWidget):
 
         header = QLabel("🧪 Formulación de Laca — Ingredientes, Recetas y Análisis")
         header.setStyleSheet("font-weight: bold; font-size: 16px; padding: 4px;")
+        header.setToolTip("🔹 Panel principal de formulación.\n🔹 Izquierda: ingredientes, pigmentos y búsqueda multi-fuente.\n🔹 Derecha: editor de recetas con análisis y comparación.")
         layout.addWidget(header)
 
         splitter = QSplitter(Qt.Horizontal)
@@ -515,6 +531,7 @@ class CuttingStageWidget(QWidget):
         left_layout.setContentsMargins(0, 0, 0, 0)
 
         left_tabs = QTabWidget()
+        left_tabs.setToolTip("Pestañas de ingredientes:\n• BD de Ingredientes — catálogo completo de ingredientes\n• Pigmentos y Solventes — búsqueda local de pigmentos\n• SpecialChem — búsqueda multi-fuente")
         self.ingredient_browser = IngredientBrowserWidget(self.ingredient_loader)
         left_tabs.addTab(self.ingredient_browser, "BD de Ingredientes")
         self.pigment_search = PigmentSearchWidget()
@@ -526,6 +543,7 @@ class CuttingStageWidget(QWidget):
         left_layout.addWidget(left_tabs)
 
         self.troubleshooting = TroubleshootingPanel("cutting")
+        self.troubleshooting.setToolTip("🔍 Solución de problemas específicos de la etapa de corte. Busca defectos, causas y soluciones.")
         left_layout.addWidget(self.troubleshooting, 1)
         splitter.addWidget(left_panel)
 
@@ -534,11 +552,13 @@ class CuttingStageWidget(QWidget):
         right_layout.setContentsMargins(0, 0, 0, 0)
 
         right_tabs = QTabWidget()
+        right_tabs.setToolTip("Editor de recetas:\n• Componentes — añade/quita ingredientes\n• Pros/Contras — metadatos de la receta\n• Análisis de Laca — ejecuta análisis completo\n• Comparar Recetas — compara dos recetas lado a lado")
         self.recipe_editor = RecipeEditorWidget(self.ingredient_loader)
         right_tabs.addTab(self.recipe_editor, "Editor de Recetas")
         right_layout.addWidget(right_tabs)
 
         self.knowledge_qa = KnowledgeQAPanel("cutting")
+        self.knowledge_qa.setToolTip("💡 Base de conocimiento y Q&A con LLM para la etapa de formulación. Consulta documentos del foro y haz preguntas.")
         right_layout.addWidget(self.knowledge_qa, 1)
         splitter.addWidget(right_panel)
 

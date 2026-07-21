@@ -41,20 +41,22 @@ class KnowledgeHub(QWidget):
         btn_row = QHBoxLayout()
         self.import_mirror_btn = QPushButton("🌐 Duplicar Foro (Lathe Trolls)")
         self.import_mirror_btn.clicked.connect(self._import_mirror)
-        self.import_mirror_btn.setToolTip("Duplica todas las categorías de lathetrolls.com")
+        self.import_mirror_btn.setToolTip("Duplica el foro completo (lathetrolls) en la base de conocimiento local")
         btn_row.addWidget(self.import_mirror_btn)
 
         self.import_md_btn = QPushButton("📂 Importar Markdown")
         self.import_md_btn.clicked.connect(self._import_markdown)
-        self.import_md_btn.setToolTip("Importa archivos .md raspaños de Playwright")
+        self.import_md_btn.setToolTip("Importa archivos Markdown con documentación técnica")
         btn_row.addWidget(self.import_md_btn)
 
         self.import_ltkb_btn = QPushButton("📁 lathetrolls_knowledge_base")
         self.import_ltkb_btn.clicked.connect(self._import_ltkb)
+        self.import_ltkb_btn.setToolTip("Importa la base de conocimiento de lathetrolls (formato LTKB)")
         btn_row.addWidget(self.import_ltkb_btn)
 
         self.import_pdf_btn = QPushButton("📄 Libros Escaneados")
         self.import_pdf_btn.clicked.connect(self._import_pdf)
+        self.import_pdf_btn.setToolTip("Importa libros escaneados o documentos PDF")
         btn_row.addWidget(self.import_pdf_btn)
 
         import_layout.addLayout(btn_row)
@@ -62,14 +64,17 @@ class KnowledgeHub(QWidget):
         btn_row2 = QHBoxLayout()
         self.full_import_btn = QPushButton("🔧 Importador Completo...")
         self.full_import_btn.clicked.connect(self._open_full_import)
+        self.full_import_btn.setToolTip("Abre el importador completo con todas las fuentes disponibles")
         btn_row2.addWidget(self.full_import_btn)
 
         self.sanitize_btn = QPushButton("🧹 Sanitizar BC")
         self.sanitize_btn.clicked.connect(self._sanitize_kb)
+        self.sanitize_btn.setToolTip("Limpia y normaliza la base de conocimiento (elimina duplicados, corrige formato)")
         btn_row2.addWidget(self.sanitize_btn)
 
         self.explorer_btn = QPushButton("📊 Explorador de Datos")
         self.explorer_btn.clicked.connect(self._open_explorer)
+        self.explorer_btn.setToolTip("Abre el explorador de datos: navega, busca y organiza toda la base de conocimiento")
         btn_row2.addWidget(self.explorer_btn)
 
         import_layout.addLayout(btn_row2)
@@ -89,15 +94,18 @@ class KnowledgeHub(QWidget):
         self.kb_search = QLineEdit()
         self.kb_search.setPlaceholderText("Buscar en la base de conocimiento...")
         self.kb_search.textChanged.connect(self._filter_kb_list)
+        self.kb_search.setToolTip("Busca entradas en la base de conocimiento por palabra clave")
         kb_layout.addWidget(self.kb_search)
 
         self.kb_list = QListWidget()
         self.kb_list.itemClicked.connect(self._show_kb_preview)
+        self.kb_list.setToolTip("Lista de entradas de conocimiento encontradas")
         kb_layout.addWidget(self.kb_list)
 
         self.kb_preview = QTextEdit()
         self.kb_preview.setReadOnly(True)
         self.kb_preview.setPlaceholderText("Selecciona una entrada para ver su contenido...")
+        self.kb_preview.setToolTip("Vista previa del contenido de la entrada de conocimiento seleccionada")
         kb_layout.addWidget(self.kb_preview)
 
         tabs.addTab(kb_tab, "Navegador BC")

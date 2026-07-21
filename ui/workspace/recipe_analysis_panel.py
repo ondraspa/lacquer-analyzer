@@ -26,12 +26,14 @@ class AnalysisInputPanel(QWidget):
         self.temp_input.setValue(23)
         self.temp_input.setSuffix(" °C")
         self.temp_input.setDecimals(1)
+        self.temp_input.setToolTip("Temperatura ambiente en °C. Afecta la velocidad de evaporación y la viscosidad")
         layout.addRow("Temperatura ambiente:", self.temp_input)
 
         self.humidity_input = QDoubleSpinBox()
         self.humidity_input.setRange(10, 100)
         self.humidity_input.setValue(50)
         self.humidity_input.setSuffix(" %")
+        self.humidity_input.setToolTip("Humedad relativa en %. Humedades altas pueden causar bloom o problemas de secado")
         layout.addRow("Humedad relativa:", self.humidity_input)
 
         self.thickness_input = QDoubleSpinBox()
@@ -39,6 +41,7 @@ class AnalysisInputPanel(QWidget):
         self.thickness_input.setValue(100)
         self.thickness_input.setSuffix(" µm")
         self.thickness_input.setDecimals(0)
+        self.thickness_input.setToolTip(" Espesor de la capa de laca en µm. Influye en el tiempo de secado")
         layout.addRow("Espesor capa laca:", self.thickness_input)
 
         self.polish_input = QDoubleSpinBox()
@@ -46,6 +49,7 @@ class AnalysisInputPanel(QWidget):
         self.polish_input.setValue(1.0)
         self.polish_input.setSuffix(" µm")
         self.polish_input.setDecimals(1)
+        self.polish_input.setToolTip("Granulado del pulido en µm. Afecta la rugosidad superficial")
         layout.addRow("Grano pulido disco:", self.polish_input)
 
         self.air_velocity = QDoubleSpinBox()
@@ -53,13 +57,16 @@ class AnalysisInputPanel(QWidget):
         self.air_velocity.setValue(0.5)
         self.air_velocity.setSuffix(" m/s")
         self.air_velocity.setSingleStep(0.1)
+        self.air_velocity.setToolTip("Velocidad del aire en m/s. Controla la tasa de evaporación")
         layout.addRow("Flujo de aire:", self.air_velocity)
 
         self.application = QComboBox()
         self.application.addItems(["curtain_coater", "spin_coater"])
+        self.application.setToolTip("Método de aplicación: cortina (curtain_coater) o spin (spin_coater)")
         layout.addRow("Aplicación:", self.application)
 
         self.positive_pressure = QCheckBox("Cámara de presión positiva")
+        self.positive_pressure.setToolTip("Activa cámara de presión positiva para reducir defectos por polvo")
         layout.addRow("", self.positive_pressure)
 
 
@@ -122,6 +129,7 @@ class AnalysisResultWidget(QWidget):
         bubble_f = QFormLayout(bubble_group)
         self.bubble_bar = QProgressBar()
         self.bubble_bar.setRange(0, 100)
+        self.bubble_bar.setToolTip("Riesgo de burbujas por arrastre de aire")
         self.bubble_cat = QLabel("—")
         self.bubble_max = QLabel("—")
         bubble_f.addRow("Riesgo:", self.bubble_bar)
@@ -134,6 +142,7 @@ class AnalysisResultWidget(QWidget):
         blush_f = QFormLayout(blush_group)
         self.blush_bar = QProgressBar()
         self.blush_bar.setRange(0, 100)
+        self.blush_bar.setToolTip("Riesgo de bloom/blanqueo por condensación de humedad")
         self.blush_cat = QLabel("—")
         blush_f.addRow("Riesgo:", self.blush_bar)
         blush_f.addRow("Categoría:", self.blush_cat)
@@ -144,6 +153,7 @@ class AnalysisResultWidget(QWidget):
         op_f = QFormLayout(op_group)
         self.op_bar = QProgressBar()
         self.op_bar.setRange(0, 100)
+        self.op_bar.setToolTip("Riesgo de sobre-curvatura (orange peel) por tensión superficial")
         self.op_cat = QLabel("—")
         op_f.addRow("Riesgo:", self.op_bar)
         op_f.addRow("Categoría:", self.op_cat)
@@ -177,6 +187,7 @@ class AnalysisResultWidget(QWidget):
         self.score_bar = QProgressBar()
         self.score_bar.setRange(0, 100)
         self.score_bar.setFormat("%v/10")
+        self.score_bar.setToolTip("Puntuación global del análisis. Más alto = mejor formulación")
         score_layout.addWidget(self.score_bar)
         layout.addWidget(score_widget)
 
@@ -186,6 +197,7 @@ class AnalysisResultWidget(QWidget):
         self.translate_btn = QPushButton("🌐 Traducir")
         self.translate_btn.setMaximumWidth(120)
         self.translate_btn.clicked.connect(self._on_translate)
+        self.translate_btn.setToolTip("Traduce las advertencias al idioma seleccionado usando el LLM")
         warn_header.addWidget(self.translate_btn)
         warn_header.addStretch()
         layout.addLayout(warn_header)
@@ -193,6 +205,7 @@ class AnalysisResultWidget(QWidget):
         self.warnings_text.setReadOnly(True)
         self.warnings_text.setPlaceholderText("Advertencias y recomendaciones")
         self.warnings_text.setMaximumHeight(100)
+        self.warnings_text.setToolTip("Advertencias y problemas detectados en la formulación")
         layout.addWidget(self.warnings_text)
 
     def _on_translate(self):
@@ -260,6 +273,7 @@ class RecipeAnalysisPanel(QWidget):
         self.analyze_btn.setStyleSheet(
             "background-color: #2196F3; color: white; font-weight: bold; padding: 8px;"
         )
+        self.analyze_btn.setToolTip("Ejecuta el análisis completo de la receta: viscosidad, evaporación, defectos, mojado y perfil Hansen")
         scroll_layout.addWidget(self.analyze_btn)
 
         self.result_widget = AnalysisResultWidget()

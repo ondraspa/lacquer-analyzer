@@ -31,32 +31,38 @@ class PressingWorkspace(QWidget):
         self.press_temp.setRange(80, 250)
         self.press_temp.setSuffix(" °C")
         self.press_temp.setValue(150)
+        self.press_temp.setToolTip("Temperatura de prensado en °C")
         params_form.addRow("Temperatura de prensa:", self.press_temp)
 
         self.press_pressure = QDoubleSpinBox()
         self.press_pressure.setRange(10, 500)
         self.press_pressure.setSuffix(" bar")
         self.press_pressure.setValue(120)
+        self.press_pressure.setToolTip("Presión de prensado en bar")
         params_form.addRow("Presión de prensa:", self.press_pressure)
 
         self.press_time = QDoubleSpinBox()
         self.press_time.setRange(5, 300)
         self.press_time.setSuffix(" s")
         self.press_time.setValue(30)
+        self.press_time.setToolTip("Tiempo de prensado en segundos")
         params_form.addRow("Tiempo de prensado:", self.press_time)
 
         self.cool_time = QDoubleSpinBox()
         self.cool_time.setRange(5, 300)
         self.cool_time.setSuffix(" s")
         self.cool_time.setValue(20)
+        self.cool_time.setToolTip("Tiempo de enfriamiento después del prensado en segundos")
         params_form.addRow("Tiempo de enfriamiento:", self.cool_time)
 
         self.mold_type = QComboBox()
         self.mold_type.addItems(["Estándar 12\"", "Estándar 7\"", "Custom"])
+        self.mold_type.setToolTip("Tipo de molde utilizado en el prensado")
         params_form.addRow("Tipo de molde:", self.mold_type)
 
         self.release_agent = QComboBox()
         self.release_agent.addItems(["Ninguno", "Cera de silicona", "PTFE spray", "Agente desmoldante líquido"])
+        self.release_agent.setToolTip("Agente desmoldante utilizado")
         params_form.addRow("Agente desmoldante:", self.release_agent)
 
         params_group.setLayout(params_form)
@@ -67,6 +73,7 @@ class PressingWorkspace(QWidget):
 
         self.disc_size = QComboBox()
         self.disc_size.addItems(["12\" (30cm)", "7\" (17.5cm)", "10\" (25cm)"])
+        self.disc_size.setToolTip("Tamaño del disco (pulgadas)")
         spec_form.addRow("Tamaño:", self.disc_size)
 
         self.disc_thickness = QDoubleSpinBox()
@@ -74,18 +81,21 @@ class PressingWorkspace(QWidget):
         self.disc_thickness.setSuffix(" mm")
         self.disc_thickness.setDecimals(2)
         self.disc_thickness.setValue(1.8)
+        self.disc_thickness.setToolTip("Grosor del disco en mm")
         spec_form.addRow("Grosor:", self.disc_thickness)
 
         self.disc_weight = QDoubleSpinBox()
         self.disc_weight.setRange(80, 250)
         self.disc_weight.setSuffix(" g")
         self.disc_weight.setValue(140)
+        self.disc_weight.setToolTip("Peso del disco en gramos")
         spec_form.addRow("Peso del disco:", self.disc_weight)
 
         self.stamper_life = QSpinBox()
         self.stamper_life.setRange(1, 10000)
         self.stamper_life.setSuffix(" prensadas")
         self.stamper_life.setValue(1000)
+        self.stamper_life.setToolTip("Vida útil del estampador en número de prensadas")
         spec_form.addRow("Vida útil del estampador:", self.stamper_life)
 
         spec_group.setLayout(spec_form)
@@ -100,13 +110,16 @@ class PressingWorkspace(QWidget):
         self.log_text = QTextEdit()
         self.log_text.setReadOnly(True)
         self.log_text.setPlaceholderText("Registro de prensadas anteriores...")
+        self.log_text.setToolTip("Registro histórico de producciones de prensado con fechas y parámetros")
         log_layout.addWidget(self.log_text)
 
         log_btn_row = QHBoxLayout()
         record_btn = QPushButton("Registrar Prensada")
         record_btn.clicked.connect(self._record_press)
+        record_btn.setToolTip("Registra la prensada actual en el historial de producción")
         clear_log = QPushButton("Limpiar Registro")
         clear_log.clicked.connect(self.log_text.clear)
+        clear_log.setToolTip("Limpia todo el registro de producción")
         log_btn_row.addWidget(record_btn)
         log_btn_row.addWidget(clear_log)
         log_btn_row.addStretch()
@@ -130,6 +143,7 @@ class PressingWorkspace(QWidget):
         <li><b>Burbujas atrapadas</b> — desgasificado insuficiente o material húmedo</li>
         </ul>
         """)
+        self.ref_text.setToolTip("Guía de referencia de defectos de prensado: causas y soluciones")
         ref_layout.addWidget(self.ref_text)
         ref_group.setLayout(ref_layout)
         mid_row.addWidget(ref_group)

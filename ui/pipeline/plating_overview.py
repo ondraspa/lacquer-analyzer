@@ -39,6 +39,7 @@ class PlatingOverviewWidget(QWidget):
           <td>Mezcla rápida/media/lenta para prevenir empañamiento</td></tr>
         </table>
         """)
+        self.seq_text.setToolTip("Parámetros recomendados para cada etapa del recubrimiento galvánico: espesores, densidades de corriente, temperaturas")
         seq_layout.addWidget(self.seq_text)
         seq_group.setLayout(seq_layout)
         layout.addWidget(seq_group)
@@ -71,6 +72,7 @@ class PlatingOverviewWidget(QWidget):
                 self.cross_table.setItem(row, col, item)
 
         self.cross_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.cross_table.setToolTip("Matriz de compatibilidad entre solventes. Muestra qué solventes son miscibles entre sí")
         cross_layout.addWidget(self.cross_table)
         cross_group.setLayout(cross_layout)
         layout.addWidget(cross_group)
@@ -101,6 +103,7 @@ class PlatingOverviewWidget(QWidget):
           <li>Evitar fracciones altas de solvente rápido</li>
         </ul>
         """)
+        self.mit_text.setToolTip("Guías de prevención de defectos comunes en galvanoplastia: causas y soluciones")
         mit_layout.addWidget(self.mit_text)
         mit_group.setLayout(mit_layout)
         layout.addWidget(mit_group)

@@ -76,21 +76,26 @@ class ExpertNotesWidget(QWidget):
         self.topic_selector = QComboBox()
         self._rebuild_topic_selector()
         self.topic_selector.currentIndexChanged.connect(self._show_topic)
+        self.topic_selector.setToolTip("Selecciona un tema de referencia de experto para ver su contenido")
         ref_layout.addWidget(QLabel("Temas de Experto:"))
         ref_layout.addWidget(self.topic_selector)
 
         self.ref_content = QTextEdit()
         self.ref_content.setReadOnly(False)
+        self.ref_content.setToolTip("Contenido del tema de referencia seleccionado. Puedes editarlo y guardarlo")
         ref_layout.addWidget(self.ref_content)
 
         edit_row = QHBoxLayout()
         self.save_topic_btn = QPushButton("Guardar Tema")
         self.save_topic_btn.clicked.connect(self._save_topic)
+        self.save_topic_btn.setToolTip("Guarda los cambios realizados en el contenido del tema")
         self.add_topic_btn = QPushButton("Añadir Tema")
         self.add_topic_btn.clicked.connect(self._add_topic)
+        self.add_topic_btn.setToolTip("Añade un nuevo tema de referencia")
         self.delete_topic_btn = QPushButton("Eliminar Tema")
         self.delete_topic_btn.setStyleSheet("color: red;")
         self.delete_topic_btn.clicked.connect(self._delete_topic)
+        self.delete_topic_btn.setToolTip("Elimina el tema de referencia seleccionado")
         edit_row.addWidget(self.save_topic_btn)
         edit_row.addWidget(self.add_topic_btn)
         edit_row.addWidget(self.delete_topic_btn)
@@ -104,6 +109,7 @@ class ExpertNotesWidget(QWidget):
 
         self.notes_title_input = QLineEdit()
         self.notes_title_input.setPlaceholderText("Título de la nota...")
+        self.notes_title_input.setToolTip("Título de la nota personal o conversación")
         custom_layout.addWidget(self.notes_title_input)
 
         self.notes_input = QTextEdit()
@@ -112,13 +118,16 @@ class ExpertNotesWidget(QWidget):
             "Ejemplo: 'Encontramos que Butyl Cellosolve al 5% mejora la estabilidad de la cortina'\n"
             "Formato: Use - para listas, ** para negrita"
         )
+        self.notes_input.setToolTip("Contenido de la nota personal")
         custom_layout.addWidget(self.notes_input)
 
         note_btn_row = QHBoxLayout()
         save_note = QPushButton("Guardar Nota")
         save_note.clicked.connect(self._save_note)
+        save_note.setToolTip("Guarda la nota personal")
         toggle_conversation = QPushButton("Alternar Modo Conversación")
         toggle_conversation.clicked.connect(self._toggle_conversation)
+        toggle_conversation.setToolTip("Alterna entre vista de notas y vista de conversación con el LLM")
         note_btn_row.addWidget(save_note)
         note_btn_row.addWidget(toggle_conversation)
         custom_layout.addLayout(note_btn_row)
@@ -128,6 +137,7 @@ class ExpertNotesWidget(QWidget):
         self.conversation_log.setPlaceholderText(
             "Registro de conversación - aquí aparecerán las discusiones sobre cambios de formulación"
         )
+        self.conversation_log.setToolTip("Historial de la conversación con el LLM sobre este tema")
         custom_layout.addWidget(self.conversation_log)
 
         tabs.addTab(custom_widget, "Notas Personalizadas / Conversación")

@@ -218,6 +218,7 @@ class KnowledgeMapView(QGraphicsView):
         self.setDragMode(QGraphicsView.ScrollHandDrag)
         self.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
         self.setBackgroundBrush(QBrush(QColor("#1a1a2e")))
+        self.setToolTip("Mapa mental de conocimiento. Rueda = zoom, Arrastrar fondo = mover, Doble clic en nodo = expandir/colapsar, Clic derecho = opciones")
 
         self._nodes: List[NodeItem] = []
         self._edges: List[EdgeItem] = []

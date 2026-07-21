@@ -69,8 +69,9 @@ class RecipeEditorWidget(QWidget):
 
     def _init_ui(self):
         layout = QVBoxLayout(self)
-
         header_group = QGroupBox("Información de la Receta")
+        header_group.setToolTip("Define el nombre y los parámetros objetivo de la receta (viscosidad, sólidos)")
+
         header_layout = QFormLayout()
 
         preset_row = QHBoxLayout()
@@ -78,22 +79,26 @@ class RecipeEditorWidget(QWidget):
         self.preset_selector.setMinimumWidth(300)
         self._populate_presets()
         self.preset_selector.currentIndexChanged.connect(self._on_preset_selected)
+        self.preset_selector.setToolTip("Selecciona una receta predefinida como punto de partida. Las recetas se cargan desde preset_recipes.yaml")
         preset_row.addWidget(QLabel("Predefinidas:"))
         preset_row.addWidget(self.preset_selector)
         preset_row.addStretch()
 
         self.name_input = QLineEdit()
         self.name_input.setPlaceholderText("Nombre de la receta")
+        self.name_input.setToolTip("Nombre descriptivo para tu receta. Aparecerá en la lista de recetas y en los análisis")
         self.target_viscosity = QDoubleSpinBox()
         self.target_viscosity.setRange(50, 5000)
         self.target_viscosity.setSuffix(" mPa·s")
         self.target_viscosity.setValue(500)
+        self.target_viscosity.setToolTip("Viscosidad objetivo en mPa·s. Se usa como referencia en el análisis")
         self.target_solids = QDoubleSpinBox()
         self.target_solids.setRange(0, 80)
         self.target_solids.setSuffix(" %")
         self.target_solids.setValue(35)
         self.target_solids.setDecimals(1)
         self.target_solids.setSpecialValueText("N/A")
+        self.target_solids.setToolTip("Porcentaje de sólidos objetivo. Ayuda a calcular la formulación esperada")
 
         header_layout.addRow(preset_row)
         header_layout.addRow("Nombre:", self.name_input)
@@ -104,6 +109,7 @@ class RecipeEditorWidget(QWidget):
 
         # Tabs: componentes + metadata + análisis + comparación
         tabs = QTabWidget()
+        tabs.setToolTip("Tabs del editor de recetas:\n• Componentes — gestiona los ingredientes\n• Pros/Contras & Hardware — metadatos y notas\n• Análisis de Laca — análisis físico completo\n• Comparar Recetas — comparación lado a lado")
 
         # Tab de componentes
         comp_widget = QWidget()
@@ -114,8 +120,10 @@ class RecipeEditorWidget(QWidget):
         self.ingredient_selector.setMinimumWidth(300)
         self.ingredient_selector_ingredients = []
         self._populate_selector()
+        self.ingredient_selector.setToolTip("Selecciona un ingrediente de la base de datos para añadirlo a la receta. Los ingredientes se filtran automáticamente")
         self.add_btn = QPushButton("Añadir Componente")
         self.add_btn.clicked.connect(self._add_component)
+        self.add_btn.setToolTip("Añade el ingrediente seleccionado a la tabla de componentes con la concentración indicada")
         add_row.addWidget(QLabel("Añadir desde BD:"))
         add_row.addWidget(self.ingredient_selector)
         add_row.addWidget(self.add_btn)
@@ -129,18 +137,22 @@ class RecipeEditorWidget(QWidget):
         ])
         self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        self.table.setToolTip("Tabla de componentes de la receta. Cada fila es un ingrediente con su tipo, concentración y concentración máxima recomendada")
         comp_layout.addWidget(self.table)
 
         btn_row = QHBoxLayout()
         self.remove_btn = QPushButton("Quitar Seleccionado")
         self.remove_btn.clicked.connect(self._remove_component)
+        self.remove_btn.setToolTip("Elimina el componente seleccionado de la tabla")
         self.clear_btn = QPushButton("Limpiar Todo")
         self.clear_btn.clicked.connect(self._clear_recipe)
+        self.clear_btn.setToolTip("Elimina todos los componentes de la receta")
         self.save_preset_btn = QPushButton("Guardar como Preset")
         self.save_preset_btn.setStyleSheet(
             "background-color: #FF9800; color: white; font-weight: bold; padding: 6px;"
         )
         self.save_preset_btn.clicked.connect(self._save_custom_preset)
+        self.save_preset_btn.setToolTip("Guarda la receta actual como un preset personalizado para usarlo después")
         btn_row.addWidget(self.remove_btn)
         btn_row.addWidget(self.clear_btn)
         btn_row.addStretch()
@@ -158,6 +170,7 @@ class RecipeEditorWidget(QWidget):
         self.translate_meta_btn = QPushButton("🌐 Traducir")
         self.translate_meta_btn.setMaximumWidth(120)
         self.translate_meta_btn.clicked.connect(self._on_translate_meta)
+        self.translate_meta_btn.setToolTip("Traduce el contenido de metadatos al idioma seleccionado usando el LLM")
         meta_header.addWidget(self.translate_meta_btn)
         meta_header.addStretch()
         meta_layout.addLayout(meta_header)
@@ -167,6 +180,7 @@ class RecipeEditorWidget(QWidget):
             "Carga una receta predefinida para ver sus pros, contras, "
             "hardware recomendado y casos de uso."
         )
+        self.metadata_text.setToolTip("Metadatos de la receta: mejores usos, pros, contras y notas de aplicación. Esta información se guarda con la receta")
         meta_layout.addWidget(self.metadata_text)
         tabs.addTab(meta_widget, "Pros/Contras & Hardware")
 

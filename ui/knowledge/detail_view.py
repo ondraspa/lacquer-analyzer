@@ -100,6 +100,7 @@ class ContentDetailPanel(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
 
         self._browser = QTextBrowser()
+        self._browser.setToolTip("Visor de contenido enriquecido. Muestra el contenido adaptado al tipo de importación (patente, libro, foro, etc.)")
         self._browser.setOpenExternalLinks(True)
         self._browser.setStyleSheet("""
             QTextBrowser {

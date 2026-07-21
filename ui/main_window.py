@@ -64,30 +64,31 @@ class MainWindow(QMainWindow):
 
         self.llm_status_btn = QPushButton("LLM: verificar")
         self.llm_status_btn.clicked.connect(self._check_llm)
-        self.llm_status_btn.setToolTip("Verificar conexión de LM Studio")
+        self.llm_status_btn.setToolTip("Verifica la conexión con el servidor LLM (LM Studio). Muestra el estado en el botón")
         toolbar.addWidget(self.llm_status_btn)
 
         self.kb_status_btn = QPushButton("BC: vacía")
         self.kb_status_btn.clicked.connect(self._open_kb_browser)
-        self.kb_status_btn.setToolTip("Explorar base de conocimiento")
+        self.kb_status_btn.setToolTip("Abre el navegador de la base de conocimiento: busca, navega y gestiona entradas")
         toolbar.addWidget(self.kb_status_btn)
 
         toolbar.addSeparator()
 
         expert_btn = QPushButton("📝 Notas de Experto")
+        expert_btn.setToolTip("Abre el bloc de notas de experto: temas de referencia y notas personales")
         expert_btn.clicked.connect(self._open_expert_notes)
         toolbar.addWidget(expert_btn)
 
         rag_btn = QPushButton("⚙ Configuración RAG")
         rag_btn.clicked.connect(self._open_rag_settings)
-        rag_btn.setToolTip("Modelo, temperatura, agente, sistema de prompt")
+        rag_btn.setToolTip("Configura el pipeline RAG: conexión LLM, generación, recuperación y agentes")
         toolbar.addWidget(rag_btn)
 
         toolbar.addSeparator()
 
         gen_btn = QPushButton("🎯 Generar Receta")
         gen_btn.clicked.connect(self._generate_from_spec)
-        gen_btn.setToolTip("Generar formulación desde especificaciones")
+        gen_btn.setToolTip("Genera una formulación automática a partir de especificaciones (viscosidad, sólidos, curado)")
         toolbar.addWidget(gen_btn)
 
         toolbar.addSeparator()
@@ -99,6 +100,7 @@ class MainWindow(QMainWindow):
         self.lang_selector.addItem("EN", "en")
         self.lang_selector.addItem("ES", "es")
         self.lang_selector.setCurrentIndex(1)  # ES por defecto
+        self.lang_selector.setToolTip("Cambia el idioma de la interfaz entre Español e Inglés")
         self.lang_selector.currentIndexChanged.connect(
             lambda i: translator.set_language(self.lang_selector.itemData(i))
         )
@@ -109,6 +111,7 @@ class MainWindow(QMainWindow):
 
         # Main area tabs
         self.main_tabs = QTabWidget()
+        self.main_tabs.setToolTip("Pestañas principales del flujo de trabajo:\n• Formulación — formulación de lacas\n• Galvánica — parámetros de baños\n• Prensado — parámetros de prensado\n• Control de Calidad — defectos y solución de problemas\n• Conocimiento — base de conocimiento y RAG")
         self.main_tabs.currentChanged.connect(self._on_tab_changed)
 
         # Tab 1: Formulación
@@ -142,53 +145,68 @@ class MainWindow(QMainWindow):
 
         file_menu = menubar.addMenu("Archivo")
         import_action = QAction("Importar Receta (JSON/YAML)", self)
+        import_action.setToolTip("Importa una receta desde un archivo YAML o JSON")
         import_action.triggered.connect(self._import_recipe)
         file_menu.addAction(import_action)
 
         export_action = QAction("Exportar Receta", self)
+        export_action.setToolTip("Exporta la receta actual a un archivo YAML")
         export_action.triggered.connect(self._export_recipe)
         file_menu.addAction(export_action)
 
         file_menu.addSeparator()
         exit_action = QAction("Salir", self)
+        exit_action.setToolTip("Cierra la aplicación")
         exit_action.triggered.connect(self.close)
         file_menu.addAction(exit_action)
 
         tools_menu = menubar.addMenu("Herramientas")
         data_action = QAction("Importar Datos...", self)
+        data_action.setToolTip("Abre el importador de datos: foros, PubChem, Wikipedia, PDFs, etc.")
         data_action.triggered.connect(self._open_data_import)
         tools_menu.addAction(data_action)
 
         expert_action = QAction("Notas de Experto...", self)
+        expert_action.setToolTip("Abre el bloc de notas de experto con temas de referencia")
         expert_action.triggered.connect(self._open_expert_notes)
         tools_menu.addAction(expert_action)
 
         tools_menu.addSeparator()
 
         ing_action = QAction("Editor de Ingredientes...", self)
+        ing_action.setToolTip("Abre el editor para añadir o modificar ingredientes en la base de datos")
         ing_action.triggered.connect(self._open_ingredient_editor)
         tools_menu.addAction(ing_action)
 
         plating_action = QAction("Editor de Reglas de Galvánica...", self)
+        plating_action.setToolTip("Edita las reglas de formulación para baños galvánicos (plata, níquel)")
         plating_action.triggered.connect(self._open_plating_rules)
         tools_menu.addAction(plating_action)
 
         defect_action = QAction("Editor de Defectos...", self)
+        defect_action.setToolTip("Gestiona la base de datos de defectos: añade, edita o elimina entradas")
         defect_action.triggered.connect(self._open_defect_editor)
         tools_menu.addAction(defect_action)
 
         tools_menu.addSeparator()
 
         gen_action = QAction("Generar Formulación desde Especificación...", self)
+        gen_action.setToolTip("Genera una receta automática a partir de especificaciones técnicas")
         gen_action.triggered.connect(self._generate_from_spec)
         tools_menu.addAction(gen_action)
 
         settings_action = QAction("Configuración RAG...", self)
+        settings_action.setToolTip("Configura el pipeline RAG, los agentes LLM y los parámetros de búsqueda")
         settings_action.triggered.connect(self._open_rag_settings)
         tools_menu.addAction(settings_action)
 
         help_menu = menubar.addMenu("Ayuda")
+        guide_action = QAction("📖 Guía de uso", self)
+        guide_action.setToolTip("Abre una guía completa sobre cómo usar cada sección de la aplicación")
+        guide_action.triggered.connect(self._show_usage_guide)
+        help_menu.addAction(guide_action)
         about_action = QAction("Acerca de", self)
+        about_action.setToolTip("Muestra información sobre la aplicación y la versión")
         about_action.triggered.connect(self._show_about)
         help_menu.addAction(about_action)
 
@@ -403,6 +421,77 @@ class MainWindow(QMainWindow):
         )
         if path:
             self.cutting_stage.recipe_editor.export_recipe(path)
+
+    def _show_usage_guide(self):
+        guide = QMessageBox(self)
+        guide.setWindowTitle("📖 Guía de Uso — Lacquer Analyzer")
+        guide.setTextFormat(Qt.RichText)
+        guide.setText(
+            "<h2>🧪 Lacquer Analyzer — Guía de Uso</h2>"
+            "<hr>"
+            "<h3>🔹 Flujo de trabajo principal</h3>"
+            "<p>1️⃣ <b>Formulación:</b> Crea recetas en el editor → Ejecuta análisis → Compara variantes</p>"
+            "<p>2️⃣ <b>Galvánica:</b> Configura parámetros de baños de plata y níquel</p>"
+            "<p>3️⃣ <b>Prensado:</b> Ajusta parámetros de prensado y lleva registro de producción</p>"
+            "<p>4️⃣ <b>Control de Calidad:</b> Consulta defectos, causas y soluciones</p>"
+            "<p>5️⃣ <b>Conocimiento:</b> Importa datos del foro, busca en la base de conocimiento, Q&A con LLM</p>"
+            "<hr>"
+            "<h3>🧪 Pestaña de Formulación</h3>"
+            "<p><b>Panel izquierdo — BD de Ingredientes:</b></p>"
+            "<p>• <b>BD de Ingredientes:</b> Explora, filtra y edita la base de datos completa de ingredientes. "
+            "Usa el buscador para encontrar por nombre. El filtro de tipo te permite ver solo resinas, solventes, pigmentos, etc. "
+            "Selecciona un ingrediente para ver sus propiedades. Botón <i>Editar</i> para modificar, <i>Añadir</i> para crear uno nuevo.</p>"
+            "<p>• <b>Pigmentos y Solventes:</b> Busca pigmentos por nombre comercial, C.I. Name/Number o clase química. "
+            "Selecciona un resultado para ver propiedades detalladas. Usa <i>Añadir a la receta</i> para importarlo como ingrediente.</p>"
+            "<p>• <b>SpecialChem:</b> Búsqueda multi-fuente (pigmentos locales + PubChem + Wikipedia + SpecialChem). "
+            "Si no hay cookies de SpecialChem, configura las cookies con el botón 🔑 para habilitar esa fuente.</p>"
+            "<p><b>Panel derecho — Editor de Recetas:</b></p>"
+            "<p>• <b>Componentes:</b> Selecciona ingredientes y ajústalos con concentraciones. "
+            "Usa los presets como punto de partida. La tabla muestra ingrediente, tipo, concentración y concentración máxima.</p>"
+            "<p>• <b>Pros/Contras & Hardware:</b> Metadatos de la receta: mejores usos, pros, contras. "
+            "Usa el botón <i>Traducir</i> para traducir al idioma seleccionado.</p>"
+            "<p>• <b>Análisis de Laca:</b> Configura condiciones ambientales (temperatura, humedad, espesor) "
+            "y ejecuta el análisis completo. Evalúa: viscosidad y película, perfil de evaporación, "
+            "riesgo de defectos (burbujas, bloom, orange peel), mojado y compatibilidad Hansen. "
+            "Puntuación global 0-100. Advertencias traducibles con el botón <i>Traducir</i>.</p>"
+            "<p>• <b>Comparar Recetas:</b> Selecciona dos recetas para compararlas lado a lado. "
+            "Muestra diferencias en composición (componente a componente), propiedades físico-químicas, "
+            "y análisis completo de ambas formulaciones simultáneamente.</p>"
+            "<hr>"
+            "<h3>⚡ Pestaña de Galvánica</h3>"
+            "<p>• <b>Parámetros de Baño:</b> Configura temperatura, pH, densidad de corriente y tiempo "
+            "para baños de plata y níquel sulfamato. Ajusta la preparación superficial.</p>"
+            "<p>• <b>Compatibilidad:</b> Matriz de compatibilidad de solventes y guías de prevención de defectos.</p>"
+            "<p>• <b>P&R:</b> Consulta la base de conocimiento sobre procesos galvánicos.</p>"
+            "<hr>"
+            "<h3>🔄 Pestaña de Prensado</h3>"
+            "<p>• Configura temperatura, presión, tiempos de prensado y enfriamiento.</p>"
+            "<p>• Especificaciones del disco: tamaño, grosor, peso, vida del estampador.</p>"
+            "<p>• Registro de producción: guarda un historial de cada prensada con sus parámetros.</p>"
+            "<p>• Referencias de defectos de prensado con causas y soluciones.</p>"
+            "<hr>"
+            "<h3>🔍 Pestaña de Control de Calidad</h3>"
+            "<p>• Navega defectos por etapa del proceso.</p>"
+            "<p>• Cada defecto muestra severidad (🟢🟡🔴), síntomas, causas, soluciones y referencias del foro.</p>"
+            "<p>• P&R con LLM sobre la base de conocimiento de defectos.</p>"
+            "<hr>"
+            "<h3>🧠 Pestaña de Conocimiento</h3>"
+            "<p>• <b>Importación:</b> Importa datos del foro Lathe Trolls, Markdown, PDFs, libros escaneados, patentes. "
+            "Usa el <i>Importador Completo</i> para acceso a todas las fuentes.</p>"
+            "<p>• <b>P&R:</b> Haz preguntas sobre cualquier tema de lacas. El LLM responde usando la base de conocimiento.</p>"
+            "<p>• <b>Navegador BC:</b> Busca y explora entradas de la base de conocimiento.</p>"
+            "<hr>"
+            "<h3>⚙️ Consejos rápidos</h3>"
+            "<p>• <b>Pasar el ratón</b> sobre cualquier elemento de la interfaz para ver un tooltip explicativo.</p>"
+            "<p>• <b>Traducción:</b> Usa el selector de idioma (🇪🇸/🇬🇧) en la barra de herramientas. "
+            "Los botones <i>Traducir</i> en análisis y metadatos traducen contenido específico.</p>"
+            "<p>• <b>Presets:</b> Usa recetas predefinidas como punto de partida. Guarda tus propias recetas como presets personalizados.</p>"
+            "<p>• <b>LLM:</b> Verifica la conexión con LM Studio usando el botón <i>LLM</i> en la barra. "
+            "Configura la URL y el modelo en <i>Configuración RAG</i>.</p>"
+            "<p>• <b>Atajos:</b> Archivo → Importar/Exportar receta para compartir formulaciones.</p>"
+        )
+        guide.setStandardButtons(QMessageBox.Ok)
+        guide.exec()
 
     def _show_about(self):
         QMessageBox.about(

@@ -45,6 +45,7 @@ class RAGSettingsDialog(QDialog):
 
         self.api_url_input = QLineEdit()
         self.api_url_input.setPlaceholderText("http://localhost:1234/v1")
+        self.api_url_input.setToolTip("URL del servidor LLM (ej: http://localhost:1234 para LM Studio)")
         conn_form.addRow("URL de API:", self.api_url_input)
 
         self.model_combo = QComboBox()
@@ -53,10 +54,12 @@ class RAGSettingsDialog(QDialog):
         if self._available_models:
             self.model_combo.addItems(self._available_models)
         self.model_combo.setPlaceholderText("p.ej. google/gemma-4-26b-a4b-qat")
+        self.model_combo.setToolTip("Modelo LLM a usar para generación. Los modelos disponibles se cargan desde el servidor")
         conn_form.addRow("Modelo:", self.model_combo)
 
         refresh_btn = QPushButton("Actualizar Modelos")
         refresh_btn.clicked.connect(self._refresh_models)
+        refresh_btn.setToolTip("Actualiza la lista de modelos disponibles desde el servidor")
         conn_form.addRow("", refresh_btn)
         base_layout.addWidget(conn_group)
 
@@ -67,12 +70,14 @@ class RAGSettingsDialog(QDialog):
         self.max_tokens_spin = QSpinBox()
         self.max_tokens_spin.setRange(64, 4096)
         self.max_tokens_spin.setSingleStep(64)
+        self.max_tokens_spin.setToolTip("Número máximo de tokens en la respuesta del LLM")
         gen_form.addRow("Máx. tokens:", self.max_tokens_spin)
 
         self.temperature_spin = QDoubleSpinBox()
         self.temperature_spin.setRange(0.0, 2.0)
         self.temperature_spin.setSingleStep(0.05)
         self.temperature_spin.setDecimals(2)
+        self.temperature_spin.setToolTip("Temperatura de generación (0.0=determinista, 1.0=creativo)")
         gen_form.addRow("Temperatura:", self.temperature_spin)
         base_layout.addWidget(gen_group)
 
@@ -82,22 +87,25 @@ class RAGSettingsDialog(QDialog):
 
         self.top_k_spin = QSpinBox()
         self.top_k_spin.setRange(1, 20)
+        self.top_k_spin.setToolTip("Número de fragmentos de conocimiento más relevantes a recuperar")
         ret_form.addRow("Fragmentos Top-K:", self.top_k_spin)
 
         self.context_chars_spin = QSpinBox()
         self.context_chars_spin.setRange(1000, 100000)
         self.context_chars_spin.setSingleStep(1000)
         self.context_chars_spin.setSuffix(" caracteres")
+        self.context_chars_spin.setToolTip("Máximo de caracteres de contexto a enviar al LLM")
         ret_form.addRow("Límite de contexto:", self.context_chars_spin)
 
         self.chunk_size_spin = QSpinBox()
         self.chunk_size_spin.setRange(200, 10000)
         self.chunk_size_spin.setSingleStep(100)
         self.chunk_size_spin.setSuffix(" caracteres")
-        self.chunk_size_spin.setToolTip("Máx. caracteres por fragmento de conocimiento (consciente de límites de párrafo)")
+        self.chunk_size_spin.setToolTip("Tamaño de los fragmentos en que se divide el conocimiento")
         ret_form.addRow("Tamaño de fragmento:", self.chunk_size_spin)
 
         self.show_details_check = QCheckBox("Mostrar detalles del pipeline RAG en el panel de P&R")
+        self.show_details_check.setToolTip("Muestra detalles del pipeline RAG en la interfaz (fragmentos, prompt, contexto)")
         ret_form.addRow("", self.show_details_check)
         base_layout.addWidget(ret_group)
 
@@ -107,21 +115,22 @@ class RAGSettingsDialog(QDialog):
 
         self.search_max_pages_spin = QSpinBox()
         self.search_max_pages_spin.setRange(1, 20)
-        self.search_max_pages_spin.setToolTip("Máx. páginas a buscar por palabra clave")
+        self.search_max_pages_spin.setToolTip("Máximo de páginas a raspar en búsquedas del foro")
         scrape_form.addRow("Máx. páginas de búsqueda:", self.search_max_pages_spin)
 
         self.forum_max_pages_spin = QSpinBox()
         self.forum_max_pages_spin.setRange(1, 50)
-        self.forum_max_pages_spin.setToolTip("Máx. páginas para listar hilos por foro")
+        self.forum_max_pages_spin.setToolTip("Máximo de páginas por hilo al raspar el foro")
         scrape_form.addRow("Páginas de listado del foro:", self.forum_max_pages_spin)
 
         self.mirror_max_pages_spin = QSpinBox()
         self.mirror_max_pages_spin.setRange(1, 20)
-        self.mirror_max_pages_spin.setToolTip("Máx. páginas de listado del foro durante el duplicado")
+        self.mirror_max_pages_spin.setToolTip("Máximo de páginas al duplicar el foro completo")
         scrape_form.addRow("Páginas de listado de duplicado:", self.mirror_max_pages_spin)
 
         self.cache_dir_input = QLineEdit()
         self.cache_dir_input.setPlaceholderText("data/forum_cache")
+        self.cache_dir_input.setToolTip("Directorio donde se almacena la caché del rastreador del foro")
         scrape_form.addRow("Directorio de caché del foro:", self.cache_dir_input)
 
         base_layout.addWidget(scrape_group)
@@ -139,6 +148,7 @@ class RAGSettingsDialog(QDialog):
         self.prompt_edit = QTextEdit()
         self.prompt_edit.setPlaceholderText("Prompt del sistema con marcador {context}...")
         self.prompt_edit.setMinimumHeight(100)
+        self.prompt_edit.setToolTip("Prompt del sistema que define el comportamiento base del LLM")
         prompt_layout.addWidget(self.prompt_edit)
         base_layout.addWidget(prompt_group)
         base_layout.addStretch()
@@ -153,13 +163,16 @@ class RAGSettingsDialog(QDialog):
         agent_list_col.addWidget(QLabel("<b>Agentes</b>"))
         self.agent_list = QListWidget()
         self.agent_list.currentItemChanged.connect(self._on_agent_select)
+        self.agent_list.setToolTip("Lista de agentes LLM especializados por dominio")
         agent_list_col.addWidget(self.agent_list, 1)
         agent_btn_row = QHBoxLayout()
         add_agent_btn = QPushButton("➕ Añadir")
         add_agent_btn.clicked.connect(self._add_agent)
+        add_agent_btn.setToolTip("Añade un nuevo agente especializado")
         agent_btn_row.addWidget(add_agent_btn)
         del_agent_btn = QPushButton("✕ Eliminar")
         del_agent_btn.clicked.connect(self._delete_agent)
+        del_agent_btn.setToolTip("Elimina el agente seleccionado")
         agent_btn_row.addWidget(del_agent_btn)
         agent_list_col.addLayout(agent_btn_row)
         agents_layout.addLayout(agent_list_col, 1)
@@ -170,9 +183,11 @@ class RAGSettingsDialog(QDialog):
         det_form = QFormLayout()
         self.agent_name_input = QLineEdit()
         self.agent_name_input.setPlaceholderText("p.ej. Experto en Química")
+        self.agent_name_input.setToolTip("Nombre del agente")
         det_form.addRow("Nombre:", self.agent_name_input)
         self.agent_domain_input = QLineEdit()
         self.agent_domain_input.setPlaceholderText("p.ej. fórmulas químicas, reacciones")
+        self.agent_domain_input.setToolTip("Dominio de especialización del agente (ej: formulacion, galvanoplastia, prensado)")
         det_form.addRow("Dominio:", self.agent_domain_input)
         self.agent_model_input = QComboBox()
         self.agent_model_input.setEditable(True)
@@ -180,9 +195,11 @@ class RAGSettingsDialog(QDialog):
         if self._available_models:
             self.agent_model_input.addItems(self._available_models)
         self.agent_model_input.setPlaceholderText("p.ej. qwen3:14b-q4_K_M")
+        self.agent_model_input.setToolTip("Modelo LLM para este agente (diferente al modelo global si se requiere)")
         det_form.addRow("Modelo:", self.agent_model_input)
         self.agent_url_input = QLineEdit()
         self.agent_url_input.setPlaceholderText("http://localhost:1234/v1")
+        self.agent_url_input.setToolTip("URL del servidor LLM para este agente")
         det_form.addRow("URL de API:", self.agent_url_input)
 
         agent_detail_col.addLayout(det_form)
@@ -190,6 +207,7 @@ class RAGSettingsDialog(QDialog):
         self.agent_prompt_edit = QTextEdit()
         self.agent_prompt_edit.setPlaceholderText("Prompt del sistema específico del dominio...")
         self.agent_prompt_edit.setMinimumHeight(120)
+        self.agent_prompt_edit.setToolTip("Prompt del sistema específico para este agente")
         agent_detail_col.addWidget(self.agent_prompt_edit, 1)
         agents_layout.addLayout(agent_detail_col, 2)
 

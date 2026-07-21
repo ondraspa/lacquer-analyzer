@@ -1,0 +1,30 @@
+pigments:
+- id: PIG-C001
+  name: sodium 1-amino-4-[3-(benzamidomethyl)-2,4,6-trimethylanilino]-9,10-dioxoanthracene-2-sulfonate
+  notes: 'Fórmula: C31H26N3NaO6S
+
+    MW: 591.6
+
+    IUPAC: sodium 1-amino-4-[3-(benzamidomethyl)-2,4,6-trimethylanilino]-9,10-dioxoanthracene-2-sulfonate'
+  type: color_pigment
+- id: PIG-C002
+  name: sodium 1-amino-4-[3-(benzamidomethyl)-2,4,6-trimethylanilino]-9,10-dioxoanthracene-2-sulfonate
+  notes: 'Fórmula: C31H26N3NaO6S
+
+    MW: 591.6
+
+    IUPAC: sodium 1-amino-4-[3-(benzamidomethyl)-2,4,6-trimethylanilino]-9,10-dioxoanthracene-2-sulfonate'
+  type: color_pigment
+- id: PIG-C003
+  name: Pigment Black 7
+  notes: 'C.I. Name: Pigment Black 7
+
+    C.I. Number: 77266
+
+    Clase: inorganic / carbon
+
+    Nombres comerciales: [''Carbon Black FW-200'', ''Printex 200'', ''Mogul L'', ''Raven
+    14'', ''Black Pearls 700'']
+
+    Alias: PBk 7, Carbon Black'
+  type: color_pigment

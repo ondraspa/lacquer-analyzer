@@ -1,0 +1,103 @@
+# ────────────────────────────────────────────────────────────────────
+# Recetas de Galvanoplastia / Electroforming — Separadas de lacas
+# Estas recetas son para baños de electrodeposición (níquel, plata)
+# y procesos de metalización. NO son recetas de laca para corte.
+# ────────────────────────────────────────────────────────────────────
+
+- id: "PLT-001"
+  name: "Galvanoplastia Rápida — Baño de Níquel Sulfamato"
+  target_viscosity_mpas: ~
+  target_solids_pct: ~
+  application: "plating"
+  coater: "n/a"
+  notes: "Composición del baño de níquel sulfamato para electroformado rápido de matrices."
+  metadata:
+    best_for: "Galvanoplastia de masters y stampers, producción de alto volumen"
+    pros:
+      - "Alta velocidad de deposición (hasta 50 µm/h)"
+      - "Bajo estrés interno en el depósito"
+      - "Excelente replicación de detalles finos del groove"
+      - "Baño estable con mantenimiento mínimo"
+    cons:
+      - "Requiere control preciso de pH (3.8-4.2)"
+      - "Temperatura crítica (50-55°C)"
+      - "La sacarina puede descomponerse con el tiempo"
+      - "Necesita filtración continua de 5 µm"
+    hardware:
+      rectifier: "Rectificador DC 0-20V, 0-100A"
+      tank: "Tanque de polipropileno 40-60L con agitación por bomba"
+      anodes: "Níquel electrolítico S-grade en canastas de titanio"
+      filtration: "Bomba de filtración 5 µm, 1-2 recirculaciones/hora"
+      temperature: "Control PID 50-55°C ±0.5°C"
+    common_issues:
+      - "Estrés alto → reducir sacarina o aumentar temperatura"
+      - "Picaduras → verificar pH, aumentar SLS"
+      - "Depósito quebradizo → verificar concentración de sulfamato"
+  components:
+    - id: "PLT-010"
+      name: "Sulfamato de Níquel"
+      concentration_pct: 65.0
+    - id: "PLT-012"
+      name: "Cloruro de Níquel"
+      concentration_pct: 5.0
+    - id: "PLT-013"
+      name: "Ácido Bórico"
+      concentration_pct: 4.5
+    - id: "PLT-014"
+      name: "SLS"
+      concentration_pct: 0.1
+    - id: "PLT-015"
+      name: "Sacarina Sódica"
+      concentration_pct: 0.15
+    - id: "PLT-016"
+      name: "1,4-Butinodiol"
+      concentration_pct: 0.03
+    - id: "PRO-001"
+      name: "Agua Desionizada"
+      concentration_pct: 25.22
+
+- id: "PLT-002"
+  name: "Baño de Plata — Plateado Químico (Silvering)"
+  application: "silvering"
+  notes: "Baño estándar para metalizar la laca antes del electroformado de níquel."
+  metadata:
+    best_for: "Metalización inicial del disco de laca para hacerlo conductor"
+    pros:
+      - "Proceso rápido (3-5 min)"
+      - "Capa conductora uniforme"
+    cons:
+      - "Solución inestable, debe usarse inmediata"
+      - "La plata es cara y se oxida con el tiempo"
+    common_issues:
+      - "Manchas → desengrasar mejor el disco"
+      - "Adhesión pobre → verificar activación con SnCl2"
+  components:
+    - id: "PLT-001"
+      name: "Nitrato de Plata (AgNO3)"
+      concentration_pct: 3.0
+    - id: "PLT-002"
+      name: "Hidróxido de Sodio (NaOH)"
+      concentration_pct: 3.0
+    - id: "PLT-004"
+      name: "Glucosa (Dextrosa)"
+      concentration_pct: 2.0
+    - id: "PRO-001"
+      name: "Agua Desionizada"
+      concentration_pct: 92.0
+
+- id: "PLT-003"
+  name: "Activación — Cloruro de Estaño (Sensibilizado)"
+  application: "silvering"
+  notes: "Pre-tratamiento del disco de laca antes del plateado químico."
+  metadata:
+    best_for: "Preparación de superficie para adhesión de plata"
+  components:
+    - id: "PLT-006"
+      name: "Cloruro de Estaño (SnCl2)"
+      concentration_pct: 1.0
+    - id: "PLT-007"
+      name: "Ácido Clorhídrico (HCl 32%)"
+      concentration_pct: 2.0
+    - id: "PRO-001"
+      name: "Agua Desionizada"
+      concentration_pct: 97.0

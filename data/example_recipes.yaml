@@ -1,0 +1,94 @@
+# Example Recipes for Burkle Curtain Coater
+
+- id: "REC-001"
+  name: "Standard NC Lacquer for Silvering"
+  target_viscosity_mpas: 600
+  target_solids_pct: 18
+  application: "curtain_coater"
+  coater: "burkle"
+  notes: "Standard formulation compatible with silvering"
+  components:
+    - id: "RES-001"
+      name: "Nitrocellulose RS 1/2 sec"
+      concentration_pct: 18
+    - id: "SOL-001"
+      name: "Butyl Acetate"
+      concentration_pct: 55
+    - id: "SOL-004"
+      name: "MAK (Methyl Amyl Ketone)"
+      concentration_pct: 20
+    - id: "SOL-005"
+      name: "Butyl Cellosolve"
+      concentration_pct: 5
+    - id: "ADD-001"
+      name: "Leveling Agent BYK-307"
+      concentration_pct: 0.5
+    - id: "ADD-002"
+      name: "Defoamer BYK-024"
+      concentration_pct: 0.3
+    - id: "ADD-003"
+      name: "Adhesion Promoter Silane A-187"
+      concentration_pct: 1.2
+
+- id: "REC-002"
+  name: "Acrylic Lacquer for Ni Sulfamate"
+  target_viscosity_mpas: 800
+  target_solids_pct: 25
+  application: "curtain_coater"
+  coater: "burkle"
+  notes: "Acrylic-based for nickel sulfamate compatibility"
+  components:
+    - id: "RES-003"
+      name: "Acrylic Resin AC-200"
+      concentration_pct: 25
+    - id: "SOL-001"
+      name: "Butyl Acetate"
+      concentration_pct: 50
+    - id: "SOL-002"
+      name: "Ethyl Acetate"
+      concentration_pct: 18
+    - id: "SOL-004"
+      name: "MAK (Methyl Amyl Ketone)"
+      concentration_pct: 5
+    - id: "ADD-001"
+      name: "Leveling Agent BYK-307"
+      concentration_pct: 0.5
+    - id: "ADD-002"
+      name: "Defoamer BYK-024"
+      concentration_pct: 0.3
+    - id: "ADD-003"
+      name: "Adhesion Promoter Silane A-187"
+      concentration_pct: 1.2
+
+- id: "REC-003"
+  name: "Universal Dual-Plating Lacquer"
+  target_viscosity_mpas: 500
+  target_solids_pct: 22
+  application: "curtain_coater"
+  coater: "burkle"
+  notes: "Compatible with both silvering and nickel sulfamate"
+  components:
+    - id: "RES-001"
+      name: "Nitrocellulose RS 1/2 sec"
+      concentration_pct: 15
+    - id: "RES-003"
+      name: "Acrylic Resin AC-200"
+      concentration_pct: 8
+    - id: "SOL-001"
+      name: "Butyl Acetate"
+      concentration_pct: 52
+    - id: "SOL-004"
+      name: "MAK (Methyl Amyl Ketone)"
+      concentration_pct: 18
+    - id: "SOL-005"
+      name: "Butyl Cellosolve"
+      concentration_pct: 5
+    - id: "ADD-001"
+      name: "Leveling Agent BYK-307"
+      concentration_pct: 0.5
+    - id: "ADD-002"
+      name: "Defoamer BYK-024"
+      concentration_pct: 0.3
+    - id: "ADD-003"
+      name: "Adhesion Promoter Silane A-187"
+      concentration_pct: 1.2

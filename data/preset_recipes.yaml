@@ -1,0 +1,682 @@
+# ────────────────────────────────────────────────────────────────────
+# Recetas Preseleccionadas — Lacquer Discs para Vinilo
+# Estas recetas son puntos de partida probados, basados en
+# formulaciones clásicas de la industria del mastering.
+# Se pueden cargar, modificar, analizar y comparar.
+# ────────────────────────────────────────────────────────────────────
+
+- id: "PRESET-001"
+  name: "NC Clásica — Corte General (33⅓ RPM)"
+  target_viscosity_mpas: 600
+  target_solids_pct: 18
+  application: "curtain_coater"
+  coater: "burkle"
+  notes: "Formulación NC estándar universal. La más usada en estudios de mastering."
+  metadata:
+    best_for: "33⅓ RPM LPs, corte general, la mayoría de géneros musicales"
+    pros:
+      - "Balance probado durante décadas en la industria"
+      - "Excelente chip flow para cortes de groove estándar"
+      - "Buena adhesión al disco de aluminio"
+      - "Compatible con todos los procesos de plateado"
+      - "Ventana de procesamiento amplia (±10% solventes)"
+    cons:
+      - "No óptima para cortes muy calientes (alta modulación)"
+      - "Puede mostrar cráteres en condiciones de alta humedad"
+      - "Requiere control preciso de temperatura (22-26°C)"
+    hardware:
+      coater_type: "Cortina Burkle o cualquier cortina de 2 rodillos"
+      drying: "Túnel de secado 25-30°C, 15-20 min"
+      curing: "24-48 horas a 22-25°C antes del plateado"
+      cutting_lathe: "Neumann VMS-70/VMS-80, Scully, Westrex"
+      stylus: "Sapphire o Ruby 3.0-3.5 mil"
+    common_issues:
+      - "Si aparece cráteres → reducir MEK, aumentar Butilglicol"
+      - "Si el chip es quebradizo → aumentar plastificante 2%"
+  components:
+    - id: "RES-002"
+      name: "Nitrocelulosa RS 1/2 seg"
+      concentration_pct: 18.0
+    - id: "PLA-001"
+      name: "Dibutilftalato (DBP)"
+      concentration_pct: 4.0
+    - id: "PLA-003"
+      name: "Aceite de Ricino"
+      concentration_pct: 1.5
+    - id: "SOL-012"
+      name: "Acetato de Butilo"
+      concentration_pct: 42.0
+    - id: "SOL-003"
+      name: "MIBK"
+      concentration_pct: 16.0
+    - id: "SOL-004"
+      name: "Ciclohexanona"
+      concentration_pct: 8.0
+    - id: "SOL-022"
+      name: "Butanol"
+      concentration_pct: 4.0
+    - id: "SOL-025"
+      name: "Butilglicol"
+      concentration_pct: 2.5
+    - id: "SOL-024"
+      name: "PMA"
+      concentration_pct: 2.0
+    - id: "ADD-003"
+      name: "Disparlón L-1980"
+      concentration_pct: 0.5
+    - id: "ADD-010"
+      name: "BYK-024"
+      concentration_pct: 0.3
+    - id: "ADD-020"
+      name: "Silano A-187"
+      concentration_pct: 1.0
+    - id: "SOL-012"
+      name: "Acetato de Butilo"
+      concentration_pct: 0.2  # balance
+
+- id: "PRESET-002"
+  name: "Hot Cut — Alta Modulación (45 RPM / Maxi-Single)"
+  target_viscosity_mpas: 750
+  target_solids_pct: 22
+  application: "curtain_coater"
+  coater: "burkle"
+  notes: "Mayor contenido de sólidos y NC de alta viscosidad para cortes calientes con mucha modulación lateral."
+  metadata:
+    best_for: "45 RPM singles, maxi-singles, cortes de alta modulación, música dance/electrónica"
+    pros:
+      - "Soporta grooves más profundos sin distorsión"
+      - "Mejor respuesta en altas frecuencias"
+      - "Mayor resistencia al salto de aguja"
+      - "Mejor chip flow a alta velocidad de corte"
+    cons:
+      - "Más difícil de filtrar (mayor viscosidad)"
+      - "Requiere mayor tiempo de curado (48-72h)"
+      - "Mayor tensión superficial → más propenso a cráteres"
+      - "No recomendada para cortes de baja modulación (pérdida de detalle)"
+    hardware:
+      coater_type: "Cortina Burkle con calentamiento de laca a 30°C"
+      drying: "Túnel 28-32°C, 20-25 min"
+      curing: "48-72 horas a 22-25°C"
+      cutting_lathe: "Neumann VMS-80, Haeco Scully con cabezal caliente"
+      stylus: "Ruby 2.5-3.0 mil para alta modulación"
+    common_issues:
+      - "Cratering → pre-calentar disco a 30°C antes del cortinado"
+      - "Viscosidad alta → verificar temperatura de la laca (debe estar a 25-28°C)"
+  components:
+    - id: "RES-003"
+      name: "Nitrocelulosa RS 5-6 seg"
+      concentration_pct: 22.0
+    - id: "PLA-001"
+      name: "Dibutilftalato (DBP)"
+      concentration_pct: 5.0
+    - id: "PLA-004"
+      name: "Alcanfor Sintético"
+      concentration_pct: 1.0
+    - id: "SOL-012"
+      name: "Acetato de Butilo"
+      concentration_pct: 36.0
+    - id: "SOL-003"
+      name: "MIBK"
+      concentration_pct: 12.0
+    - id: "SOL-004"
+      name: "Ciclohexanona"
+      concentration_pct: 10.0
+    - id: "SOL-022"
+      name: "Butanol"
+      concentration_pct: 4.0
+    - id: "SOL-025"
+      name: "Butilglicol"
+      concentration_pct: 3.0
+    - id: "SOL-024"
+      name: "PMA"
+      concentration_pct: 3.0
+    - id: "SOL-040"
+      name: "MAK"
+      concentration_pct: 2.0
+    - id: "ADD-003"
+      name: "Disparlón L-1980"
+      concentration_pct: 0.5
+    - id: "ADD-010"
+      name: "BYK-024"
+      concentration_pct: 0.3
+    - id: "ADD-020"
+      name: "Silano A-187"
+      concentration_pct: 1.0
+
+- id: "PRESET-003"
+  name: "Mastering — Alta Definición (Corte de Biblioteca / Audiophile)"
+  target_viscosity_mpas: 400
+  target_solids_pct: 15
+  application: "curtain_coater"
+  coater: "burkle"
+  notes: "Baja viscosidad y sólidos para máxima transferencia de detalle. Usada en cortes de biblioteca y ediciones audiophile."
+  metadata:
+    best_for: "Cortes de biblioteca, ediciones audiophile, jazz clásico, música acústica, voz"
+    pros:
+      - "Máximo detalle en alta frecuencia (responde a 20kHz+)"
+      - "Mejor relación señal/ruido"
+      - "Menor distorsión por travesía (tracking distortion)"
+      - "Excelente para pasajes de baja modulación"
+    cons:
+      - "No soporta grooves muy calientes (limitación en nivel)"
+      - "Laca más blanda → menor vida útil del disco maestro"
+      - "Requiere ajuste fino de la cortina (más delicada)"
+      - "Mayor sensibilidad a temperatura y humedad"
+    hardware:
+      coater_type: "Cortina Burkle con filtro de 5 µm en línea"
+      drying: "Túnel 22-25°C, 25-30 min (secado muy lento)"
+      curing: "24h a 22°C + 24h a 25°C (curado escalonado)"
+      cutting_lathe: "Neumann VMS-80 con cabezal refrigerado"
+      stylus: "Sapphire 3.5-4.0 mil para máximo detalle"
+    common_issues:
+      - "Pérdida de nivel → no apta para cortes > 0 dB"
+      - "Cratering por solventes lentos → ajustar relación Butanol/Butilglicol"
+  components:
+    - id: "RES-001"
+      name: "Nitrocelulosa RS 1/4 seg"
+      concentration_pct: 15.0
+    - id: "PLA-001"
+      name: "Dibutilftalato (DBP)"
+      concentration_pct: 3.0
+    - id: "PLA-003"
+      name: "Aceite de Ricino"
+      concentration_pct: 1.0
+    - id: "SOL-012"
+      name: "Acetato de Butilo"
+      concentration_pct: 44.0
+    - id: "SOL-003"
+      name: "MIBK"
+      concentration_pct: 18.0
+    - id: "SOL-004"
+      name: "Ciclohexanona"
+      concentration_pct: 6.0
+    - id: "SOL-022"
+      name: "Butanol"
+      concentration_pct: 5.0
+    - id: "SOL-025"
+      name: "Butilglicol"
+      concentration_pct: 2.0
+    - id: "SOL-024"
+      name: "PMA"
+      concentration_pct: 3.0
+    - id: "ADD-003"
+      name: "Disparlón L-1980"
+      concentration_pct: 0.5
+    - id: "ADD-010"
+      name: "BYK-024"
+      concentration_pct: 0.2
+    - id: "ADD-020"
+      name: "Silano A-187"
+      concentration_pct: 1.0
+    - id: "ADD-030"
+      name: "Tinuvin 400"
+      concentration_pct: 1.0
+
+- id: "PRESET-004"
+  name: "Secado Rápido — Producción en Serie (45 RPM)"
+  target_viscosity_mpas: 500
+  target_solids_pct: 20
+  application: "curtain_coater"
+  coater: "burkle"
+  notes: "Optimizada para flujo de producción rápido con túnel de secado a 35°C."
+  metadata:
+    best_for: "Producción en serie de 45 RPM, plantas de pressing de alto volumen"
+    pros:
+      - "Secado en 10-12 minutos (vs 20-25 de NC clásica)"
+      - "Mayor throughput: 3-4 discos/hora vs 1-2"
+      - "Buena compatibilidad con plateado automatizado"
+      - "Menor riesgo de contaminación por polvo (menos tiempo expuesto)"
+    cons:
+      - "Ventana de proceso estrecha (±3% en solventes)"
+      - "Mayor riesgo de cráteres por evaporación rápida"
+      - "La laca envejece más rápido en la cuba de cortinado"
+      - "No apta para cortes audiophile (pierde detalle en agudos)"
+    hardware:
+      coater_type: "Cortina Burkle con bomba de recirculación rápida"
+      drying: "Túnel de secado 35-40°C con flujo de aire forzado, 10-12 min"
+      curing: "12-24 horas a 25°C"
+      cutting_lathe: "Scully automático, Neumann VMS-70"
+      stylus: "Ruby 3.0 mil (mayor resistencia al desgaste)"
+    common_issues:
+      - "Cratering → reducir temperatura del túnel a 32°C"
+      - "Laca espesa en cuba → añadir 2% de acetato de butilo cada hora"
+  components:
+    - id: "RES-002"
+      name: "Nitrocelulosa RS 1/2 seg"
+      concentration_pct: 18.0
+    - id: "RES-005"
+      name: "Nitrocelulosa RS 30-40 seg"
+      concentration_pct: 2.0
+    - id: "PLA-001"
+      name: "Dibutilftalato (DBP)"
+      concentration_pct: 3.5
+    - id: "SOL-012"
+      name: "Acetato de Butilo"
+      concentration_pct: 32.0
+    - id: "SOL-010"
+      name: "Acetato de Etilo"
+      concentration_pct: 18.0
+    - id: "SOL-003"
+      name: "MIBK"
+      concentration_pct: 12.0
+    - id: "SOL-001"
+      name: "Acetona"
+      concentration_pct: 4.0
+    - id: "SOL-022"
+      name: "Butanol"
+      concentration_pct: 3.0
+    - id: "SOL-025"
+      name: "Butilglicol"
+      concentration_pct: 1.0
+    - id: "SOL-024"
+      name: "PMA"
+      concentration_pct: 4.0
+    - id: "ADD-003"
+      name: "Disparlón L-1980"
+      concentration_pct: 0.5
+    - id: "ADD-010"
+      name: "BYK-024"
+      concentration_pct: 0.3
+    - id: "ADD-020"
+      name: "Silano A-187"
+      concentration_pct: 1.0
+    - id: "ADD-030"
+      name: "Tinuvin 400"
+      concentration_pct: 0.5
+
+- id: "PRESET-005"
+  name: "DMM — Direct Metal Mastering Compatible"
+  target_viscosity_mpas: 550
+  target_solids_pct: 19
+  application: "curtain_coater"
+  coater: "burkle"
+  notes: "Formulación especial para compatibilidad con procesos DMM. Menor contenido de plastificantes para mejor conductividad."
+  metadata:
+    best_for: "Discos que requieren proceso DMM (Direct Metal Mastering), discos de demostración"
+    pros:
+      - "Compatible con sustratos de cobre (DMM)"
+      - "Mejor conductividad térmica durante el corte"
+      - "Chip más estable y predecible"
+      - "Buena respuesta en todo el rango de frecuencias"
+    cons:
+      - "No apta para plateado químico tradicional (silvering)"
+      - "Requiere equipo DMM especializado"
+      - "Mayor costo por disco (sustrato de cobre)"
+      - "Menor flexibilidad de la película"
+    hardware:
+      coater_type: "Cortina Burkle con control de espesor por láser"
+      drying: "Túnel 25-28°C, 15-18 min"
+      curing: "24h a 25°C"
+      cutting_lathe: "Neumann VMS-82 DMM, cabezal de diamante"
+      stylus: "Diamante 3.0 mil (para DMM)"
+    common_issues:
+      - "Delaminación → aumentar Silano A-187 a 1.5%"
+      - "Conductividad insuficiente → reducir plastificante 1%"
+  components:
+    - id: "RES-002"
+      name: "Nitrocelulosa RS 1/2 seg"
+      concentration_pct: 16.0
+    - id: "RES-009"
+      name: "Paraloid B-44"
+      concentration_pct: 3.0
+    - id: "PLA-001"
+      name: "Dibutilftalato (DBP)"
+      concentration_pct: 2.0
+    - id: "PLA-003"
+      name: "Aceite de Ricino"
+      concentration_pct: 0.5
+    - id: "SOL-012"
+      name: "Acetato de Butilo"
+      concentration_pct: 40.0
+    - id: "SOL-003"
+      name: "MIBK"
+      concentration_pct: 16.0
+    - id: "SOL-004"
+      name: "Ciclohexanona"
+      concentration_pct: 8.0
+    - id: "SOL-022"
+      name: "Butanol"
+      concentration_pct: 4.0
+    - id: "SOL-025"
+      name: "Butilglicol"
+      concentration_pct: 2.0
+    - id: "SOL-024"
+      name: "PMA"
+      concentration_pct: 5.0
+    - id: "ADD-003"
+      name: "Disparlón L-1980"
+      concentration_pct: 0.5
+    - id: "ADD-010"
+      name: "BYK-024"
+      concentration_pct: 0.3
+    - id: "ADD-021"
+      name: "Silano A-1100"
+      concentration_pct: 1.0
+    - id: "SOL-012"
+      name: "Acetato de Butilo"
+      concentration_pct: 1.7
+
+- id: "PRESET-006"
+  name: "Económica — Producción de Bajo Costo"
+  target_viscosity_mpas: 650
+  target_solids_pct: 24
+  application: "curtain_coater"
+  coater: "burkle"
+  notes: "Formulación optimizada para costo. Usa mayor contenido de sólidos y solventes de menor precio."
+  metadata:
+    best_for: "Producción de bajo presupuesto, discos promocionales, tiradas cortas económicas"
+    pros:
+      - "Costo por disco ~30% menor que NC clásica"
+      - "Mayor rendimiento (más discos por litro de laca)"
+      - "Buena tolerancia a variaciones de proceso"
+      - "Recuperación rápida si hay defectos"
+    cons:
+      - "Calidad de corte inferior — más ruido de superficie"
+      - "Menor respuesta en alta frecuencia"
+      - "El chip es más quebradizo — mayor riesgo de obstrucción"
+      - "No apta para catálogo o ediciones de calidad"
+      - "Menor vida útil del maestro antes del plateado"
+    hardware:
+      coater_type: "Cortina Burkle estándar (sin calentamiento)"
+      drying: "Túnel 22-25°C, 15-20 min"
+      curing: "24h a 22°C"
+      cutting_lathe: "Scully (cualquier modelo)"
+      stylus: "Sapphire 3.0 mil"
+    common_issues:
+      - "Chip quebradizo → aumentar DBP 1%"
+      - "Ruido excesivo → verificar filtración (malla 10 µm mínima)"
+  components:
+    - id: "RES-002"
+      name: "Nitrocelulosa RS 1/2 seg"
+      concentration_pct: 16.0
+    - id: "RES-012"
+      name: "Resina Cetónica"
+      concentration_pct: 4.0
+    - id: "PLA-001"
+      name: "Dibutilftalato (DBP)"
+      concentration_pct: 3.0
+    - id: "PLA-005"
+      name: "Tripolifosfato de Sodio"
+      concentration_pct: 1.0
+    - id: "SOL-012"
+      name: "Acetato de Butilo"
+      concentration_pct: 38.0
+    - id: "SOL-010"
+      name: "Acetato de Etilo"
+      concentration_pct: 14.0
+    - id: "SOL-003"
+      name: "MIBK"
+      concentration_pct: 10.0
+    - id: "SOL-031"
+      name: "Xileno"
+      concentration_pct: 6.0
+    - id: "SOL-022"
+      name: "Butanol"
+      concentration_pct: 3.0
+    - id: "SOL-025"
+      name: "Butilglicol"
+      concentration_pct: 1.0
+    - id: "SOL-024"
+      name: "PMA"
+      concentration_pct: 2.0
+    - id: "ADD-003"
+      name: "Disparlón L-1980"
+      concentration_pct: 0.5
+    - id: "ADD-010"
+      name: "BYK-024"
+      concentration_pct: 0.3
+    - id: "ADD-020"
+      name: "Silano A-187"
+      concentration_pct: 1.0
+- id: "PRESET-008"
+  name: "Audio Devices — Patente US2607699A (1948)"
+  target_viscosity_mpas: 350
+  target_solids_pct: 24
+  application: "curtain_coater"
+  coater: "burkle"
+  notes: "Fórmula clásica de Audio Devices (George Sutheim, 1948). Una de las primeras recetas documentadas de lacquer disc moderna. Base de todas las formulaciones posteriores."
+  metadata:
+    best_for: "Referencia histórica, base para experimentación, cortes generales"
+    pros:
+      - "Receta probada y documentada en patente US2607699A"
+      - "Balance clásico NC/plastificante/solvente"
+      - "Bajo ruido de superficie reportado"
+      - "Incluye pigmento anticlimbing (0.05-0.25%)"
+    cons:
+      - "Alto contenido de alcohol (18%) puede causar blush en alta humedad"
+      - "NC al 33% de sólidos → película quebradiza sin plastificante suficiente"
+      - "Solventes mayormente ésteres de baja ebullición → secado rápido, propenso a burbujas"
+    hardware:
+      coater_type: "Cortina Burkle o spin coater"
+      drying: "Túnel 22-25°C, 15-20 min"
+      curing: "24-48h a 22-25°C"
+      cutting_lathe: "Neumann VMS-70, Scully, Westrex"
+      stylus: "Sapphire 3.0-3.5 mil"
+    common_issues:
+      - "Blush en alta humedad → reducir alcohol, aumentar butanol"
+      - "Climbing → añadir 0.1% de carbonato de calcio coloidal o sílice"
+  components:
+    - id: "RES-002"
+      name: "Nitrocelulosa RS 1/2 seg"
+      concentration_pct: 33.3
+    - id: "PLA-001"
+      name: "Dibutilftalato (DBP)"
+      concentration_pct: 10.0
+    - id: "PLA-003"
+      name: "Aceite de Ricino"
+      concentration_pct: 10.0
+    - id: "SOL-010"
+      name: "Acetato de Etilo"
+      concentration_pct: 28.2
+    - id: "SOL-020"
+      name: "Etanol (Alcohol Etílico)"
+      concentration_pct: 18.0
+    - id: "ADD-003"
+      name: "Disparlón L-1980 (Nivelante Acrílico)"
+      concentration_pct: 0.5
+
+- id: "PRESET-009"
+  name: "Nail Polish Base — Adaptación Lathe Trolls (2009)"
+  target_viscosity_mpas: 500
+  target_solids_pct: 20
+  application: "curtain_coater"
+  coater: "burkle"
+  notes: "Adaptación de fórmula de esmalte de uñas (nitrocelulosa + resina tosilamida/formaldehído). Probada por la comunidad Lathe Trolls como punto de partida para lacquer casero. Añadir 5% de aceite de ricino para flexibilidad."
+  metadata:
+    best_for: "Experimentación casera, prototipos, bajo presupuesto"
+    pros:
+      - "Ingredientes accesibles (esmalte de uñas industrial)"
+      - "Incluye resina tosilamida/formaldehído para dureza"
+      - "Camphor como plastificante secundario natural"
+      - "Benzofenona-1 como estabilizador UV"
+    cons:
+      - "No probada en producción profesional"
+      - "Resina tosilamida/formaldehído puede ser frágil"
+      - "Requiere 5% aceite de ricino adicional para flexibilidad de corte"
+      - "Stearalkonium hectorite (espesante) puede dejar residuos"
+    hardware:
+      coater_type: "Spin coater o cortina pequeña"
+      drying: "25-30°C, 20-30 min"
+      curing: "48h a 22°C"
+      cutting_lathe: "Scully, Neumann VMS-70"
+      stylus: "Sapphire 3.0 mil"
+    common_issues:
+      - "Película muy dura → aumentar plastificante 2%"
+      - "Residuos de hectorite → filtrar a 5 µm antes de usar"
+      - "Blush → añadir 2% butilglicol como retardante"
+  components:
+    - id: "SOL-012"
+      name: "Acetato de Butilo"
+      concentration_pct: 27.0
+    - id: "SOL-010"
+      name: "Acetato de Etilo"
+      concentration_pct: 23.2
+    - id: "SOL-030"
+      name: "Tolueno"
+      concentration_pct: 12.0
+    - id: "RES-002"
+      name: "Nitrocelulosa RS 1/2 seg"
+      concentration_pct: 13.0
+    - id: "RES-013"
+      name: "Resina Tosilamida/Formaldehído"
+      concentration_pct: 9.0
+    - id: "PLA-001"
+      name: "Dibutilftalato (DBP)"
+      concentration_pct: 7.0
+    - id: "SOL-021"
+      name: "Isopropanol (IPA)"
+      concentration_pct: 5.0
+    - id: "ADD-050"
+      name: "Aerosil R-972 (Sílice Pirógena)"
+      concentration_pct: 1.5
+    - id: "PLA-004"
+      name: "Alcanfor Sintético"
+      concentration_pct: 0.95
+    - id: "ADD-032"
+      name: "Tinuvin 328"
+      concentration_pct: 0.15
+    - id: "PLA-003"
+      name: "Aceite de Ricino"
+      concentration_pct: 5.0
+
+- id: "PRESET-010"
+  name: "DuPont EVA/SAIB — Patente US3476694A (1969)"
+  target_viscosity_mpas: 420
+  target_solids_pct: 21
+  application: "curtain_coater"
+  coater: "burkle"
+  notes: "Fórmula de DuPont que incorpora copolímero etileno/acetato de vinilo (EVA) y sacarosa acetato isobutirato (SAIB) como modificadores de película. NC 50%, EVA 20%, SAIB 30% en sólidos. Solventes: tolueno 50%, IPA 15%, acetato de butilo 35%."
+  metadata:
+    best_for: "Investigación de nuevos modificadores de película, laboratorio"
+    pros:
+      - "EVA aporta flexibilidad sin plastificante externo"
+      - "SAIB mejora dureza superficial y brillo"
+      - "Buena estabilidad de viscosidad en cuba"
+      - "Documentado con datos de viscosidad Ford Cup"
+    cons:
+      - "Alto contenido de tolueno (tóxico, olor fuerte)"
+      - "EVA y SAIB no son comunes en la industria del disco"
+      - "Requiere ball milling para dispersión homogénea"
+      - "Sin probar en corte real de lacquer disc"
+    hardware:
+      coater_type: "Cortina Burkle con ball mill previo"
+      drying: "25-30°C, 15-20 min"
+      curing: "24-48h a 22°C"
+      stylus: "Diamante 3.0 mil"
+    common_issues:
+      - "Separación de fases → mezclar EVA en tolueno antes de añadir NC"
+      - "Viscosidad muy alta → diluir con 5% más de acetato de butilo"
+  components:
+    - id: "RES-002"
+      name: "Nitrocelulosa RS 1/2 seg"
+      concentration_pct: 10.5
+    - id: "ADD-060"
+      name: "Copolímero EVA (45% VA)"
+      concentration_pct: 4.2
+    - id: "ADD-061"
+      name: "Sacarosa Acetato Isobutirato (SAIB)"
+      concentration_pct: 6.3
+    - id: "SOL-030"
+      name: "Tolueno"
+      concentration_pct: 39.5
+    - id: "SOL-021"
+      name: "Isopropanol (IPA)"
+      concentration_pct: 11.85
+    - id: "SOL-012"
+      name: "Acetato de Butilo"
+      concentration_pct: 27.65
+
+- id: "PRESET-011"
+  name: "Deutsche Celluloid Fabrik — US2092229A (1937)"
+  target_viscosity_mpas: 300
+  target_solids_pct: 18
+  application: "curtain_coater"
+  coater: "burkle"
+  notes: "Fórmula alemana de los años 30 que usa exclusivamente alcohol absoluto + benceno como solventes, sin solventes verdaderos. NC de alta nitración (11.5-11.9% N). Curiosidad histórica que demuestra que se puede hacer lacquer sin acetatos."
+  metadata:
+    best_for: "Estudio histórico, demostración de principios de solubilidad de NC"
+    pros:
+      - "Demuestra que alcohol + aromático pueden disolver NC de alta nitración"
+      - "Película transparente sin blush (con adición <4% de solvente verdadero)"
+      - "Bajo costo de solventes"
+    cons:
+      - "Benceno es cancerígeno (no usable hoy sin reemplazo por tolueno)"
+      - "NC de alta nitración (11.5-11.9% N) no es la estándar RS"
+      - "Ventana de solvente muy estrecha (±2%)"
+      - "Sin datos de comportamiento en corte real"
+    hardware:
+      coater_type: "Cortina o inmersión"
+      drying: "20-22°C, 25-30 min"
+      curing: "48h"
+    common_issues:
+      - "Blush si se excede 4% de solvente verdadero"
+      - "Precipitación de NC si la proporción alcohol/benceno no es exacta 50:50"
+  components:
+    - id: "RES-014"
+      name: "Nitrocelulosa Alta Nitración (11.8% N)"
+      concentration_pct: 16.0
+    - id: "SOL-031"
+      name: "Xileno"
+      concentration_pct: 41.0
+    - id: "SOL-020"
+      name: "Etanol (Alcohol Etílico)"
+      concentration_pct: 41.0
+    - id: "PLA-001"
+      name: "Dibutilftalato (DBP)"
+      concentration_pct: 2.0
+
+- id: "PRESET-012"
+  name: "Hot Cut 45 RPM — Comunidad Lathe Trolls (Castor Oil 5%)"
+  target_viscosity_mpas: 650
+  target_solids_pct: 22
+  application: "curtain_coater"
+  coater: "burkle"
+  notes: "Desarrollada por la comunidad Lathe Trolls. Usa Watco lacquer (nitrocelulosa comercial para madera) + 5% aceite de ricino. Aplicación por spin coating. Reportada como funcional para 45 RPM, con 10% de aceite resulta demasiado blanda."
+  metadata:
+    best_for: "Experimentación casera, 45 RPM, demostración de viabilidad"
+    pros:
+      - "Ingredientes accesibles (Watco lacquer de Home Depot)"
+      - "Spin coating da espesor uniforme"
+      - "5% castor oil da flexibilidad adecuada para corte"
+      - "Reproducible por cualquiera"
+    cons:
+      - "Watco lacquer tiene fórmula variable según lote"
+      - "Ruido de superficie más alto que lacquer profesional"
+      - "Dust contamination es problema mayor"
+      - "No usable en producción profesional"
+    hardware:
+      coater_type: "Spin coater casero (plato giratorio)"
+      drying: "22-25°C, 30-45 min"
+      curing: "48-72h a 22°C"
+      cutting_lathe: "Scully, Rek-O-Kut, Presto"
+      stylus: "Sapphire 3.0 mil"
+    common_issues:
+      - "Ruido alto → filtrar lacquer a 10 µm"
+      - "Orange peel → añadir 2% butilglicol como retardante"
+      - "Polvo en superficie → usar cámara de presión positiva"
+  components:
+    - id: "RES-002"
+      name: "Nitrocelulosa RS 1/2 seg"
+      concentration_pct: 20.0
+    - id: "PLA-003"
+      name: "Aceite de Ricino"
+      concentration_pct: 5.0
+    - id: "SOL-012"
+      name: "Acetato de Butilo"
+      concentration_pct: 38.0
+    - id: "SOL-010"
+      name: "Acetato de Etilo"
+      concentration_pct: 15.0
+    - id: "SOL-030"
+      name: "Tolueno"
+      concentration_pct: 10.0
+    - id: "SOL-022"
+      name: "Butanol (n-Butanol)"
+      concentration_pct: 5.0
+    - id: "SOL-025"
+      name: "Butilglicol (Butil Cellosolve)"
+      concentration_pct: 2.0
+    - id: "ADD-020"
+      name: "Silano A-187"
+      concentration_pct: 1.0
+

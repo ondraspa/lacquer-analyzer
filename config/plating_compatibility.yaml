@@ -1,0 +1,128 @@
+# Reglas de Compatibilidad de Metalizado para Deposición de Laca
+# Define la compatibilidad química entre formulaciones de laca y procesos de metalizado
+
+silvering:
+  name: "Plateado de Plata (Cianuro/No Cianuro)"
+  description: "Deposición electrolítica de plata"
+  bath_composition:
+    - "Cianuro de plata / Sulfamato de plata"
+    - "Cianuro libre / Tiosulfato"
+    - "Buffer de carbonato"
+    - "Abrillantadores (orgánicos)"
+  critical_parameters:
+    ph_range: [8.5, 11.0]
+    temperature_c: [20, 30]
+    current_density_ad: [2, 8]
+  forbidden_chemicals:
+    - "MEK (Metil Etil Cetona)"
+    - "Acetona"
+    - "Ácidos fuertes (pH < 4)"
+    - "Solventes clorados"
+    - "Amoníaco > 5%"
+    - "Sulfuros"
+  required_surface_prep:
+    - "Superficie limpia (sin aceites)"
+    - "Microrrugosidad Ra 0.2-0.5 µm"
+    - "Sin solventes de laca residuales"
+  lacquer_requirements:
+    min_adhesion_mpa: 8.0
+    max_solvent_retention_pct: 0.1
+    cure_temp_max_c: 120
+    forbidden_additives:
+      - "Que contienen azufre"
+      - "Fosfatos > 0.5%"
+
+nickel_sulfamate:
+  name: "Sulfamato de Níquel"
+  description: "Deposición de níquel de alta pureza para aplicaciones de ingeniería"
+  bath_composition:
+    - "Sulfamato de níquel 300-450 g/L"
+    - "Ácido bórico 30-45 g/L"
+    - "Cloruro 0-30 g/L"
+    - "Reductores de tensión (orgánicos)"
+  critical_parameters:
+    ph_range: [3.8, 4.5]
+    temperature_c: [45, 60]
+    current_density_ad: [2, 20]
+  forbidden_chemicals:
+    - "Oxidantes fuertes"
+    - "Ácidos orgánicos (cítrico, acético > 1%)"
+    - "Siliconas"
+    - "Surfactantes excesivos"
+  required_surface_prep:
+    - "Activar en ácido diluido"
+    - "Sin capa de óxido pasiva"
+    - "Enjuagar completamente"
+  lacquer_requirements:
+    min_adhesion_mpa: 10.0
+    max_solvent_retention_pct: 0.05
+    cure_temp_max_c: 150
+    forbidden_additives:
+      - "Siliconas"
+      - "Fosfonatos > 0.2%"
+      - "Agentes nivelantes excesivos"
+
+cross_contamination_matrix:
+  lacquer_to_silvering:
+    risk_level: "ALTO"
+    mechanisms:
+      - "El atrapamiento de solvente causa picaduras"
+      - "Contaminación por silicona -> mala adhesión"
+      - "Compuestos de azufre -> deslustre"
+    mitigation:
+      - "Curado completo antes del metalizado"
+      - "Limpieza con plasma si es necesario"
+      - "Probar adhesión según ASTM D3359"
+
+  lacquer_to_nickel_sulfamate:
+    risk_level: "MEDIO"
+    mechanisms:
+      - "Contaminación orgánica -> tensión/rugosidad"
+      - "Siliconas -> picaduras"
+      - "Fosfatos -> contaminación del baño"
+    mitigation:
+      - "Activar con ácido antes del metalizado"
+      - "Monitorear orgánicos del baño"
+      - "Tratamiento con carbón si es necesario"
+
+  silvering_to_lacquer:
+    risk_level: "BAJO"
+    mechanisms:
+      - "Migración de plata hacia la laca (raro)"
+    mitigation:
+      - "Capa barrera si es necesario"
+
+  nickel_sulfamate_to_lacquer:
+    risk_level: "BAJO"
+    mechanisms:
+      - "Sales de níquel -> decoloración"
+    mitigation:
+      - "Enjuague completo + agua DI"
+      - "Pasivar si es necesario"
+
+process_sequence_rules:
+  - sequence: ["lacquer", "silvering"]
+    allowed: true
+    conditions:
+      - "Laca completamente curada (>24h a 20°C o >1h a 80°C)"
+      - "Sin MEK/acetona en la formulación"
+      - "Promotor de adhesión requerido"
+
+  - sequence: ["lacquer", "nickel_sulfamate"]
+    allowed: true
+    conditions:
+      - "Laca completamente curada"
+      - "Sin siliconas en la formulación"
+      - "Paso de activación ácida obligatorio"
+
+  - sequence: ["silvering", "lacquer"]
+    allowed: true
+    conditions:
+      - "Plata pasivada/protegida"
+      - "Sin solventes agresivos sobre plata fresca"
+
+  - sequence: ["nickel_sulfamate", "lacquer"]
+    allowed: true
+    conditions:
+      - "Níquel pasivado"
+      - "Energía superficial > 38 mN/m"

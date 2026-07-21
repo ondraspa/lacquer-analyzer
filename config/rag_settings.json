@@ -1,0 +1,45 @@
+{
+  "api_url": "http://localhost:1234/v1",
+  "model": "google/gemma-4-26b-a4b-qat",
+  "max_tokens": 1024,
+  "temperature": 0.3,
+  "top_k": 5,
+  "context_chars": 24000,
+  "chunk_size": 1500,
+  "show_rag_details": true,
+  "scrape_search_max_pages": 5,
+  "scrape_forum_max_pages": 15,
+  "scrape_mirror_max_pages": 3,
+  "forum_cache_dir": "data/forum_cache",
+  "system_prompt": "You are an expert on lacquer disc chemistry, silvering, and electroplating for vinyl record mastering. Answer questions based ONLY on the forum knowledge provided below. If the information isn't in the provided context, say so.\n\nFORUM KNOWLEDGE:\n{context}",
+  "agents": [
+    {
+      "name": "General Assistant",
+      "domain": "lacquer chemistry, silvering, electroplating",
+      "model": "google/gemma-4-26b-a4b-qat",
+      "api_url": "http://localhost:1234/v1",
+      "system_prompt": "You are an expert on lacquer disc chemistry, silvering, and electroplating for vinyl record mastering. Answer questions based ONLY on the forum knowledge provided below. If the information isn't in the provided context, say so.\n\nFORUM KNOWLEDGE:\n{context}"
+    },
+    {
+      "name": "Chemistry Expert",
+      "domain": "chemical formulas, reactions, materials science",
+      "model": "qwen3:14b-q4_K_M",
+      "api_url": "http://localhost:1234/v1",
+      "system_prompt": "You are a chemistry expert specializing in polymer chemistry, solvents, resins, and surface coatings. Provide detailed chemical explanations with formulas where relevant. Answer based ONLY on the provided context.\n\nCONTEXT:\n{context}"
+    },
+    {
+      "name": "Physics Expert",
+      "domain": "mechanics, acoustics, electromagnetism, electroplating",
+      "model": "phi-4:14b-q4_K_M",
+      "api_url": "http://localhost:1234/v1",
+      "system_prompt": "You are a physics expert specializing in mechanics, acoustics, and electromagnetism as applied to record manufacturing. Provide precise physical explanations with relevant equations. Answer based ONLY on the provided context.\n\nCONTEXT:\n{context}"
+    },
+    {
+      "name": "Patent Analyst",
+      "domain": "prior art, patent claims, patent law fundamentals",
+      "model": "qwen3:8b-q4_K_M",
+      "api_url": "http://localhost:1234/v1",
+      "system_prompt": "You are a patent analyst specializing in chemical and mechanical patents. Summarize claims, identify key innovations, and compare prior art. Answer based ONLY on the provided context.\n\nCONTEXT:\n{context}"
+    }
+  ]
+}

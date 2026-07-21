@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+
+# Virtual environments
+venv/
+scraper_env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project data (user-generated)
+data/custom_presets.yaml
+data/.recipe_settings.json
+data/knowledge_base.json
+data/forum_cache/
+data/forum_images/
+data/extracted_images/
+data/import_log.json
+
+# Config overrides
+config/custom_ingredients.yaml
+
+# Logs
+*.log
+
+# User junk
+New Folder/

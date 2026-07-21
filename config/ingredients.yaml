@@ -1,0 +1,2277 @@
+# Base de Datos de Ingredientes — Lacquer Discs para Vinilo
+# Recopilación completa para formulación de lacas de corte directo
+# con datos técnicos reales, compatibilidad con plateado, y advertencias.
+# Extensión: propiedades fisicoquímicas para análisis numérico (numpy/scipy/RDKit).
+
+resins:
+  # ── Nitrocelulosa (base principal de lacquer discs) ──────────────
+  - id: "RES-001"
+    name: "Nitrocelulosa RS 1/4 seg"
+    type: "base_resin"
+    cas_number: "9004-70-0"
+    molecular_formula: "[C6H7.6N2.2O9.1]n"
+    molecular_weight_gmol: 262.7
+    density_gcm3: 1.65
+    physical_state: "solid"
+    refractive_index: 1.510
+    solids_content: 98.0
+    solids_content_pct: 98.0
+    viscosity_mpas: 300
+    max_concentration_pct: 30
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    acid_value_mgkoh: 0.2
+    hydroxyl_value_mgkoh: 3.0
+    glass_transition_temp_c: 53
+    nitrogen_content_pct: 12.0
+    degree_substitution: 2.2
+    tensile_strength_MPa: 62
+    elongation_pct: 25
+    water_absorption_pct: 1.5
+    molecular_weight_mn: 25000
+    molecular_weight_mw: 55000
+    notes: "Baja viscosidad — para recubrimientos por cortina de alta fluidez"
+
+  - id: "RES-002"
+    name: "Nitrocelulosa RS 1/2 seg"
+    type: "base_resin"
+    cas_number: "9004-70-0"
+    molecular_formula: "[C6H7.6N2.2O9.1]n"
+    molecular_weight_gmol: 262.7
+    density_gcm3: 1.65
+    physical_state: "solid"
+    refractive_index: 1.510
+    solids_content: 98.5
+    solids_content_pct: 98.5
+    viscosity_mpas: 1200
+    max_concentration_pct: 35
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    acid_value_mgkoh: 0.2
+    hydroxyl_value_mgkoh: 3.0
+    glass_transition_temp_c: 53
+    nitrogen_content_pct: 12.0
+    degree_substitution: 2.2
+    tensile_strength_MPa: 64
+    elongation_pct: 28
+    water_absorption_pct: 1.4
+    molecular_weight_mn: 35000
+    molecular_weight_mw: 85000
+    notes: "Viscosidad estándar para lacquer discs de 33⅓ RPM"
+
+  - id: "RES-003"
+    name: "Nitrocelulosa RS 5-6 seg"
+    type: "base_resin"
+    cas_number: "9004-70-0"
+    molecular_formula: "[C6H7.6N2.2O9.1]n"
+    molecular_weight_gmol: 262.7
+    density_gcm3: 1.65
+    physical_state: "solid"
+    refractive_index: 1.510
+    solids_content: 98.0
+    solids_content_pct: 98.0
+    viscosity_mpas: 3500
+    max_concentration_pct: 28
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    acid_value_mgkoh: 0.2
+    hydroxyl_value_mgkoh: 3.0
+    glass_transition_temp_c: 53
+    nitrogen_content_pct: 12.0
+    degree_substitution: 2.2
+    tensile_strength_MPa: 66
+    elongation_pct: 22
+    water_absorption_pct: 1.3
+    molecular_weight_mn: 55000
+    molecular_weight_mw: 135000
+    notes: "Media-alta — para cortes profundos y 45 RPM"
+
+  - id: "RES-004"
+    name: "Nitrocelulosa RS 15-20 seg"
+    type: "base_resin"
+    cas_number: "9004-70-0"
+    molecular_formula: "[C6H7.6N2.2O9.1]n"
+    molecular_weight_gmol: 262.7
+    density_gcm3: 1.65
+    physical_state: "solid"
+    refractive_index: 1.510
+    solids_content: 97.5
+    solids_content_pct: 97.5
+    viscosity_mpas: 8000
+    max_concentration_pct: 22
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    acid_value_mgkoh: 0.2
+    hydroxyl_value_mgkoh: 3.0
+    glass_transition_temp_c: 53
+    nitrogen_content_pct: 12.0
+    degree_substitution: 2.2
+    tensile_strength_MPa: 68
+    elongation_pct: 18
+    water_absorption_pct: 1.2
+    molecular_weight_mn: 75000
+    molecular_weight_mw: 200000
+    notes: "Alta viscosidad — mayor dureza superficial, recomendada para masters de larga duración"
+
+  - id: "RES-005"
+    name: "Nitrocelulosa RS 30-40 seg"
+    type: "base_resin"
+    cas_number: "9004-70-0"
+    molecular_formula: "[C6H7.6N2.2O9.1]n"
+    molecular_weight_gmol: 262.7
+    density_gcm3: 1.65
+    physical_state: "solid"
+    refractive_index: 1.510
+    solids_content: 97.0
+    solids_content_pct: 97.0
+    viscosity_mpas: 18000
+    max_concentration_pct: 18
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    acid_value_mgkoh: 0.2
+    hydroxyl_value_mgkoh: 3.0
+    glass_transition_temp_c: 53
+    nitrogen_content_pct: 12.0
+    degree_substitution: 2.2
+    tensile_strength_MPa: 70
+    elongation_pct: 15
+    water_absorption_pct: 1.1
+    molecular_weight_mn: 110000
+    molecular_weight_mw: 300000
+    notes: "Muy alta viscosidad — máximo chip resistance, para cortes agresivos"
+
+  - id: "RES-006"
+    name: "Nitrocelulosa SS 1/4 seg"
+    type: "base_resin"
+    cas_number: "9004-70-0"
+    molecular_formula: "[C6H8.1N1.9O8.2]n"
+    molecular_weight_gmol: 237.2
+    density_gcm3: 1.63
+    physical_state: "solid"
+    refractive_index: 1.507
+    solids_content: 97.5
+    solids_content_pct: 97.5
+    viscosity_mpas: 250
+    max_concentration_pct: 32
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    acid_value_mgkoh: 0.2
+    hydroxyl_value_mgkoh: 5.0
+    glass_transition_temp_c: 50
+    nitrogen_content_pct: 11.2
+    degree_substitution: 1.9
+    tensile_strength_MPa: 55
+    elongation_pct: 30
+    water_absorption_pct: 1.8
+    molecular_weight_mn: 22000
+    molecular_weight_mw: 50000
+    notes: "SS (soluble en solventes débiles) — mejor compatibilidad con alcoholes"
+
+  # ── Ésteres de Celulosa ─────────────────────────────────────────
+  - id: "RES-007"
+    name: "CAB 381-0.5"
+    type: "base_resin"
+    cas_number: "9004-36-8"
+    molecular_formula: "[C6H7O2(OH)0.5(OCOCH3)0.8(OCOC3H7)1.7]n"
+    molecular_weight_gmol: 302.3
+    density_gcm3: 1.22
+    physical_state: "solid"
+    refractive_index: 1.475
+    solids_content: 99.0
+    solids_content_pct: 99.0
+    viscosity_mpas: 800
+    max_concentration_pct: 30
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    acid_value_mgkoh: 1.5
+    hydroxyl_value_mgkoh: 14.0
+    glass_transition_temp_c: 130
+    degree_substitution: 2.7
+    tensile_strength_MPa: 30
+    elongation_pct: 50
+    water_absorption_pct: 2.0
+    molecular_weight_mn: 20000
+    molecular_weight_mw: 60000
+    notes: "Acetato butirato de celulosa — mejora flujo y reduce cráteres"
+
+  - id: "RES-008"
+    name: "CAB 551-0.2"
+    type: "base_resin"
+    cas_number: "9004-36-8"
+    molecular_formula: "[C6H7O2(OH)0.5(OCOCH3)0.2(OCOC3H7)2.3]n"
+    molecular_weight_gmol: 328.4
+    density_gcm3: 1.16
+    physical_state: "solid"
+    refractive_index: 1.472
+    solids_content: 99.0
+    solids_content_pct: 99.0
+    viscosity_mpas: 450
+    max_concentration_pct: 25
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    acid_value_mgkoh: 1.0
+    hydroxyl_value_mgkoh: 12.0
+    glass_transition_temp_c: 85
+    degree_substitution: 2.8
+    tensile_strength_MPa: 22
+    elongation_pct: 65
+    water_absorption_pct: 1.5
+    molecular_weight_mn: 18000
+    molecular_weight_mw: 50000
+    notes: "CAB con mayor butirato — mejor humectación y brillo"
+
+  # ── Acrílicas ───────────────────────────────────────────────────
+  - id: "RES-009"
+    name: "Resina Acrílica Paraloid B-44"
+    type: "base_resin"
+    cas_number: "9010-88-2"
+    molecular_formula: "[(C5H8O2)0.7(C4H6O2)0.3]n"
+    molecular_weight_gmol: 100.1
+    density_gcm3: 1.12
+    physical_state: "solid"
+    refractive_index: 1.490
+    solids_content: 98.0
+    solids_content_pct: 98.0
+    viscosity_mpas: 1200
+    max_concentration_pct: 20
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    acid_value_mgkoh: 0.5
+    hydroxyl_value_mgkoh: 1.0
+    glass_transition_temp_c: 50
+    tensile_strength_MPa: 48
+    elongation_pct: 6
+    water_absorption_pct: 0.3
+    molecular_weight_mn: 35000
+    molecular_weight_mw: 90000
+    notes: "Termoplástico acrílico — mejora dureza y resistencia al cortador"
+
+  - id: "RES-010"
+    name: "Resina Acrílica Paraloid B-67"
+    type: "base_resin"
+    cas_number: "9011-15-8"
+    molecular_formula: "[C8H14O2]n"
+    molecular_weight_gmol: 142.2
+    density_gcm3: 1.04
+    physical_state: "solid"
+    refractive_index: 1.483
+    solids_content: 98.0
+    solids_content_pct: 98.0
+    viscosity_mpas: 900
+    max_concentration_pct: 25
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    acid_value_mgkoh: 0.3
+    hydroxyl_value_mgkoh: 0.5
+    glass_transition_temp_c: 50
+    tensile_strength_MPa: 35
+    elongation_pct: 3
+    water_absorption_pct: 0.2
+    molecular_weight_mn: 30000
+    molecular_weight_mw: 75000
+    notes: "Acrílico isobutil-metacrilato — buena compatibilidad con NC"
+
+  # ── Alquídicas y modificadoras ──────────────────────────────────
+  - id: "RES-011"
+    name: "Resina Alquídica Corta en Aceite"
+    type: "base_resin"
+    cas_number: "63148-69-6"
+    molecular_formula: "variable (poliol + anhídrido ftálico + aceite)"
+    molecular_weight_gmol: 1500.0
+    density_gcm3: 1.05
+    physical_state: "liquid"
+    refractive_index: 1.520
+    solids_content: 95.0
+    solids_content_pct: 95.0
+    viscosity_mpas: 2500
+    max_concentration_pct: 15
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    acid_value_mgkoh: 12.0
+    hydroxyl_value_mgkoh: 40.0
+    glass_transition_temp_c: 5
+    tensile_strength_MPa: 15
+    elongation_pct: 80
+    water_absorption_pct: 0.8
+    molecular_weight_mn: 2500
+    molecular_weight_mw: 8000
+    warnings: "No usar con silvering — residuos ácidos interfieren"
+    notes: "Mejora flexibilidad de la película"
+
+  - id: "RES-012"
+    name: "Resina Cetónica"
+    type: "base_resin"
+    cas_number: "68952-18-1"
+    molecular_formula: "variable (policetona ciclohexanona-formaldehído)"
+    molecular_weight_gmol: 800.0
+    density_gcm3: 1.08
+    physical_state: "solid"
+    refractive_index: 1.525
+    solids_content: 98.0
+    solids_content_pct: 98.0
+    viscosity_mpas: 600
+    max_concentration_pct: 10
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    acid_value_mgkoh: 2.0
+    hydroxyl_value_mgkoh: 25.0
+    glass_transition_temp_c: 75
+    tensile_strength_MPa: 10
+    elongation_pct: 5
+    water_absorption_pct: 0.5
+    molecular_weight_mn: 1500
+    molecular_weight_mw: 4000
+    notes: "Acelera secado, aumenta dureza superficial"
+
+  # ── Plastificantes (esenciales para flexibilidad del corte) ─────
+  - id: "PLA-001"
+    name: "Dibutilftalato (DBP)"
+    type: "base_resin"
+    cas_number: "84-74-2"
+    molecular_formula: "C16H22O4"
+    molecular_weight_gmol: 278.35
+    density_gcm3: 1.045
+    physical_state: "liquid"
+    refractive_index: 1.492
+    solids_content: 100.0
+    solids_content_pct: 100.0
+    viscosity_mpas: 20
+    max_concentration_pct: 25
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    glass_transition_temp_c: -90
+    plasticizer_efficiency: 1.0
+    migration_resistance: "fair"
+    compatibility: "good"
+    dosage_pct: 15
+    notes: "Plastificante primario estándar para NC — mejora chip flow"
+
+  - id: "PLA-002"
+    name: "Dioctilftalato (DOP)"
+    type: "base_resin"
+    cas_number: "117-81-7"
+    molecular_formula: "C24H38O4"
+    molecular_weight_gmol: 390.56
+    density_gcm3: 0.986
+    physical_state: "liquid"
+    refractive_index: 1.485
+    solids_content: 100.0
+    solids_content_pct: 100.0
+    viscosity_mpas: 30
+    max_concentration_pct: 20
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    glass_transition_temp_c: -85
+    plasticizer_efficiency: 0.8
+    migration_resistance: "good"
+    compatibility: "good"
+    notes: "Plastificante alternativo — menor volatilidad que DBP"
+
+  - id: "PLA-003"
+    name: "Aceite de Ricino"
+    type: "base_resin"
+    cas_number: "8001-79-4"
+    molecular_formula: "C57H104O9"
+    molecular_weight_gmol: 933.45
+    density_gcm3: 0.961
+    physical_state: "liquid"
+    refractive_index: 1.477
+    solids_content: 100.0
+    solids_content_pct: 100.0
+    viscosity_mpas: 250
+    max_concentration_pct: 10
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    glass_transition_temp_c: -70
+    plasticizer_efficiency: 0.6
+    migration_resistance: "good"
+    compatibility: "fair"
+    notes: "Plastificante natural — mejora lubricidad del corte"
+
+  - id: "PLA-004"
+    name: "Alcanfor Sintético"
+    type: "base_resin"
+    cas_number: "76-22-2"
+    molecular_formula: "C10H16O"
+    molecular_weight_gmol: 152.23
+    density_gcm3: 0.990
+    physical_state: "solid"
+    refractive_index: 1.546
+    solids_content: 99.0
+    solids_content_pct: 99.0
+    viscosity_mpas: 5
+    max_concentration_pct: 8
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    glass_transition_temp_c: -40
+    plasticizer_efficiency: 0.7
+    migration_resistance: "poor"
+    compatibility: "good"
+    notes: "Plastificante clásico — endurece la laca y mejora el corte"
+
+  - id: "PLA-005"
+    name: "Tripolifosfato de Sodio"
+    type: "base_resin"
+    cas_number: "7758-29-4"
+    molecular_formula: "Na5P3O10"
+    molecular_weight_gmol: 367.86
+    density_gcm3: 2.52
+    physical_state: "powder"
+    refractive_index: 1.480
+    solids_content: 98.0
+    solids_content_pct: 98.0
+    viscosity_mpas: 10
+    max_concentration_pct: 3
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    glass_transition_temp_c: null
+    plasticizer_efficiency: 0.3
+    migration_resistance: "fair"
+    compatibility: "fair"
+    notes: "Plastificante de bajo costo — reduce amarillamiento"
+
+  - id: "RES-013"
+    name: "Resina Tosilamida/Formaldehído"
+    type: "base_resin"
+    cas_number: "1338-51-8"
+    molecular_formula: "(C8H9NO3S·CH2O)n"
+    molecular_weight_gmol: 700
+    density_gcm3: 1.35
+    physical_state: "solid"
+    refractive_index: 1.525
+    solids_content_pct: 98.0
+    max_concentration_pct: 20
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    glass_transition_temp_c: 85
+    tensile_strength_MPa: 45
+    notes: "Resina tosilamida/formaldehído (TSFR). Usada en esmaltes de uñas para aumentar dureza y brillo."
+
+  - id: "RES-014"
+    name: "Nitrocelulosa Alta Nitración (11.8% N)"
+    type: "base_resin"
+    cas_number: "9004-70-0"
+    molecular_formula: "[C6H7.4N2.6O10.2]n"
+    molecular_weight_gmol: 270.3
+    density_gcm3: 1.66
+    physical_state: "solid"
+    refractive_index: 1.512
+    solids_content_pct: 98.0
+    viscosity_mpas: 200
+    max_concentration_pct: 25
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    nitrogen_content_pct: 11.8
+    degree_substitution: 2.4
+    glass_transition_temp_c: 55
+    tensile_strength_MPa: 65
+    elongation_pct: 20
+    notes: "NC alta nitración (11.5-11.9% N), soluble alcohol+benceno (US2092229A, 1937)."
+
+  - id: "RES-015"
+    name: "Etil Celulosa (Ethocel std 4)"
+    type: "base_resin"
+    cas_number: "9004-57-3"
+    molecular_formula: "(C12H22O5)n"
+    molecular_weight_gmol: 900
+    density_gcm3: 1.14
+    physical_state: "solid"
+    refractive_index: 1.470
+    solids_content_pct: 98.0
+    viscosity_mpas: 400
+    max_concentration_pct: 20
+    glass_transition_temp_c: 43
+    tensile_strength_MPa: 30
+    elongation_pct: 35
+    notes: "Etil celulosa. Usada en lacquer discs pre-1934 antes de la adopción de NC. Termoplástica, flexible."
+
+  - id: "RES-016"
+    name: "Acetobutirato de Celulosa (CAB-553-0.4)"
+    type: "base_resin"
+    cas_number: "9004-36-8"
+    molecular_formula: "(C17H26O11)n"
+    molecular_weight_gmol: 1200
+    density_gcm3: 1.22
+    physical_state: "solid"
+    refractive_index: 1.475
+    solids_content_pct: 98.0
+    viscosity_mpas: 350
+    max_concentration_pct: 15
+    glass_transition_temp_c: 75
+    notes: "CAB patente IBM US4419392 (1983). Alta dureza superficial, usado para electroerosion."
+
+
+solvents:
+  # ── Solventes Activos (cetonas) ─────────────────────────────────
+  - id: "SOL-001"
+    name: "Acetona"
+    type: "active_solvent"
+    cas_number: "67-64-1"
+    molecular_formula: "C3H6O"
+    molecular_weight_gmol: 58.08
+    density_gcm3: 0.791
+    physical_state: "liquid"
+    refractive_index: 1.359
+    boiling_point_c: 56.2
+    melting_point_c: -95.0
+    flash_point_c: -17.0
+    autoignition_c: 465
+    vapor_pressure_mmhg: 186.0
+    evaporation_rate: 7.2
+    surface_tension_dynes: 23.3
+    dielectric_constant: 20.7
+    dipole_moment_D: 2.88
+    hansen_delta_d: 15.5
+    hansen_delta_p: 10.4
+    hansen_delta_h: 7.0
+    hansen_radius: 5.0
+    specific_heat_JgK: 2.15
+    thermal_conductivity_WmK: 0.16
+    viscosity_cP: 0.32
+    solubility_water_gL: 1000
+    solubility_parameter: 19.9
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    max_concentration_pct: 15
+    warnings: "Evaporación muy rápida — causa cráteres; evitar con silvering"
+    notes: "Usar solo en mezclas para ajuste rápido"
+
+  - id: "SOL-002"
+    name: "MEK (Metil Etil Cetona)"
+    type: "active_solvent"
+    cas_number: "78-93-3"
+    molecular_formula: "C4H8O"
+    molecular_weight_gmol: 72.11
+    density_gcm3: 0.805
+    physical_state: "liquid"
+    refractive_index: 1.379
+    boiling_point_c: 79.6
+    melting_point_c: -86.0
+    flash_point_c: -9.0
+    autoignition_c: 404
+    vapor_pressure_mmhg: 77.5
+    evaporation_rate: 3.8
+    surface_tension_dynes: 24.0
+    dielectric_constant: 18.5
+    dipole_moment_D: 2.78
+    hansen_delta_d: 16.0
+    hansen_delta_p: 9.0
+    hansen_delta_h: 5.1
+    hansen_radius: 4.5
+    specific_heat_JgK: 2.19
+    thermal_conductivity_WmK: 0.15
+    viscosity_cP: 0.40
+    solubility_water_gL: 280
+    solubility_parameter: 19.0
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    max_concentration_pct: 25
+    warnings: "Ataca la capa de plata — evitar en formulaciones pre-silvering"
+    notes: "Excelente solvencia para NC, usar post-plateado"
+
+  - id: "SOL-003"
+    name: "MIBK (Metil Isobutil Cetona)"
+    type: "active_solvent"
+    cas_number: "108-10-1"
+    molecular_formula: "C6H12O"
+    molecular_weight_gmol: 100.16
+    density_gcm3: 0.802
+    physical_state: "liquid"
+    refractive_index: 1.396
+    boiling_point_c: 116.2
+    melting_point_c: -84.0
+    flash_point_c: 14.0
+    autoignition_c: 460
+    vapor_pressure_mmhg: 16.3
+    evaporation_rate: 1.6
+    surface_tension_dynes: 23.6
+    dielectric_constant: 14.7
+    dipole_moment_D: 2.70
+    hansen_delta_d: 15.3
+    hansen_delta_p: 6.1
+    hansen_delta_h: 4.1
+    hansen_radius: 4.0
+    specific_heat_JgK: 2.08
+    thermal_conductivity_WmK: 0.13
+    viscosity_cP: 0.55
+    solubility_water_gL: 19
+    solubility_parameter: 17.2
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 40
+    notes: "Solvente activo balanceado — compatible con silvering"
+
+  - id: "SOL-004"
+    name: "Ciclohexanona"
+    type: "active_solvent"
+    cas_number: "108-94-1"
+    molecular_formula: "C6H10O"
+    molecular_weight_gmol: 98.15
+    density_gcm3: 0.947
+    physical_state: "liquid"
+    refractive_index: 1.451
+    boiling_point_c: 155.7
+    melting_point_c: -32.0
+    flash_point_c: 44.0
+    autoignition_c: 420
+    vapor_pressure_mmhg: 3.4
+    evaporation_rate: 0.3
+    surface_tension_dynes: 34.5
+    dielectric_constant: 16.1
+    dipole_moment_D: 2.87
+    hansen_delta_d: 17.8
+    hansen_delta_p: 8.4
+    hansen_delta_h: 5.1
+    hansen_radius: 4.5
+    specific_heat_JgK: 1.68
+    thermal_conductivity_WmK: 0.15
+    viscosity_cP: 2.20
+    solubility_water_gL: 90
+    solubility_parameter: 20.3
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 35
+    notes: "Solvente activo lento — mejora flujo y brillo superficial"
+
+  - id: "SOL-005"
+    name: "Diacetona Alcohol (DAA)"
+    type: "active_solvent"
+    cas_number: "123-42-2"
+    molecular_formula: "C6H12O2"
+    molecular_weight_gmol: 116.16
+    density_gcm3: 0.938
+    physical_state: "liquid"
+    refractive_index: 1.421
+    boiling_point_c: 166.0
+    melting_point_c: -47.0
+    flash_point_c: 58.0
+    autoignition_c: 340
+    vapor_pressure_mmhg: 0.8
+    evaporation_rate: 0.2
+    surface_tension_dynes: 31.0
+    dielectric_constant: 15.8
+    dipole_moment_D: 2.84
+    hansen_delta_d: 15.8
+    hansen_delta_p: 8.2
+    hansen_delta_h: 10.8
+    hansen_radius: 5.5
+    specific_heat_JgK: 1.97
+    thermal_conductivity_WmK: 0.14
+    viscosity_cP: 2.80
+    solubility_water_gL: 1000
+    solubility_parameter: 20.7
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 20
+    notes: "Solvente lento — usado como retardante de evaporación"
+
+  - id: "SOL-006"
+    name: "Isoporona"
+    type: "active_solvent"
+    cas_number: "78-59-1"
+    molecular_formula: "C9H14O"
+    molecular_weight_gmol: 138.21
+    density_gcm3: 0.923
+    physical_state: "liquid"
+    refractive_index: 1.476
+    boiling_point_c: 215.0
+    melting_point_c: -8.0
+    flash_point_c: 84.0
+    autoignition_c: 460
+    vapor_pressure_mmhg: 0.2
+    evaporation_rate: 0.1
+    surface_tension_dynes: 33.0
+    dielectric_constant: 12.4
+    dipole_moment_D: 3.76
+    hansen_delta_d: 17.0
+    hansen_delta_p: 8.4
+    hansen_delta_h: 5.0
+    hansen_radius: 5.0
+    specific_heat_JgK: 1.90
+    thermal_conductivity_WmK: 0.14
+    viscosity_cP: 2.60
+    solubility_water_gL: 12
+    solubility_parameter: 19.7
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 10
+    notes: "Solvente de muy baja volatilidad — para nivelación extrema"
+
+  # ── Solventes Activos (ésteres) ────────────────────────────────
+  - id: "SOL-010"
+    name: "Acetato de Etilo"
+    type: "active_solvent"
+    cas_number: "141-78-6"
+    molecular_formula: "C4H8O2"
+    molecular_weight_gmol: 88.11
+    density_gcm3: 0.902
+    physical_state: "liquid"
+    refractive_index: 1.372
+    boiling_point_c: 77.1
+    melting_point_c: -84.0
+    flash_point_c: -4.0
+    autoignition_c: 426
+    vapor_pressure_mmhg: 73.9
+    evaporation_rate: 4.1
+    surface_tension_dynes: 23.8
+    dielectric_constant: 6.0
+    dipole_moment_D: 1.78
+    hansen_delta_d: 15.8
+    hansen_delta_p: 5.3
+    hansen_delta_h: 7.2
+    hansen_radius: 5.0
+    specific_heat_JgK: 1.92
+    thermal_conductivity_WmK: 0.14
+    viscosity_cP: 0.45
+    solubility_water_gL: 83
+    solubility_parameter: 18.2
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 30
+    notes: "Éster rápido — buena solvencia para NC mixta"
+
+  - id: "SOL-011"
+    name: "Acetato de Isopropilo"
+    type: "active_solvent"
+    cas_number: "108-21-4"
+    molecular_formula: "C5H10O2"
+    molecular_weight_gmol: 102.13
+    density_gcm3: 0.873
+    physical_state: "liquid"
+    refractive_index: 1.377
+    boiling_point_c: 89.0
+    melting_point_c: -73.0
+    flash_point_c: 2.0
+    autoignition_c: 460
+    vapor_pressure_mmhg: 47.1
+    evaporation_rate: 3.0
+    surface_tension_dynes: 23.1
+    dielectric_constant: 5.7
+    dipole_moment_D: 1.83
+    hansen_delta_d: 14.9
+    hansen_delta_p: 4.5
+    hansen_delta_h: 8.2
+    hansen_radius: 5.0
+    specific_heat_JgK: 1.88
+    thermal_conductivity_WmK: 0.13
+    viscosity_cP: 0.55
+    solubility_water_gL: 29
+    solubility_parameter: 17.6
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 25
+
+  - id: "SOL-012"
+    name: "Acetato de Butilo"
+    type: "active_solvent"
+    cas_number: "123-86-4"
+    molecular_formula: "C6H12O2"
+    molecular_weight_gmol: 116.16
+    density_gcm3: 0.882
+    physical_state: "liquid"
+    refractive_index: 1.394
+    boiling_point_c: 126.0
+    melting_point_c: -78.0
+    flash_point_c: 22.0
+    autoignition_c: 370
+    vapor_pressure_mmhg: 8.0
+    evaporation_rate: 1.0
+    surface_tension_dynes: 24.9
+    dielectric_constant: 5.0
+    dipole_moment_D: 1.84
+    hansen_delta_d: 15.8
+    hansen_delta_p: 3.7
+    hansen_delta_h: 6.3
+    hansen_radius: 4.5
+    specific_heat_JgK: 1.78
+    thermal_conductivity_WmK: 0.13
+    viscosity_cP: 0.69
+    solubility_water_gL: 7
+    solubility_parameter: 17.4
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 50
+    notes: "Solvente activo estándar — núcleo de la formulación"
+
+  - id: "SOL-013"
+    name: "Acetato de sec-Butilo"
+    type: "active_solvent"
+    cas_number: "105-46-4"
+    molecular_formula: "C6H12O2"
+    molecular_weight_gmol: 116.16
+    density_gcm3: 0.872
+    physical_state: "liquid"
+    refractive_index: 1.390
+    boiling_point_c: 112.0
+    melting_point_c: -99.0
+    flash_point_c: 17.0
+    autoignition_c: 340
+    vapor_pressure_mmhg: 13.3
+    evaporation_rate: 1.5
+    surface_tension_dynes: 23.7
+    dielectric_constant: 4.9
+    dipole_moment_D: 1.83
+    hansen_delta_d: 15.5
+    hansen_delta_p: 3.5
+    hansen_delta_h: 6.0
+    hansen_radius: 4.5
+    specific_heat_JgK: 1.80
+    thermal_conductivity_WmK: 0.13
+    viscosity_cP: 0.60
+    solubility_water_gL: 8
+    solubility_parameter: 17.0
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 30
+
+  - id: "SOL-014"
+    name: "Acetato de Amilo"
+    type: "active_solvent"
+    cas_number: "628-63-7"
+    molecular_formula: "C7H14O2"
+    molecular_weight_gmol: 130.18
+    density_gcm3: 0.876
+    physical_state: "liquid"
+    refractive_index: 1.402
+    boiling_point_c: 142.0
+    melting_point_c: -71.0
+    flash_point_c: 32.0
+    autoignition_c: 360
+    vapor_pressure_mmhg: 4.7
+    evaporation_rate: 0.5
+    surface_tension_dynes: 25.1
+    dielectric_constant: 4.8
+    dipole_moment_D: 1.85
+    hansen_delta_d: 15.8
+    hansen_delta_p: 3.3
+    hansen_delta_h: 6.1
+    hansen_radius: 4.0
+    specific_heat_JgK: 1.76
+    thermal_conductivity_WmK: 0.13
+    viscosity_cP: 0.87
+    solubility_water_gL: 2
+    solubility_parameter: 17.4
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 20
+    notes: "Éster lento — usado clásicamente en lacquer discs originales"
+
+  # ── Solventes Auxiliares (tail solvents) ───────────────────────
+  - id: "SOL-020"
+    name: "Etanol (Alcohol Etílico)"
+    type: "tail_solvent"
+    cas_number: "64-17-5"
+    molecular_formula: "C2H6O"
+    molecular_weight_gmol: 46.07
+    density_gcm3: 0.789
+    physical_state: "liquid"
+    refractive_index: 1.361
+    boiling_point_c: 78.4
+    melting_point_c: -114.0
+    flash_point_c: 13.0
+    autoignition_c: 363
+    vapor_pressure_mmhg: 44.6
+    evaporation_rate: 1.7
+    surface_tension_dynes: 22.4
+    dielectric_constant: 24.6
+    dipole_moment_D: 1.69
+    hansen_delta_d: 15.8
+    hansen_delta_p: 8.8
+    hansen_delta_h: 19.4
+    hansen_radius: 6.0
+    specific_heat_JgK: 2.44
+    thermal_conductivity_WmK: 0.17
+    viscosity_cP: 1.20
+    solubility_water_gL: 1000
+    solubility_parameter: 26.4
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 20
+    notes: "Diluyente suave — reduce el poder solvente, controla viscosidad"
+
+  - id: "SOL-021"
+    name: "Isopropanol (IPA)"
+    type: "tail_solvent"
+    cas_number: "67-63-0"
+    molecular_formula: "C3H8O"
+    molecular_weight_gmol: 60.10
+    density_gcm3: 0.785
+    physical_state: "liquid"
+    refractive_index: 1.378
+    boiling_point_c: 82.6
+    melting_point_c: -89.0
+    flash_point_c: 12.0
+    autoignition_c: 399
+    vapor_pressure_mmhg: 33.0
+    evaporation_rate: 2.1
+    surface_tension_dynes: 21.7
+    dielectric_constant: 18.3
+    dipole_moment_D: 1.66
+    hansen_delta_d: 15.8
+    hansen_delta_p: 6.1
+    hansen_delta_h: 16.4
+    hansen_radius: 6.0
+    specific_heat_JgK: 2.60
+    thermal_conductivity_WmK: 0.14
+    viscosity_cP: 2.37
+    solubility_water_gL: 1000
+    solubility_parameter: 23.6
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 15
+
+  - id: "SOL-022"
+    name: "Butanol (n-Butanol)"
+    type: "tail_solvent"
+    cas_number: "71-36-3"
+    molecular_formula: "C4H10O"
+    molecular_weight_gmol: 74.12
+    density_gcm3: 0.810
+    physical_state: "liquid"
+    refractive_index: 1.399
+    boiling_point_c: 117.7
+    melting_point_c: -89.0
+    flash_point_c: 35.0
+    autoignition_c: 343
+    vapor_pressure_mmhg: 4.4
+    evaporation_rate: 0.5
+    surface_tension_dynes: 24.6
+    dielectric_constant: 17.8
+    dipole_moment_D: 1.66
+    hansen_delta_d: 16.0
+    hansen_delta_p: 5.7
+    hansen_delta_h: 15.8
+    hansen_radius: 6.0
+    specific_heat_JgK: 2.35
+    thermal_conductivity_WmK: 0.15
+    viscosity_cP: 2.95
+    solubility_water_gL: 73
+    solubility_parameter: 23.1
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 15
+    notes: "Alcohol lento — mejora nivelación y reduce neblina"
+
+  - id: "SOL-023"
+    name: "Metoxipropanol (PM)"
+    type: "tail_solvent"
+    cas_number: "107-98-2"
+    molecular_formula: "C4H10O2"
+    molecular_weight_gmol: 90.12
+    density_gcm3: 0.921
+    physical_state: "liquid"
+    refractive_index: 1.402
+    boiling_point_c: 120.0
+    melting_point_c: -97.0
+    flash_point_c: 32.0
+    autoignition_c: 270
+    vapor_pressure_mmhg: 7.5
+    evaporation_rate: 0.7
+    surface_tension_dynes: 27.1
+    dielectric_constant: 12.6
+    dipole_moment_D: 1.70
+    hansen_delta_d: 15.6
+    hansen_delta_p: 6.3
+    hansen_delta_h: 11.6
+    hansen_radius: 5.5
+    specific_heat_JgK: 2.00
+    thermal_conductivity_WmK: 0.15
+    viscosity_cP: 1.75
+    solubility_water_gL: 1000
+    solubility_parameter: 20.5
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 20
+    notes: "Glicol éter — equilibra el perfil de evaporación"
+
+  - id: "SOL-024"
+    name: "Metoxipropil Acetato (PMA)"
+    type: "tail_solvent"
+    cas_number: "108-65-6"
+    molecular_formula: "C6H12O3"
+    molecular_weight_gmol: 132.16
+    density_gcm3: 0.966
+    physical_state: "liquid"
+    refractive_index: 1.402
+    boiling_point_c: 146.0
+    melting_point_c: -67.0
+    flash_point_c: 44.0
+    autoignition_c: 315
+    vapor_pressure_mmhg: 2.4
+    evaporation_rate: 0.4
+    surface_tension_dynes: 26.0
+    dielectric_constant: 8.5
+    dipole_moment_D: 1.90
+    hansen_delta_d: 15.6
+    hansen_delta_p: 5.6
+    hansen_delta_h: 9.8
+    hansen_radius: 5.0
+    specific_heat_JgK: 1.85
+    thermal_conductivity_WmK: 0.14
+    viscosity_cP: 1.10
+    solubility_water_gL: 180
+    solubility_parameter: 19.2
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 25
+    notes: "Glicol éster — mejora flujo y brillo"
+
+  - id: "SOL-025"
+    name: "Butilglicol (Butil Cellosolve)"
+    type: "tail_solvent"
+    cas_number: "111-76-2"
+    molecular_formula: "C6H14O2"
+    molecular_weight_gmol: 118.17
+    density_gcm3: 0.902
+    physical_state: "liquid"
+    refractive_index: 1.419
+    boiling_point_c: 171.0
+    melting_point_c: -77.0
+    flash_point_c: 61.0
+    autoignition_c: 245
+    vapor_pressure_mmhg: 0.6
+    evaporation_rate: 0.1
+    surface_tension_dynes: 26.0
+    dielectric_constant: 9.4
+    dipole_moment_D: 2.10
+    hansen_delta_d: 15.8
+    hansen_delta_p: 4.5
+    hansen_delta_h: 11.6
+    hansen_radius: 5.5
+    specific_heat_JgK: 2.05
+    thermal_conductivity_WmK: 0.15
+    viscosity_cP: 3.24
+    solubility_water_gL: 1000
+    solubility_parameter: 20.5
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 12
+    notes: "Retardante fuerte — usado para corregir cráteres en lacquer discs"
+
+  # ── Hidrocarburos Aromáticos ───────────────────────────────────
+  - id: "SOL-030"
+    name: "Tolueno"
+    type: "tail_solvent"
+    cas_number: "108-88-3"
+    molecular_formula: "C7H8"
+    molecular_weight_gmol: 92.14
+    density_gcm3: 0.867
+    physical_state: "liquid"
+    refractive_index: 1.497
+    boiling_point_c: 110.6
+    melting_point_c: -95.0
+    flash_point_c: 4.0
+    autoignition_c: 480
+    vapor_pressure_mmhg: 22.0
+    evaporation_rate: 2.0
+    surface_tension_dynes: 27.9
+    dielectric_constant: 2.38
+    dipole_moment_D: 0.36
+    hansen_delta_d: 18.0
+    hansen_delta_p: 1.4
+    hansen_delta_h: 2.0
+    hansen_radius: 4.0
+    specific_heat_JgK: 1.71
+    thermal_conductivity_WmK: 0.13
+    viscosity_cP: 0.59
+    solubility_water_gL: 0.5
+    solubility_parameter: 18.2
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    max_concentration_pct: 20
+    warnings: "Afecta la capa de plata — usar con precaución"
+    notes: "Diluyente aromático de poder medio"
+
+  - id: "SOL-031"
+    name: "Xileno"
+    type: "tail_solvent"
+    cas_number: "1330-20-7"
+    molecular_formula: "C8H10"
+    molecular_weight_gmol: 106.16
+    density_gcm3: 0.864
+    physical_state: "liquid"
+    refractive_index: 1.495
+    boiling_point_c: 138.0
+    melting_point_c: -47.0
+    flash_point_c: 25.0
+    autoignition_c: 465
+    vapor_pressure_mmhg: 6.4
+    evaporation_rate: 0.8
+    surface_tension_dynes: 28.5
+    dielectric_constant: 2.37
+    dipole_moment_D: 0.30
+    hansen_delta_d: 17.6
+    hansen_delta_p: 1.0
+    hansen_delta_h: 3.1
+    hansen_radius: 3.5
+    specific_heat_JgK: 1.70
+    thermal_conductivity_WmK: 0.13
+    viscosity_cP: 0.65
+    solubility_water_gL: 0.2
+    solubility_parameter: 18.0
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 15
+    notes: "Diluyente aromático lento"
+
+  - id: "SOL-032"
+    name: "Aromático 100 (Solvesso 100)"
+    type: "tail_solvent"
+    cas_number: "64742-95-6"
+    molecular_formula: "mezcla C9-C10 aromáticos"
+    molecular_weight_gmol: 120.0
+    density_gcm3: 0.870
+    physical_state: "liquid"
+    refractive_index: 1.495
+    boiling_point_c: 163.0
+    melting_point_c: -50.0
+    flash_point_c: 42.0
+    autoignition_c: 430
+    vapor_pressure_mmhg: 2.0
+    evaporation_rate: 0.3
+    surface_tension_dynes: 28.0
+    dielectric_constant: 2.3
+    dipole_moment_D: 0.30
+    hansen_delta_d: 18.0
+    hansen_delta_p: 0.5
+    hansen_delta_h: 1.5
+    hansen_radius: 3.0
+    specific_heat_JgK: 1.70
+    thermal_conductivity_WmK: 0.13
+    viscosity_cP: 0.80
+    solubility_water_gL: 0.1
+    solubility_parameter: 18.1
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 10
+    notes: "Mezcla de aromáticos pesados — usado como retardante"
+
+  # ── Cetonas Grasas ─────────────────────────────────────────────
+  - id: "SOL-040"
+    name: "MAK (Metil Amil Cetona)"
+    type: "tail_solvent"
+    cas_number: "110-43-0"
+    molecular_formula: "C7H14O"
+    molecular_weight_gmol: 114.19
+    density_gcm3: 0.817
+    physical_state: "liquid"
+    refractive_index: 1.407
+    boiling_point_c: 150.0
+    melting_point_c: -35.0
+    flash_point_c: 41.0
+    autoignition_c: 393
+    vapor_pressure_mmhg: 2.4
+    evaporation_rate: 0.5
+    surface_tension_dynes: 25.0
+    dielectric_constant: 11.0
+    dipole_moment_D: 2.66
+    hansen_delta_d: 16.2
+    hansen_delta_p: 5.2
+    hansen_delta_h: 4.1
+    hansen_radius: 4.0
+    specific_heat_JgK: 1.95
+    thermal_conductivity_WmK: 0.14
+    viscosity_cP: 0.76
+    solubility_water_gL: 4
+    solubility_parameter: 17.5
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    max_concentration_pct: 25
+    notes: "Cetona lenta — reduce la formación de espuma durante el cortinado"
+
+
+additives:
+  # ── Nivelantes ──────────────────────────────────────────────────
+  - id: "ADD-001"
+    name: "BYK-307 (Nivelante Siliconado)"
+    type: "leveling"
+    cas_number: "proprietario"
+    molecular_formula: "poliéter-polimetilsiloxano modificado"
+    molecular_weight_gmol: 5000.0
+    density_gcm3: 1.04
+    physical_state: "liquid"
+    refractive_index: 1.445
+    viscosity_cP: 100
+    surface_tension_dynes: 21.0
+    dosage_pct: 0.3
+    max_concentration_pct: 2.0
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Nivelante de alto peso molecular — reduce tensión superficial"
+
+  - id: "ADD-002"
+    name: "BYK-333 (Nivelante Siliconado)"
+    type: "leveling"
+    cas_number: "proprietario"
+    molecular_formula: "poliéter-polimetilsiloxano modificado"
+    molecular_weight_gmol: 3000.0
+    density_gcm3: 1.04
+    physical_state: "liquid"
+    refractive_index: 1.448
+    viscosity_cP: 150
+    surface_tension_dynes: 21.0
+    dosage_pct: 0.2
+    max_concentration_pct: 1.5
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Nivelante con efecto deslizante — protege la aguja de corte"
+
+  - id: "ADD-003"
+    name: "Disparlón L-1980 (Nivelante Acrílico)"
+    type: "leveling"
+    cas_number: "proprietario"
+    molecular_formula: "polímero acrílico modificado"
+    molecular_weight_gmol: 8000.0
+    density_gcm3: 1.02
+    physical_state: "liquid"
+    refractive_index: 1.460
+    viscosity_cP: 200
+    surface_tension_dynes: 25.0
+    dosage_pct: 0.5
+    max_concentration_pct: 3.0
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Nivelante libre de siliconas — para plateado sin defectos"
+
+  # ── Antiespumantes ─────────────────────────────────────────────
+  - id: "ADD-010"
+    name: "BYK-024 (Antiespumante)"
+    type: "defoamer"
+    cas_number: "proprietario"
+    molecular_formula: "polidimetilsiloxano modificado"
+    molecular_weight_gmol: 4000.0
+    density_gcm3: 1.00
+    physical_state: "liquid"
+    refractive_index: 1.440
+    viscosity_cP: 300
+    dosage_pct: 0.2
+    max_concentration_pct: 1.0
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Antiespumante de silicona — crítico en formulaciones de cortinado"
+
+  - id: "ADD-011"
+    name: "BYK-065 (Antiespumante Libre de Silicona)"
+    type: "defoamer"
+    cas_number: "proprietario"
+    molecular_formula: "poliéter-polímero acrílico"
+    molecular_weight_gmol: 3500.0
+    density_gcm3: 0.91
+    physical_state: "liquid"
+    refractive_index: 1.455
+    viscosity_cP: 500
+    dosage_pct: 0.5
+    max_concentration_pct: 2.0
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Alternativa libre de silicona — evita problemas de plateado"
+
+  - id: "ADD-012"
+    name: "Tego Foamex 825"
+    type: "defoamer"
+    cas_number: "proprietario"
+    molecular_formula: "poliéter-siloxano"
+    molecular_weight_gmol: 4500.0
+    density_gcm3: 1.00
+    physical_state: "liquid"
+    refractive_index: 1.442
+    viscosity_cP: 350
+    dosage_pct: 0.3
+    max_concentration_pct: 1.5
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Antiespumante poliéter-siloxano — persistente en ciclo de cortinado"
+
+  # ── Promotores de Adhesión ─────────────────────────────────────
+  - id: "ADD-020"
+    name: "Silano A-187 (Gamma-Glicidoxipropiltrimetoxisilano)"
+    type: "adhesion"
+    cas_number: "2530-83-8"
+    molecular_formula: "C9H20O5Si"
+    molecular_weight_gmol: 236.34
+    density_gcm3: 1.06
+    physical_state: "liquid"
+    refractive_index: 1.428
+    boiling_point_c: 290.0
+    flash_point_c: 113.0
+    viscosity_cP: 3.0
+    dosage_pct: 1.0
+    max_concentration_pct: 3.0
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Crítico para adhesión de laca al disco de aluminio"
+
+  - id: "ADD-021"
+    name: "Silano A-1100 (Gamma-Aminopropiltrietoxisilano)"
+    type: "adhesion"
+    cas_number: "919-30-2"
+    molecular_formula: "C9H23NO3Si"
+    molecular_weight_gmol: 221.37
+    density_gcm3: 0.946
+    physical_state: "liquid"
+    refractive_index: 1.422
+    boiling_point_c: 217.0
+    flash_point_c: 96.0
+    viscosity_cP: 2.5
+    dosage_pct: 0.8
+    max_concentration_pct: 2.5
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Promotor amino-funcional — mejora adhesión en húmedad alta"
+
+  - id: "ADD-022"
+    name: "Titanato Ken-React KR-TTS"
+    type: "adhesion"
+    cas_number: "proprietario"
+    molecular_formula: "C57H114O7Ti"
+    molecular_weight_gmol: 959.0
+    density_gcm3: 0.96
+    physical_state: "liquid"
+    refractive_index: 1.475
+    viscosity_cP: 100
+    flash_point_c: 160.0
+    dosage_pct: 0.5
+    max_concentration_pct: 2.0
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Titanato orgánico — mejora unión laca-sustrato metálico"
+
+  # ── Estabilizadores UV ─────────────────────────────────────────
+  - id: "ADD-030"
+    name: "Tinuvin 400 (Absorbedor UV)"
+    type: "uv_stabilizer"
+    cas_number: "153519-44-9"
+    molecular_formula: "C24H29N3O3"
+    molecular_weight_gmol: 431.5
+    density_gcm3: 1.13
+    physical_state: "liquid"
+    refractive_index: 1.520
+    viscosity_cP: 250
+    dosage_pct: 1.0
+    max_concentration_pct: 3.0
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Absorbedor UV hidroxifenil-triazina — protege la laca de degradación lumínica"
+
+  - id: "ADD-031"
+    name: "Tinuvin 292 (Estabilizador HALS)"
+    type: "uv_stabilizer"
+    cas_number: "41556-26-7"
+    molecular_formula: "C30H56N2O4"
+    molecular_weight_gmol: 508.78
+    density_gcm3: 0.99
+    physical_state: "liquid"
+    refractive_index: 1.490
+    viscosity_cP: 100
+    dosage_pct: 0.5
+    max_concentration_pct: 2.0
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Amina impedida — captura radicales libres, extiende vida del lacquer disc"
+
+  - id: "ADD-032"
+    name: "Tinuvin 328 (Absorbedor UV Benzotriazol)"
+    type: "uv_stabilizer"
+    cas_number: "25973-55-1"
+    molecular_formula: "C22H29N3O"
+    molecular_weight_gmol: 351.49
+    density_gcm3: 1.07
+    physical_state: "solid"
+    refractive_index: 1.540
+    melting_point_c: 80.0
+    dosage_pct: 1.0
+    max_concentration_pct: 2.5
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Absorbedor UV clásico — protección de banda ancha"
+
+  # ── Agentes Humectantes ────────────────────────────────────────
+  - id: "ADD-040"
+    name: "BYK-3455 (Humectante Siliconado)"
+    type: "wetting"
+    cas_number: "proprietario"
+    molecular_formula: "poliéter-siloxano"
+    molecular_weight_gmol: 2000.0
+    density_gcm3: 1.03
+    physical_state: "liquid"
+    refractive_index: 1.450
+    viscosity_cP: 80
+    surface_tension_dynes: 20.5
+    dosage_pct: 0.2
+    max_concentration_pct: 1.0
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Humectante que reduce cráteres en lacquer discs"
+
+  - id: "ADD-041"
+    name: "BYK-346 (Humectante Acrílico)"
+    type: "wetting"
+    cas_number: "proprietario"
+    molecular_formula: "poliéster acrílico modificado"
+    molecular_weight_gmol: 2500.0
+    density_gcm3: 1.02
+    physical_state: "liquid"
+    refractive_index: 1.460
+    viscosity_cP: 120
+    surface_tension_dynes: 24.0
+    dosage_pct: 0.3
+    max_concentration_pct: 1.5
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Humectante libre de silicona — seguro para plateado"
+
+  - id: "ADD-042"
+    name: "Tego Wet 270 (Humectante Poliéter)"
+    type: "wetting"
+    cas_number: "proprietario"
+    molecular_formula: "poliéter modificado"
+    molecular_weight_gmol: 1800.0
+    density_gcm3: 1.04
+    physical_state: "liquid"
+    refractive_index: 1.455
+    viscosity_cP: 90
+    surface_tension_dynes: 22.0
+    dosage_pct: 0.2
+    max_concentration_pct: 1.0
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Humectante dinámico — corrige defectos de humectación en sustratos difíciles"
+
+  # ── Estabilizantes de Viscosidad ───────────────────────────────
+  - id: "ADD-050"
+    name: "Aerosil R-972 (Sílice Pirógena)"
+    type: "leveling"
+    cas_number: "68611-44-9"
+    molecular_formula: "SiO2 (tratada con dimetildiclorosilano)"
+    molecular_weight_gmol: 60.08
+    density_gcm3: 2.20
+    physical_state: "powder"
+    refractive_index: 1.460
+    specific_surface_area_m2g: 130
+    particle_size_d50_um: 0.016
+    ph_value: 3.5
+    oil_absorption_g100g: 280
+    dosage_pct: 1.0
+    max_concentration_pct: 5.0
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    warnings: "Puede interferir con la plata colloidal — reducir dosis"
+    notes: "Modificador reológico — controla escurrimiento en cortinado"
+
+  - id: "ADD-051"
+    name: "Bentone 27 (Organoarcilla)"
+    type: "leveling"
+    cas_number: "proprietario"
+    molecular_formula: "hectorita modificada con amonio cuaternario"
+    molecular_weight_gmol: 500.0
+    density_gcm3: 1.50
+    physical_state: "powder"
+    refractive_index: 1.510
+    specific_surface_area_m2g: 350
+    particle_size_d50_um: 2.5
+    ph_value: 8.5
+    oil_absorption_g100g: 100
+    dosage_pct: 2.0
+    max_concentration_pct: 6.0
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    warnings: "Requiere activación con metanol — no usar con silvering"
+    notes: "Tixotrópico — evita sedimentación de pigmentos"
+
+  - id: "ADD-060"
+    name: "Copolímero EVA (45% VA)"
+    type: "leveling"
+    cas_number: "24937-78-8"
+    molecular_formula: "(C2H4)x(CH3CO2C2H3)y"
+    molecular_weight_gmol: 2000
+    density_gcm3: 0.95
+    physical_state: "solid (pellets)"
+    refractive_index: 1.483
+    max_concentration_pct: 10
+    glass_transition_temp_c: -15
+    notes: "Copolímero etileno/acetato de vinilo (45% VA). Patente DuPont US3476694A. Aporta flexibilidad sin plastificante externo."
+
+  - id: "ADD-061"
+    name: "Sacarosa Acetato Isobutirato (SAIB)"
+    type: "leveling"
+    cas_number: "126-13-6"
+    molecular_formula: "C40H62O19"
+    molecular_weight_gmol: 846.9
+    density_gcm3: 1.15
+    physical_state: "liquid"
+    refractive_index: 1.454
+    max_concentration_pct: 15
+    notes: "SAIB. Patente DuPont US3476694A. Endurece superficie y mejora brillo."
+
+
+pigments:
+  # ── Blancos ─────────────────────────────────────────────────────
+  - id: "PIG-001"
+    name: "TiO2 Rutilo Kronos 2190"
+    type: "white_pigment"
+    cas_number: "13463-67-7"
+    molecular_formula: "TiO2"
+    molecular_weight_gmol: 79.87
+    density_gcm3: 4.23
+    physical_state: "powder"
+    refractive_index: 2.76
+    solids_content: 100.0
+    opacity: 98
+    max_concentration_pct: 30
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    particle_size_d50_um: 0.30
+    specific_surface_area_m2g: 12
+    oil_absorption_g100g: 18
+    ph_value: 7.5
+    heat_stability_c: 1000
+    lightfastness_iso_rating: 8
+    weatherfastness_iso_rating: 5
+    specific_gravity: 4.23
+    notes: "Blanco titanio de alta opacidad — para lacquer discs blancos"
+
+  - id: "PIG-002"
+    name: "TiO2 Rutilo R-902+"
+    type: "white_pigment"
+    cas_number: "13463-67-7"
+    molecular_formula: "TiO2"
+    molecular_weight_gmol: 79.87
+    density_gcm3: 4.20
+    physical_state: "powder"
+    refractive_index: 2.76
+    solids_content: 100.0
+    opacity: 97
+    max_concentration_pct: 28
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    particle_size_d50_um: 0.35
+    specific_surface_area_m2g: 10
+    oil_absorption_g100g: 16
+    ph_value: 7.0
+    heat_stability_c: 1000
+    lightfastness_iso_rating: 8
+    weatherfastness_iso_rating: 5
+    specific_gravity: 4.20
+    notes: "Blanco titanio estándar industrial"
+
+  # ── Negros ─────────────────────────────────────────────────────
+  - id: "PIG-010"
+    name: "Negro de Carbón FW-200 (Negro Humo)"
+    type: "black_pigment"
+    cas_number: "1333-86-4"
+    molecular_formula: "C"
+    molecular_weight_gmol: 12.01
+    density_gcm3: 1.95
+    physical_state: "powder"
+    refractive_index: 1.0
+    solids_content: 100.0
+    opacity: 99
+    max_concentration_pct: 8
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    particle_size_d50_um: 0.013
+    specific_surface_area_m2g: 460
+    oil_absorption_g100g: 280
+    ph_value: 3.5
+    heat_stability_c: 1000
+    lightfastness_iso_rating: 8
+    weatherfastness_iso_rating: 5
+    specific_gravity: 1.95
+    notes: "Negro de alta intensidad — lacquer discs negros premium, alto poder colorante"
+
+  - id: "PIG-011"
+    name: "Negro de Carbón Special Black 4A"
+    type: "black_pigment"
+    cas_number: "1333-86-4"
+    molecular_formula: "C"
+    molecular_weight_gmol: 12.01
+    density_gcm3: 1.85
+    physical_state: "powder"
+    refractive_index: 1.0
+    solids_content: 100.0
+    opacity: 98
+    max_concentration_pct: 10
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    particle_size_d50_um: 0.030
+    specific_surface_area_m2g: 180
+    oil_absorption_g100g: 150
+    ph_value: 7.0
+    heat_stability_c: 1000
+    lightfastness_iso_rating: 8
+    weatherfastness_iso_rating: 5
+    specific_gravity: 1.85
+    notes: "Negro estándar — buena dispersión y brillo"
+
+  - id: "PIG-012"
+    name: "Negro de Carbón Printex 60"
+    type: "black_pigment"
+    cas_number: "1333-86-4"
+    molecular_formula: "C"
+    molecular_weight_gmol: 12.01
+    density_gcm3: 1.90
+    physical_state: "powder"
+    refractive_index: 1.0
+    solids_content: 100.0
+    opacity: 97
+    max_concentration_pct: 12
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    particle_size_d50_um: 0.055
+    specific_surface_area_m2g: 90
+    oil_absorption_g100g: 120
+    ph_value: 8.0
+    heat_stability_c: 1000
+    lightfastness_iso_rating: 8
+    weatherfastness_iso_rating: 5
+    specific_gravity: 1.90
+    notes: "Negro de bajo aceite — mayor carga posible sin afectar propiedades"
+
+  # ── Color ──────────────────────────────────────────────────────
+  - id: "PIG-020"
+    name: "Amarillo Óxido 3910"
+    type: "color_pigment"
+    cas_number: "51274-00-1"
+    molecular_formula: "FeO(OH)"
+    molecular_weight_gmol: 88.85
+    density_gcm3: 3.90
+    physical_state: "powder"
+    refractive_index: 2.40
+    solids_content: 98.0
+    opacity: 95
+    max_concentration_pct: 15
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    particle_size_d50_um: 0.30
+    specific_surface_area_m2g: 15
+    oil_absorption_g100g: 35
+    ph_value: 6.0
+    heat_stability_c: 200
+    lightfastness_iso_rating: 8
+    weatherfastness_iso_rating: 5
+    specific_gravity: 3.90
+    notes: "Óxido de hierro amarillo — para lacquer discs de color"
+
+  - id: "PIG-021"
+    name: "Rojo Óxido 130M"
+    type: "color_pigment"
+    cas_number: "1309-37-1"
+    molecular_formula: "Fe2O3"
+    molecular_weight_gmol: 159.69
+    density_gcm3: 5.00
+    physical_state: "powder"
+    refractive_index: 2.90
+    solids_content: 98.0
+    opacity: 96
+    max_concentration_pct: 12
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    particle_size_d50_um: 0.25
+    specific_surface_area_m2g: 12
+    oil_absorption_g100g: 25
+    ph_value: 7.0
+    heat_stability_c: 800
+    lightfastness_iso_rating: 8
+    weatherfastness_iso_rating: 5
+    specific_gravity: 5.00
+
+  - id: "PIG-022"
+    name: "Azul Ftalocianina PB 15:3"
+    type: "color_pigment"
+    cas_number: "147-14-8"
+    molecular_formula: "C32H16CuN8"
+    molecular_weight_gmol: 576.07
+    density_gcm3: 1.60
+    physical_state: "powder"
+    refractive_index: 1.60
+    solids_content: 99.0
+    opacity: 94
+    max_concentration_pct: 10
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    particle_size_d50_um: 0.08
+    specific_surface_area_m2g: 55
+    oil_absorption_g100g: 45
+    ph_value: 7.0
+    heat_stability_c: 200
+    lightfastness_iso_rating: 8
+    weatherfastness_iso_rating: 5
+    specific_gravity: 1.60
+    notes: "Azul ftalo beta — tono cian, alta resistencia química"
+
+  - id: "PIG-023"
+    name: "Violeta Dioxacina PV 23"
+    type: "color_pigment"
+    cas_number: "6358-30-1"
+    molecular_formula: "C34H22Cl2N4O2"
+    molecular_weight_gmol: 589.47
+    density_gcm3: 1.50
+    physical_state: "powder"
+    refractive_index: 1.65
+    solids_content: 99.0
+    opacity: 92
+    max_concentration_pct: 8
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    particle_size_d50_um: 0.07
+    specific_surface_area_m2g: 65
+    oil_absorption_g100g: 50
+    ph_value: 6.5
+    heat_stability_c: 200
+    lightfastness_iso_rating: 7
+    weatherfastness_iso_rating: 4
+    specific_gravity: 1.50
+    notes: "PV 23 — usado para tonalidades violeta en lacquer discs de colección"
+
+  # ── Efectos ────────────────────────────────────────────────────
+  - id: "PIG-030"
+    name: "Mica-TiO2 Plateada (50 µm)"
+    type: "white_pigment"
+    cas_number: "12001-26-2"
+    molecular_formula: "KAl2(AlSi3O10)(OH)2 + TiO2 coating"
+    molecular_weight_gmol: 400.0
+    density_gcm3: 3.00
+    physical_state: "powder"
+    refractive_index: 2.50
+    solids_content: 100.0
+    opacity: 85
+    max_concentration_pct: 5
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    particle_size_d50_um: 50.0
+    specific_surface_area_m2g: 2
+    oil_absorption_g100g: 60
+    ph_value: 7.5
+    heat_stability_c: 800
+    lightfastness_iso_rating: 8
+    weatherfastness_iso_rating: 5
+    specific_gravity: 3.00
+    warnings: "Partículas grandes interfieren con el cortador — probar antes"
+    notes: "Efecto perlado — solo para tiradas cortas o displays"
+
+
+plating:
+  # ── Químicos de Plateado (Silvering) ───────────────────────────
+  - id: "PLT-001"
+    name: "Nitrato de Plata (AgNO3)"
+    type: "silvering"
+    cas_number: "7761-88-8"
+    molecular_formula: "AgNO3"
+    molecular_weight_gmol: 169.87
+    density_gcm3: 4.35
+    physical_state: "solid"
+    refractive_index: 1.744
+    electrode_potential_V: 0.799
+    solubility_g_L: 2190
+    molar_conductivity: 133.2
+    active_ingredient_pct: 99.9
+    max_concentration_pct: 10
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: false
+    warnings: "Corrosivo, fotosensible. Almacenar en oscuridad"
+    notes: "Fuente de iones plata para el plateado químico del lacquer disc"
+
+  - id: "PLT-002"
+    name: "Hidróxido de Sodio (NaOH)"
+    type: "silvering"
+    cas_number: "1310-73-2"
+    molecular_formula: "NaOH"
+    molecular_weight_gmol: 40.00
+    density_gcm3: 2.13
+    physical_state: "solid"
+    refractive_index: 1.358
+    conductivity_mScm: 240.0
+    ph_min: 12.0
+    ph_max: 14.0
+    solubility_g_L: 1110
+    molar_conductivity: 247.8
+    active_ingredient_pct: 98.0
+    max_concentration_pct: 5
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: false
+    notes: "Alcalinizante para la reacción de plateado"
+    warnings: "Cáustico — usar EPP"
+
+  - id: "PLT-003"
+    name: "Hidróxido de Potasio (KOH)"
+    type: "silvering"
+    cas_number: "1310-58-3"
+    molecular_formula: "KOH"
+    molecular_weight_gmol: 56.11
+    density_gcm3: 2.04
+    physical_state: "solid"
+    refractive_index: 1.409
+    conductivity_mScm: 260.0
+    ph_min: 12.0
+    ph_max: 14.0
+    solubility_g_L: 1210
+    molar_conductivity: 272.0
+    active_ingredient_pct: 98.0
+    max_concentration_pct: 5
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: false
+    notes: "Alternativa al NaOH, reacción más controlada"
+
+  - id: "PLT-004"
+    name: "Glucosa (Dextrosa)"
+    type: "silvering"
+    cas_number: "50-99-7"
+    molecular_formula: "C6H12O6"
+    molecular_weight_gmol: 180.16
+    density_gcm3: 1.56
+    physical_state: "solid"
+    refractive_index: 1.545
+    solubility_g_L: 900
+    ph_min: 10.0
+    ph_max: 12.0
+    active_ingredient_pct: 99.5
+    max_concentration_pct: 3
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: false
+    notes: "Agente reductor para el plateado químico"
+
+  - id: "PLT-005"
+    name: "Formaldehído (37%)"
+    type: "silvering"
+    cas_number: "50-00-0"
+    molecular_formula: "CH2O"
+    molecular_weight_gmol: 30.03
+    density_gcm3: 1.08
+    physical_state: "liquid"
+    refractive_index: 1.375
+    boiling_point_c: 96.0
+    flash_point_c: 50.0
+    ph_min: 10.0
+    ph_max: 12.0
+    active_ingredient_pct: 37.0
+    max_concentration_pct: 2
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: false
+    warnings: "Tóxico — usar solo con ventilación adecuada"
+    notes: "Agente reductor alternativo — reacción más rápida"
+
+  - id: "PLT-006"
+    name: "Cloruro de Estaño (SnCl2)"
+    type: "silvering"
+    cas_number: "7772-99-8"
+    molecular_formula: "SnCl2"
+    molecular_weight_gmol: 189.60
+    density_gcm3: 3.95
+    physical_state: "solid"
+    refractive_index: 1.655
+    electrode_potential_V: -0.138
+    solubility_g_L: 840
+    ph_min: 1.0
+    ph_max: 3.0
+    active_ingredient_pct: 98.0
+    max_concentration_pct: 1
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: false
+    notes: "Sensibilizador de superficie — capa de estaño colloidal antes del plateado"
+
+  - id: "PLT-007"
+    name: "Ácido Clorhídrico (HCl 32%)"
+    type: "silvering"
+    cas_number: "7647-01-0"
+    molecular_formula: "HCl"
+    molecular_weight_gmol: 36.46
+    density_gcm3: 1.16
+    physical_state: "liquid"
+    refractive_index: 1.343
+    boiling_point_c: 110.0
+    conductivity_mScm: 420.0
+    ph_min: 0.0
+    ph_max: 2.0
+    molar_conductivity: 426.0
+    active_ingredient_pct: 32.0
+    max_concentration_pct: 5
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: false
+    notes: "Activación de superficie antes del plateado"
+
+  # ── Químicos de Níquel (Galvanoplastia) ────────────────────────
+  - id: "PLT-010"
+    name: "Sulfamato de Níquel (Ni(SO3NH2)2)"
+    type: "nickel_sulfamate"
+    cas_number: "13770-89-3"
+    molecular_formula: "Ni(SO3NH2)2"
+    molecular_weight_gmol: 250.87
+    density_gcm3: 1.90
+    physical_state: "solid"
+    refractive_index: 1.510
+    electrode_potential_V: -0.257
+    conductivity_mScm: 60.0
+    ph_min: 3.5
+    ph_max: 4.5
+    current_density_A_dm2: 4.0
+    deposition_rate_um_min: 0.5
+    solubility_g_L: 650
+    molar_conductivity: 260.0
+    active_ingredient_pct: 98.0
+    max_concentration_pct: 40
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    warnings: "Controlar pH (3.5-4.5) y temperatura (40-60°C)"
+    notes: "Fuente de níquel para electroformado de matrices"
+
+  - id: "PLT-011"
+    name: "Sulfato de Níquel (NiSO4)"
+    type: "nickel_sulfamate"
+    cas_number: "7786-81-4"
+    molecular_formula: "NiSO4"
+    molecular_weight_gmol: 154.75
+    density_gcm3: 3.68
+    physical_state: "solid"
+    refractive_index: 1.511
+    electrode_potential_V: -0.257
+    conductivity_mScm: 50.0
+    ph_min: 3.5
+    ph_max: 4.5
+    current_density_A_dm2: 3.0
+    deposition_rate_um_min: 0.4
+    solubility_g_L: 650
+    molar_conductivity: 254.0
+    active_ingredient_pct: 98.0
+    max_concentration_pct: 30
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    notes: "Alternativa al sulfamato — baño Watts"
+
+  - id: "PLT-012"
+    name: "Cloruro de Níquel (NiCl2)"
+    type: "nickel_sulfamate"
+    cas_number: "7718-54-9"
+    molecular_formula: "NiCl2"
+    molecular_weight_gmol: 129.60
+    density_gcm3: 3.55
+    physical_state: "solid"
+    refractive_index: 1.570
+    electrode_potential_V: -0.257
+    conductivity_mScm: 55.0
+    ph_min: 3.5
+    ph_max: 4.5
+    current_density_A_dm2: 3.5
+    solubility_g_L: 640
+    molar_conductivity: 248.0
+    active_ingredient_pct: 98.0
+    max_concentration_pct: 10
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    notes: "Fuente de iones cloruro para mejorar corrosión anódica"
+
+  - id: "PLT-013"
+    name: "Ácido Bórico (H3BO3)"
+    type: "nickel_sulfamate"
+    cas_number: "10043-35-3"
+    molecular_formula: "H3BO3"
+    molecular_weight_gmol: 61.83
+    density_gcm3: 1.44
+    physical_state: "solid"
+    refractive_index: 1.458
+    conductivity_mScm: 2.0
+    ph_min: 3.5
+    ph_max: 4.5
+    solubility_g_L: 56
+    active_ingredient_pct: 99.5
+    max_concentration_pct: 5
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    notes: "Buffer de pH para baños de níquel (mantiene pH 3.5-4.5)"
+
+  - id: "PLT-014"
+    name: "Lauril Sulfato de Sodio (SLS)"
+    type: "nickel_sulfamate"
+    cas_number: "151-21-3"
+    molecular_formula: "C12H25NaO4S"
+    molecular_weight_gmol: 288.38
+    density_gcm3: 1.10
+    physical_state: "solid"
+    refractive_index: 1.460
+    conductivity_mScm: 10.0
+    ph_min: 6.0
+    ph_max: 8.0
+    solubility_g_L: 100
+    active_ingredient_pct: 95.0
+    max_concentration_pct: 0.1
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    notes: "Agente humectante — reduce picaduras por hidrógeno"
+
+  - id: "PLT-015"
+    name: "Sacarina Sódica"
+    type: "nickel_sulfamate"
+    cas_number: "128-44-9"
+    molecular_formula: "C7H4NNaO3S"
+    molecular_weight_gmol: 205.17
+    density_gcm3: 0.90
+    physical_state: "solid"
+    refractive_index: 1.520
+    solubility_g_L: 300
+    ph_min: 7.0
+    ph_max: 9.0
+    active_ingredient_pct: 99.0
+    max_concentration_pct: 0.2
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    notes: "Ablandador de tensiones internas — reduce fragilidad del níquel"
+
+  - id: "PLT-016"
+    name: "1,4-Butinodiol"
+    type: "nickel_sulfamate"
+    cas_number: "110-65-6"
+    molecular_formula: "C4H6O2"
+    molecular_weight_gmol: 86.09
+    density_gcm3: 1.10
+    physical_state: "solid"
+    refractive_index: 1.490
+    melting_point_c: 58.0
+    solubility_g_L: 300
+    ph_min: 3.5
+    ph_max: 4.5
+    active_ingredient_pct: 98.0
+    max_concentration_pct: 0.05
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    notes: "Brillador — produce depósitos de níquel brillante y nivelados"
+
+  - id: "PLT-017"
+    name: "Sulfato de Magnesio (MgSO4)"
+    type: "nickel_sulfamate"
+    cas_number: "7487-88-9"
+    molecular_formula: "MgSO4"
+    molecular_weight_gmol: 120.37
+    density_gcm3: 2.66
+    physical_state: "solid"
+    refractive_index: 1.510
+    conductivity_mScm: 45.0
+    ph_min: 6.0
+    ph_max: 8.0
+    solubility_g_L: 350
+    molar_conductivity: 266.0
+    active_ingredient_pct: 99.0
+    max_concentration_pct: 3
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    notes: "Aumenta conductividad del baño — mejora uniformidad del espesor"
+
+  - id: "PLT-018"
+    name: "Ácido Sulfámico (HSO3NH2)"
+    type: "nickel_sulfamate"
+    cas_number: "5329-14-6"
+    molecular_formula: "H3NO3S"
+    molecular_weight_gmol: 97.09
+    density_gcm3: 2.15
+    physical_state: "solid"
+    refractive_index: 1.550
+    conductivity_mScm: 5.0
+    ph_min: 1.0
+    ph_max: 2.5
+    solubility_g_L: 210
+    molar_conductivity: 380.0
+    active_ingredient_pct: 99.0
+    max_concentration_pct: 2
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    notes: "Ajuste de pH para baños de sulfamato de níquel"
+
+  # ── Aditivos de Proceso ────────────────────────────────────────
+  - id: "PRO-001"
+    name: "Agua Desionizada"
+    type: "process"
+    cas_number: "7732-18-5"
+    molecular_formula: "H2O"
+    molecular_weight_gmol: 18.02
+    density_gcm3: 1.00
+    physical_state: "liquid"
+    refractive_index: 1.333
+    boiling_point_c: 100.0
+    melting_point_c: 0.0
+    conductivity_mScm: 0.001
+    ph_min: 6.5
+    ph_max: 7.5
+    specific_heat_JgK: 4.18
+    dielectric_constant: 80.1
+    surface_tension_dynes: 72.8
+    viscosity_cP: 1.00
+    active_ingredient_pct: 100.0
+    max_concentration_pct: 100
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Agua DI para diluciones y lavados — conductividad < 1 µS/cm"
+
+  - id: "PRO-002"
+    name: "Metanol (Alcohol Metílico)"
+    type: "process"
+    cas_number: "67-56-1"
+    molecular_formula: "CH4O"
+    molecular_weight_gmol: 32.04
+    density_gcm3: 0.792
+    physical_state: "liquid"
+    refractive_index: 1.329
+    boiling_point_c: 64.7
+    melting_point_c: -98.0
+    flash_point_c: 11.0
+    autoignition_c: 464
+    vapor_pressure_mmhg: 97.7
+    evaporation_rate: 6.0
+    surface_tension_dynes: 22.7
+    dielectric_constant: 32.7
+    dipole_moment_D: 1.70
+    hansen_delta_d: 15.1
+    hansen_delta_p: 12.3
+    hansen_delta_h: 22.3
+    hansen_radius: 6.5
+    specific_heat_JgK: 2.53
+    viscosity_cP: 0.59
+    solubility_water_gL: 1000
+    solubility_parameter: 29.7
+    active_ingredient_pct: 99.8
+    max_concentration_pct: 10
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: true
+    warnings: "Tóxico — no usar cerca de plateado"
+    notes: "Limpiador de superficie pre-silvering"
+
+  - id: "PRO-003"
+    name: "Detergente No-iónico Triton X-100"
+    type: "process"
+    cas_number: "9002-93-1"
+    molecular_formula: "C14H22O(C2H4O)n (n=9-10)"
+    molecular_weight_gmol: 625.0
+    density_gcm3: 1.07
+    physical_state: "liquid"
+    refractive_index: 1.489
+    viscosity_cP: 240
+    surface_tension_dynes: 29.0
+    ph_min: 6.0
+    ph_max: 8.0
+    active_ingredient_pct: 100.0
+    max_concentration_pct: 0.5
+    compatible_plating:
+      silvering: true
+      nickel_sulfamate: true
+    notes: "Limpiador de discos antes del plateado"
+
+  - id: "PRO-004"
+    name: "Polvo de Alúmina (Al2O3 1 µm)"
+    type: "process"
+    cas_number: "1344-28-1"
+    molecular_formula: "Al2O3"
+    molecular_weight_gmol: 101.96
+    density_gcm3: 3.95
+    physical_state: "powder"
+    refractive_index: 1.760
+    particle_size_d50_um: 1.0
+    specific_surface_area_m2g: 5
+    ph_value: 7.5
+    heat_stability_c: 1200
+    active_ingredient_pct: 99.5
+    max_concentration_pct: 2
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: false
+    notes: "Abrasivo para pulido de matrices de níquel"
+
+  - id: "PRO-005"
+    name: "Pasta Diamantada (3 µm)"
+    type: "process"
+    cas_number: "7782-40-3"
+    molecular_formula: "C"
+    molecular_weight_gmol: 12.01
+    density_gcm3: 3.51
+    physical_state: "paste"
+    refractive_index: 2.420
+    particle_size_d50_um: 3.0
+    heat_stability_c: 1000
+    active_ingredient_pct: 10.0
+    max_concentration_pct: 1
+    compatible_plating:
+      silvering: false
+      nickel_sulfamate: false
+    notes: "Pulido fino de la superficie del estampador"
+

@@ -298,29 +298,16 @@ class RecipeAnalysisPanel(QWidget):
 
             if t in (IngredientType.ACTIVE_SOLVENT, IngredientType.TAIL_SOLVENT):
                 solvent_blend[name] = solvent_blend.get(name, 0) + conc
+            elif t == IngredientType.PLASTICIZER:
+                plasticizer_blend[name] = plasticizer_blend.get(name, 0) + conc
             elif t == IngredientType.BASE_RESIN:
-                if any(p in name.lower() for p in ["ftalato", "ricino", "alcanfor",
-                                                    "tripolifosfato"]):
-                    plasticizer_blend[name] = plasticizer_blend.get(name, 0) + conc
-                else:
                     resin_blend[name] = resin_blend.get(name, 0) + conc
             elif t in (IngredientType.LEVELING, IngredientType.DEFOAMER,
                        IngredientType.ADHESION, IngredientType.UV_STABILIZER,
                        IngredientType.WETTING):
                 additive_blend[name] = additive_blend.get(name, 0) + conc
             else:
-                # Other types: try to categorize
-                if any(p in name.lower() for p in ["ftalato", "ricino", "alcanfor",
-                                                    "tripolifosfato", "estearato",
-                                                    "sebacato"]):
-                    plasticizer_blend[name] = plasticizer_blend.get(name, 0) + conc
-                elif any(s in name.lower() for s in ["sol", "acetato", "acetona",
-                                                       "cetona", "etanol", "tolueno",
-                                                       "xileno", "butanol",
-                                                       "butilglicol", "metoxi"]):
-                    solvent_blend[name] = solvent_blend.get(name, 0) + conc
-                else:
-                    resin_blend[name] = resin_blend.get(name, 0) + conc
+                additive_blend[name] = additive_blend.get(name, 0) + conc
 
         result = analyze_lacquer(solvent_blend, resin_blend, plasticizer_blend,
                                  additive_blend, inputs)

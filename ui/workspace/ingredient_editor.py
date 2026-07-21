@@ -18,6 +18,7 @@ from src.ingredient_loader import IngredientLoader
 TYPE_CHOICES = [t.value for t in IngredientType]
 CATEGORY_MAP = {
     "base_resin": "resins",
+    "plasticizer": "additives",
     "active_solvent": "solvents",
     "tail_solvent": "solvents",
     "leveling": "additives",
@@ -95,6 +96,12 @@ class IngredientEditorDialog(QDialog):
         self.dosage_spin.setDecimals(2)
         props_form.addRow("Dosis recomendada:", self.dosage_spin)
 
+        self.density_spin = QDoubleSpinBox()
+        self.density_spin.setRange(0, 20)
+        self.density_spin.setDecimals(3)
+        self.density_spin.setSuffix(" g/cm³")
+        props_form.addRow("Densidad:", self.density_spin)
+
         self.evap_spin = QDoubleSpinBox()
         self.evap_spin.setRange(0, 10)
         self.evap_spin.setSingleStep(0.1)
@@ -146,9 +153,10 @@ class IngredientEditorDialog(QDialog):
         self.solids_spin.setValue(float(cp.solids_content_pct or 100))
         self.viscosity_spin.setValue(int(float(cp.viscosity_mpas or 0)))
         self.max_conc_spin.setValue(float(ing.max_concentration_pct or 0))
-        self.dosage_spin.setValue(float(ing.properties.get("dosage_pct", 0) or 0))
+        self.dosage_spin.setValue(float(getattr(ing, 'dosage_pct', 0) or 0))
+        self.density_spin.setValue(float(ing.properties.get("density_gcm3", 0)))
         self.evap_spin.setValue(float(cp.evaporation_rate or 0))
-        self.boiling_spin.setValue(int(float(ing.properties.get("boiling_point", 0))))
+        self.boiling_spin.setValue(int(float(ing.properties.get("boiling_point_c", 0))))
         self.surface_tension_spin.setValue(cp.surface_tension_dynes)
         self.warnings_input.setPlainText("\n".join(ing.warnings))
         self.notes_input.setPlainText(ing.notes)
@@ -167,9 +175,9 @@ class IngredientEditorDialog(QDialog):
         ]
 
         if self.is_new:
-            custom_path = Path(__file__).parent.parent / "config" / "custom_ingredients.yaml"
+            custom_path = Path(__file__).parent.parent.parent / "config" / "custom_ingredients.yaml"
         else:
-            custom_path = Path(__file__).parent.parent / "config" / "custom_ingredients.yaml"
+            custom_path = Path(__file__).parent.parent.parent / "config" / "custom_ingredients.yaml"
 
         existing = {}
         if custom_path.exists():
@@ -218,7 +226,11 @@ class IngredientEditorDialog(QDialog):
 
         bp = self.boiling_spin.value()
         if bp:
-            entry["boiling_point"] = bp
+            entry["boiling_point_c"] = bp
+
+        density = self.density_spin.value()
+        if density:
+            entry["density_gcm3"] = density
 
         st = self.surface_tension_spin.value()
         if st != 35.0:

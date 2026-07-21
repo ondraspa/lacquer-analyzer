@@ -8,6 +8,7 @@ import yaml
 
 class IngredientType(Enum):
     BASE_RESIN = "base_resin"
+    PLASTICIZER = "plasticizer"
     ACTIVE_SOLVENT = "active_solvent"
     TAIL_SOLVENT = "tail_solvent"
     LEVELING = "leveling"
@@ -48,6 +49,7 @@ class Ingredient:
     coating_properties: IngredientProperties = field(default_factory=IngredientProperties)
     dosage_pct: Optional[float] = None
     max_concentration_pct: Optional[float] = None
+    compatible_plating: Dict[str, bool] = field(default_factory=dict)
     warnings: List[str] = field(default_factory=list)
     notes: str = ""
 
@@ -56,7 +58,7 @@ class Ingredient:
         props = data.get('properties', {})
         coating = IngredientProperties(
             surface_tension_dynes=props.get('surface_tension_dynes', data.get('surface_tension_dynes', 35.0)),
-            solids_content_pct=props.get('solids_content_pct', data.get('solids_content')),
+            solids_content_pct=props.get('solids_content_pct', data.get('solids_content', data.get('solids_content_pct'))),
             viscosity_mpas=props.get('viscosity_mpas', data.get('viscosity_mpas')),
             evaporation_rate=props.get('evaporation_rate', data.get('evaporation_rate')),
             solvency_parameter=props.get('solvency_parameter', data.get('solvency_parameter')),
@@ -72,6 +74,7 @@ class Ingredient:
                                    'dosage_pct', 'max_concentration_pct', 'warnings', 'notes']},
             dosage_pct=data.get('dosage_pct'),
             max_concentration_pct=data.get('max_concentration_pct'),
+            compatible_plating=data.get('compatible_plating', {}),
             warnings=data.get('warnings', []),
             notes=data.get('notes', '')
         )
@@ -156,7 +159,8 @@ class CoatingAnalysis:
 
 
 @dataclass
-class AnalysisResult:
+class FormulationAnalysisResult:
+    """Resultado del análisis de compatibilidad de formulación (plating_rules)."""
     recipe: LacquerRecipe
     coating_analysis: CoatingAnalysis
     overall_risk: str = "LOW"

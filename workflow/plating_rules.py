@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 
 from core.models import (
     RecipeComponent, LacquerRecipe, CoatingAnalysis,
-    AnalysisResult, Ingredient, IngredientType
+    FormulationAnalysisResult, Ingredient, IngredientType
 )
 
 
@@ -18,11 +18,11 @@ class LacquerAnalyzer:
             IngredientType.TAIL_SOLVENT,
         }
 
-    def analyze_recipe(self, recipe: LacquerRecipe) -> AnalysisResult:
+    def analyze_recipe(self, recipe: LacquerRecipe) -> FormulationAnalysisResult:
         coating = self._analyze_coating(recipe)
         issues = list(coating.issues)
         suggestions = list(coating.recommendations)
-        return AnalysisResult(
+        return FormulationAnalysisResult(
             recipe=recipe,
             coating_analysis=coating,
             overall_risk=coating.overall_risk,

@@ -194,7 +194,7 @@ class Translator(QObject):
     def get_all(self, key: str) -> Dict[str, str]:
         return self._strings.get(key, {"en": key, "es": key})
 
-    async def translate_with_llm(self, text: str, target_lang: str, llm_client) -> str:
+    def translate_with_llm(self, text: str, target_lang: str, llm_client) -> str:
         """Traduce un texto usando el LLM local."""
         if not text.strip():
             return text
@@ -205,7 +205,7 @@ class Translator(QObject):
             f"---\n{text}\n---"
         )
         try:
-            result = await llm_client.chat(prompt)
+            result = llm_client.ask(question=prompt, max_tokens=2048, temperature=0.1)
             return result.strip()
         except Exception:
             return text

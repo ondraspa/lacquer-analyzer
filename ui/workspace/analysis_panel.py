@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QBrush, QFont
 
-from core.models import AnalysisResult, CoatingAnalysis
+from core.models import FormulationAnalysisResult, CoatingAnalysis
 
 
 class AnalysisPanelWidget(QWidget):
@@ -68,7 +68,7 @@ class AnalysisPanelWidget(QWidget):
         self.stats_group.setLayout(stats_layout)
         layout.addWidget(self.stats_group)
 
-    def show_results(self, result: AnalysisResult):
+    def show_results(self, result: FormulationAnalysisResult):
         risk_colors = {
             "LOW": "#4CAF50",
             "MEDIUM": "#FFC107",

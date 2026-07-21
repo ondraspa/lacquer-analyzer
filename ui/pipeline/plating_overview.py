@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QBrush, QFont
 
-from core.models import AnalysisResult
+from core.models import FormulationAnalysisResult
 
 
 class PlatingOverviewWidget(QWidget):
@@ -105,7 +105,7 @@ class PlatingOverviewWidget(QWidget):
         mit_group.setLayout(mit_layout)
         layout.addWidget(mit_group)
 
-    def show_results(self, result: AnalysisResult):
+    def show_results(self, result: FormulationAnalysisResult):
         c = result.coating_analysis
         self.seq_text.append(
             f"\n<h3>Receta Actual: {result.recipe.name}</h3>"

@@ -76,11 +76,7 @@ class RecipeEditorWidget(QWidget):
         preset_row = QHBoxLayout()
         self.preset_selector = QComboBox()
         self.preset_selector.setMinimumWidth(300)
-        self.preset_selector.addItem("— Cargar receta predefinida —", None)
-        for p in self._presets:
-            self.preset_selector.addItem(
-                f"{p.get('name', '?')}  ({p.get('id', '')})", p
-            )
+        self._populate_presets()
         self.preset_selector.currentIndexChanged.connect(self._on_preset_selected)
         preset_row.addWidget(QLabel("Predefinidas:"))
         preset_row.addWidget(self.preset_selector)
@@ -324,13 +320,34 @@ class RecipeEditorWidget(QWidget):
             os.makedirs(os.path.dirname(custom_path), exist_ok=True)
             with open(custom_path, "w") as f:
                 yaml.dump(custom, f, default_flow_style=False, allow_unicode=True)
+
+            # Update in-memory selector immediately
+            preset["_custom"] = True
+            for i, p in enumerate(self._presets):
+                if p.get("id") == preset["id"]:
+                    self._presets[i] = preset
+                    break
+            else:
+                self._presets.append(preset)
+            self._populate_presets()
+            self._update_comparison_list()
+
             QMessageBox.information(
                 self, "Guardado",
-                f"Preset '{preset['name']}' guardado.\n"
-                "Recarga la aplicación para verlo en el selector."
+                f"Preset '{preset['name']}' guardado."
             )
         except Exception as e:
             QMessageBox.critical(self, "Error", f"No se pudo guardar: {e}")
+
+    def _populate_presets(self):
+        self.preset_selector.blockSignals(True)
+        self.preset_selector.clear()
+        self.preset_selector.addItem("— Cargar receta predefinida —", None)
+        for p in self._presets:
+            self.preset_selector.addItem(
+                f"{p.get('name', '?')}  ({p.get('id', '')})", p
+            )
+        self.preset_selector.blockSignals(False)
 
     def _on_preset_selected(self, idx):
         if idx <= 0:
@@ -351,7 +368,7 @@ class RecipeEditorWidget(QWidget):
             if ing:
                 components.append(RecipeComponent(
                     ingredient=ing,
-                    concentration_pct=comp_data.get("concentration_pct", 10)
+                    concentration_pct=comp_data.get("concentration_pct", comp_data.get("concentration", 10))
                 ))
 
         recipe = LacquerRecipe(
@@ -529,7 +546,7 @@ class RecipeEditorWidget(QWidget):
         self.name_input.clear()
 
     def _on_data_changed(self):
-        pass
+        self._update_comparison_list()
 
     def get_recipe(self) -> Optional[LacquerRecipe]:
         if self.table.rowCount() == 0:
@@ -567,6 +584,7 @@ class RecipeEditorWidget(QWidget):
         recipe = self.get_recipe()
         if recipe:
             self.analysis_panel.analyze_recipe(recipe)
+            self.analysis_requested.emit()
 
     def _on_translate_meta(self):
         text = self.metadata_text.toPlainText()

@@ -368,13 +368,7 @@ class MainWindow(QMainWindow):
                 self.llm = llm
 
             def run(self):
-                lang_name = "Spanish" if self.target_lang == "es" else "English"
-                prompt = (
-                    f"Translate the following text to {lang_name}. "
-                    f"Preserve all formatting, emoji, and technical terms exactly.\n\n"
-                    f"---\n{self.text}\n---"
-                )
-                result = self.llm.ask(question=prompt, max_tokens=2048, temperature=0.1)
+                result = translator.translate_with_llm(self.text, self.target_lang, self.llm)
                 self.finished.emit(result)
 
         thread = QThread(self)
@@ -383,6 +377,8 @@ class MainWindow(QMainWindow):
         thread.started.connect(worker.run)
         worker.finished.connect(lambda res: self._show_translation(res, thread))
         worker.finished.connect(lambda: self.statusBar().showMessage("Traducción completa"))
+        worker.finished.connect(worker.deleteLater)
+        thread.finished.connect(thread.deleteLater)
         thread.start()
 
     def _show_translation(self, translated: str, thread: QThread):

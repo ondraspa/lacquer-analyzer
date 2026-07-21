@@ -338,7 +338,7 @@ resins:
   # ── Plastificantes (esenciales para flexibilidad del corte) ─────
   - id: "PLA-001"
     name: "Dibutilftalato (DBP)"
-    type: "base_resin"
+    type: "plasticizer"
     cas_number: "84-74-2"
     molecular_formula: "C16H22O4"
     molecular_weight_gmol: 278.35
@@ -361,7 +361,7 @@ resins:
 
   - id: "PLA-002"
     name: "Dioctilftalato (DOP)"
-    type: "base_resin"
+    type: "plasticizer"
     cas_number: "117-81-7"
     molecular_formula: "C24H38O4"
     molecular_weight_gmol: 390.56
@@ -383,7 +383,7 @@ resins:
 
   - id: "PLA-003"
     name: "Aceite de Ricino"
-    type: "base_resin"
+    type: "plasticizer"
     cas_number: "8001-79-4"
     molecular_formula: "C57H104O9"
     molecular_weight_gmol: 933.45
@@ -405,7 +405,7 @@ resins:
 
   - id: "PLA-004"
     name: "Alcanfor Sintético"
-    type: "base_resin"
+    type: "plasticizer"
     cas_number: "76-22-2"
     molecular_formula: "C10H16O"
     molecular_weight_gmol: 152.23
@@ -427,7 +427,7 @@ resins:
 
   - id: "PLA-005"
     name: "Tripolifosfato de Sodio"
-    type: "base_resin"
+    type: "plasticizer"
     cas_number: "7758-29-4"
     molecular_formula: "Na5P3O10"
     molecular_weight_gmol: 367.86

@@ -117,12 +117,10 @@ class RecipeComparisonWidget(QWidget):
             for comp in recipe.components:
                 ing = comp.ingredient
                 c = comp.concentration_pct
-                n = ing.name.lower()
                 t = ing.type.value
                 if t in ("active_solvent", "tail_solvent"):
                     solvent[ing.name] = c
-                elif any(p in n for p in ["ftalato", "ricino", "alcanfor",
-                                           "tripolifosfato", "estearato"]):
+                elif t == "plasticizer":
                     plast[ing.name] = c
                 elif t == "base_resin":
                     resin[ing.name] = c
@@ -132,8 +130,16 @@ class RecipeComparisonWidget(QWidget):
 
         s_a, r_a, p_a, ad_a = extract_blends(a)
         s_b, r_b, p_b, ad_b = extract_blends(b)
-        res_a = analyze_lacquer(s_a, r_a, p_a, ad_a, inputs)
-        res_b = analyze_lacquer(s_b, r_b, p_b, ad_b, inputs)
+        try:
+            res_a = analyze_lacquer(s_a, r_a, p_a, ad_a, inputs)
+        except Exception as e:
+            print(f"[recipe_comparison] Error analizando receta A: {e}")
+            res_a = AnalysisResult(issues={})
+        try:
+            res_b = analyze_lacquer(s_b, r_b, p_b, ad_b, inputs)
+        except Exception as e:
+            print(f"[recipe_comparison] Error analizando receta B: {e}")
+            res_b = AnalysisResult(issues={})
 
         self.result_a.display_result(res_a)
         self.result_b.display_result(res_b)
@@ -162,12 +168,16 @@ class RecipeComparisonWidget(QWidget):
 
             # Notas sobre diferencias significativas
             notes = ""
-            if abs(diff) > 5:
-                notes = "Diferencia significativa"
             if data['a'] == 0:
                 notes = "Solo en B"
+                if abs(diff) > 5:
+                    notes += " — Diferencia significativa"
             elif data['b'] == 0:
                 notes = "Solo en A"
+                if abs(diff) > 5:
+                    notes += " — Diferencia significativa"
+            elif abs(diff) > 5:
+                notes = "Diferencia significativa"
             self.comp_table.setItem(i, 4, QTableWidgetItem(notes))
 
         # Properties table

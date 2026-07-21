@@ -16,6 +16,7 @@ from ui.pipeline.base_stage import PipelineStageWidget
 from ui.workspace.galvanics_workspace import GalvanicsWorkspace
 from ui.workspace.pressing_workspace import PressingWorkspace
 from ui.workspace.knowledge_hub import KnowledgeHub
+from ui.workspace.welcome_screen import WelcomeScreen
 from ui.imports.tool_dialogs import DataImportDialog, ExpertNotesDialog
 from ui.knowledge.explorer import DataExplorerDialog
 from src.ingredient_loader import IngredientLoader
@@ -111,8 +112,13 @@ class MainWindow(QMainWindow):
 
         # Main area tabs
         self.main_tabs = QTabWidget()
-        self.main_tabs.setToolTip("Pestañas principales del flujo de trabajo:\n• Formulación — formulación de lacas\n• Galvánica — parámetros de baños\n• Prensado — parámetros de prensado\n• Control de Calidad — defectos y solución de problemas\n• Conocimiento — base de conocimiento y RAG")
+        self.main_tabs.setToolTip("Pestañas principales del flujo de trabajo:\n• Inicio — panel de navegación\n• Formulación — formulación de lacas\n• Galvánica — parámetros de baños\n• Prensado — parámetros de prensado\n• Control de Calidad — defectos y solución de problemas\n• Conocimiento — base de conocimiento y RAG")
         self.main_tabs.currentChanged.connect(self._on_tab_changed)
+
+        # Tab 0: Inicio (Welcome)
+        self.welcome_screen = WelcomeScreen()
+        self.welcome_screen.navigate_requested.connect(self._navigate_to_tab)
+        self.main_tabs.addTab(self.welcome_screen, "🏠 Inicio")
 
         # Tab 1: Formulación
         self.cutting_stage = CuttingStageWidget(self.ingredient_loader)
@@ -243,6 +249,8 @@ class MainWindow(QMainWindow):
                     w.set_knowledge_base(self.kb)
 
     def _on_tab_changed(self, index):
+        if index == 0:
+            return  # welcome screen — no setup needed
         w = self.main_tabs.widget(index)
         if w:
             if hasattr(w, 'set_llm'):
@@ -251,6 +259,9 @@ class MainWindow(QMainWindow):
                 w.set_knowledge_base(self.kb)
             if isinstance(w, KnowledgeHub):
                 w.set_kb_and_llm(self.kb, self.llm, self.rag_settings)
+
+    def _navigate_to_tab(self, tab_index: int):
+        self.main_tabs.setCurrentIndex(tab_index)
 
     # ── Dialog actions ──
 
@@ -297,7 +308,7 @@ class MainWindow(QMainWindow):
         if dlg.exec():
             recipe = dlg.get_recipe()
             self.cutting_stage.recipe_editor.set_recipe(recipe)
-            self.main_tabs.setCurrentIndex(0)
+            self.main_tabs.setCurrentIndex(1)
             self.statusBar().showMessage("Formulación generada cargada en etapa de Formulación")
 
     def _check_llm(self):
@@ -412,7 +423,7 @@ class MainWindow(QMainWindow):
         )
         if path:
             self.cutting_stage.recipe_editor.import_recipe(path)
-            self.main_tabs.setCurrentIndex(0)
+            self.main_tabs.setCurrentIndex(1)
 
     def _export_recipe(self):
         from PySide6.QtWidgets import QFileDialog

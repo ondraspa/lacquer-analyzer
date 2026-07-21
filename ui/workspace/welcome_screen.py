@@ -73,7 +73,7 @@ class SectionCard(QFrame):
 class StatusIndicator(QFrame):
     def __init__(self, icon: str, label: str, status: str, status_color: str):
         super().__init__()
-        self.setStyleSheet("background: rgba(0,0,0,0.03); border-radius: 8px;")
+        self.setStyleSheet("background: rgba(255,255,255,0.08); border-radius: 8px;")
         layout = QHBoxLayout(self)
         layout.setContentsMargins(12, 8, 12, 8)
         icon_lbl = QLabel(icon)

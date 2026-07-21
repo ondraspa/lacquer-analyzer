@@ -856,7 +856,7 @@ class DataImportWidget(QWidget):
         self.pdf_preview_image.setToolTip("Vista previa de la imagen de la página escaneada")
         self.pdf_preview_image.setAlignment(Qt.AlignCenter)
         self.pdf_preview_image.setMinimumHeight(200)
-        self.pdf_preview_image.setStyleSheet("background: #1e1e1e; color: #888; border: 1px solid #444;")
+        self.pdf_preview_image.setStyleSheet("background: #1e1e1e; color: #aaa; border: 1px solid #444;")
         self.pdf_preview_image.setScaledContents(False)
         pdf_preview_split.addWidget(self.pdf_preview_image)
 
@@ -1025,7 +1025,7 @@ class DataImportWidget(QWidget):
         # RAG details
         self.llm_rag_details_btn = QPushButton("▶ Mostrar detalles del pipeline RAG")
         self.llm_rag_details_btn.setToolTip("Muestra u oculta los detalles del pipeline RAG")
-        self.llm_rag_details_btn.setStyleSheet("text-align: left; border: none; color: #555; font-size: 11px;")
+        self.llm_rag_details_btn.setStyleSheet("text-align: left; border: none; color: #999; font-size: 11px;")
         self.llm_rag_details_btn.setCheckable(True)
         self.llm_rag_details_btn.toggled.connect(self._llm_toggle_rag)
         llm_layout.addWidget(self.llm_rag_details_btn)
@@ -1039,7 +1039,7 @@ class DataImportWidget(QWidget):
         self.llm_rag_chunks.setMaximumHeight(80)
         self.llm_rag_chunks.setToolTip("Fragmentos de conocimiento recuperados para la respuesta")
         self.llm_rag_chunks.setPlaceholderText("Fragmentos de conocimiento recuperados...")
-        self.llm_rag_chunks.setStyleSheet("font-size: 10px; color: #888;")
+        self.llm_rag_chunks.setStyleSheet("font-size: 10px; color: #aaa;")
         llm_rag_layout.addWidget(self.llm_rag_chunks)
 
         self.llm_rag_prompt = QTextEdit()
@@ -1047,7 +1047,7 @@ class DataImportWidget(QWidget):
         self.llm_rag_prompt.setMaximumHeight(100)
         self.llm_rag_prompt.setToolTip("Prompt completo enviado al modelo LLM")
         self.llm_rag_prompt.setPlaceholderText("Prompt completo enviado al modelo...")
-        self.llm_rag_prompt.setStyleSheet("font-size: 10px; color: #888;")
+        self.llm_rag_prompt.setStyleSheet("font-size: 10px; color: #aaa;")
         llm_rag_layout.addWidget(self.llm_rag_prompt)
 
         self.llm_rag_widget.setVisible(False)

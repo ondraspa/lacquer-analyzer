@@ -172,7 +172,7 @@ class KnowledgeQAPanel(QWidget):
 
         self.kb_status = QLabel("Base de conocimiento: no cargada")
         self.kb_status.setToolTip("Estado de la base de conocimiento: número de entradas cargadas")
-        self.kb_status.setStyleSheet("color: gray; font-style: italic;")
+        self.kb_status.setStyleSheet("color: #aaa; font-style: italic;")
         layout.addWidget(self.kb_status)
 
         self.knowledge_list = QListWidget()
@@ -183,7 +183,7 @@ class KnowledgeQAPanel(QWidget):
         # ── RAG Details (collapsible) ──
         self.rag_details_btn = QPushButton("▶ Mostrar detalles del pipeline RAG")
         self.rag_details_btn.setToolTip("Muestra/oculta los detalles del pipeline RAG (fragmentos, prompt, contexto)")
-        self.rag_details_btn.setStyleSheet("text-align: left; border: none; color: #555;")
+        self.rag_details_btn.setStyleSheet("text-align: left; border: none; color: #999;")
         self.rag_details_btn.setCheckable(True)
         self.rag_details_btn.toggled.connect(self._toggle_rag_details)
         layout.addWidget(self.rag_details_btn)
@@ -193,7 +193,7 @@ class KnowledgeQAPanel(QWidget):
         rag_details_layout.setContentsMargins(8, 0, 0, 0)
 
         self.rag_chunks_label = QLabel("Fragmentos recuperados: ninguno")
-        self.rag_chunks_label.setStyleSheet("font-size: 11px; color: #666;")
+        self.rag_chunks_label.setStyleSheet("font-size: 11px; color: #aaa;")
         rag_details_layout.addWidget(self.rag_chunks_label)
 
         self.rag_chunks_area = QTextEdit()
@@ -201,11 +201,11 @@ class KnowledgeQAPanel(QWidget):
         self.rag_chunks_area.setMaximumHeight(100)
         self.rag_chunks_area.setToolTip("Fragmentos de conocimiento recuperados por el pipeline RAG para la consulta")
         self.rag_chunks_area.setPlaceholderText("Fragmentos de conocimiento recuperados para la última pregunta...")
-        self.rag_chunks_area.setStyleSheet("font-size: 10px; color: #888;")
+        self.rag_chunks_area.setStyleSheet("font-size: 10px; color: #999;")
         rag_details_layout.addWidget(self.rag_chunks_area)
 
         self.rag_prompt_label = QLabel("Prompt enviado al modelo:")
-        self.rag_prompt_label.setStyleSheet("font-size: 11px; color: #666;")
+        self.rag_prompt_label.setStyleSheet("font-size: 11px; color: #aaa;")
         rag_details_layout.addWidget(self.rag_prompt_label)
 
         self.rag_prompt_area = QTextEdit()
@@ -213,7 +213,7 @@ class KnowledgeQAPanel(QWidget):
         self.rag_prompt_area.setMaximumHeight(120)
         self.rag_prompt_area.setToolTip("Prompt completo enviado al LLM, incluyendo el contexto recuperado")
         self.rag_prompt_area.setPlaceholderText("El array completo de mensajes enviado a /v1/chat/completions...")
-        self.rag_prompt_area.setStyleSheet("font-size: 10px; color: #888;")
+        self.rag_prompt_area.setStyleSheet("font-size: 10px; color: #999;")
         rag_details_layout.addWidget(self.rag_prompt_area)
 
         self.rag_details_area.setVisible(False)
@@ -251,7 +251,7 @@ class KnowledgeQAPanel(QWidget):
 
         self.llm_status = QLabel("")
         self.llm_status.setToolTip("Estado de conexión con el LLM (conectado/desconectado)")
-        self.llm_status.setStyleSheet("color: #666;")
+        self.llm_status.setStyleSheet("color: #aaa;")
         btn_row.addWidget(self.llm_status, 1)
         qa_layout.addLayout(btn_row)
 
@@ -581,7 +581,7 @@ class PipelineStageWidget(QWidget):
         desc = QLabel(info.get("description", ""))
         desc.setWordWrap(True)
         desc.setToolTip(info.get("description", ""))
-        desc.setStyleSheet("color: #555; padding: 2px 4px 8px 4px;")
+        desc.setStyleSheet("color: #999; padding: 2px 4px 8px 4px;")
         layout.addWidget(desc)
 
         self._param_box = QGroupBox("Parámetros Clave")

@@ -326,7 +326,7 @@ class KnowledgeMapView(QGraphicsView):
             txt = self._scene.addSimpleText(
                 "¡No hay entradas — importa datos primero!",
                 QFont("Segoe UI", 18))
-            txt.setBrush(QBrush(QColor("#888")))
+            txt.setBrush(QBrush(QColor("#aaa")))
             txt.setPos(-150, -20)
             return
 

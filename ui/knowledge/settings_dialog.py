@@ -143,7 +143,7 @@ class RAGSettingsDialog(QDialog):
             "El modelo verá esto antes de tu pregunta."
         )
         prompt_help.setWordWrap(True)
-        prompt_help.setStyleSheet("color: #666; font-size: 11px;")
+        prompt_help.setStyleSheet("color: #aaa; font-size: 11px;")
         prompt_layout.addWidget(prompt_help)
         self.prompt_edit = QTextEdit()
         self.prompt_edit.setPlaceholderText("Prompt del sistema con marcador {context}...")

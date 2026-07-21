@@ -115,9 +115,9 @@ class ContentDetailPanel(QWidget):
     def show_info(self, title: str, body: str):
         """Show a simple info page (for category/import-type clicks)."""
         html = (
-            f'<div style="padding:20px; color:#555; text-align:center; font-size:14px;'
+            f'<div style="padding:20px; color:#aaa; text-align:center; font-size:14px;'
             f'font-family:\'Segoe UI\',sans-serif;">'
-            f'<h2 style="color:#333;">{title}</h2>'
+            f'<h2 style="color:#ccc;">{title}</h2>'
             f'<p>{body}</p>'
             f'</div>'
         )
@@ -126,7 +126,7 @@ class ContentDetailPanel(QWidget):
     def show_entry(self, entry) -> None:
         if not entry:
             self._browser.setHtml(
-                '<div style="color:#888; text-align:center; padding:40px;">'
+                '<div style="color:#999; text-align:center; padding:40px;">'
                 'Selecciona una entrada para ver su contenido.</div>')
             return
         self._browser.setHtml(self._render(entry))
@@ -146,7 +146,7 @@ class ContentDetailPanel(QWidget):
         <table width="100%"><tr>
         <td><span style="font-size:28px;">{icon}</span></td>
         <td width="100%" style="padding-left:10px;">
-            <span style="font-size:11px; color:#888;">{imp}</span><br>
+            <span style="font-size:11px; color:#999;">{imp}</span><br>
             <span style="font-size:18px; font-weight:bold; color:#1a1a2e;">{title[:120]}</span>
         </td></tr></table>
         <hr style="border:none; border-top:2px solid #e0e0e0; margin:8px 0;">
@@ -154,7 +154,7 @@ class ContentDetailPanel(QWidget):
 
         # Metadata badges
         html += f"""
-        <table style="font-size:12px; color:#555; margin:8px 0;">
+        <table style="font-size:12px; color:#aaa; margin:8px 0;">
         <tr><td style="padding-right:20px;"><b>Categoría</b></td>
             <td><span style="background:{cat_color}; color:white; padding:2px 10px; border-radius:4px;">{entry.category}</span></td></tr>
         <tr><td style="padding-right:20px;"><b>Origen</b></td><td>{source[:80]}</td></tr>
@@ -188,10 +188,10 @@ class ContentDetailPanel(QWidget):
 
         # Full content toggle link
         if len(content) > 4000:
-            html += f'<br><p style="color:#888; font-size:11px;">Mostrando primeros 4000 caracteres · {len(content)} total</p>'
+            html += f'<br><p style="color:#999; font-size:11px;">Mostrando primeros 4000 caracteres · {len(content)} total</p>'
 
         return f"""
-        <!DOCTYPE html><html><body style="font-family:'Segoe UI',sans-serif; margin:0; padding:0; color:#333;">
+        <!DOCTYPE html><html><body style="font-family:'Segoe UI',sans-serif; margin:0; padding:0; color:#ccc;">
         {html}
         </body></html>
         """

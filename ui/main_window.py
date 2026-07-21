@@ -23,11 +23,13 @@ from src.ingredient_loader import IngredientLoader
 from src.llm_integration import LocalLLM, ForumKnowledgeBase
 from src.rag_config import RAGSettings
 from core.translations import T, translator
+from ui.theme import DARK_THEME
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.setStyleSheet(DARK_THEME)
         self.rag_settings = RAGSettings.load()
         self.ingredient_loader = IngredientLoader(
             str(Path(__file__).parent.parent / "config")
@@ -334,7 +336,7 @@ class MainWindow(QMainWindow):
         if corr:
             label += f" (+{corr} correcciones)"
         self.kb_status_btn.setText(label)
-        self.kb_status_btn.setStyleSheet("color: #333; padding: 4px 8px;")
+        self.kb_status_btn.setStyleSheet("color: #ccc; padding: 4px 8px;")
 
     def _open_kb_browser(self):
         from ui.imports.tool_dialogs import KnowledgeBrowserDialog

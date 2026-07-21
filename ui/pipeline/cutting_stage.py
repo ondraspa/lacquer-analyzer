@@ -229,7 +229,7 @@ class SpecialChemSearchWidget(QWidget):
         layout.addLayout(row)
 
         self.source_label = QLabel("")
-        self.source_label.setStyleSheet("color: #666; font-size: 11px;")
+        self.source_label.setStyleSheet("color: #aaa; font-size: 11px;")
         self.source_label.setToolTip("Resumen de resultados por fuente (pigmentos, PubChem, Wikipedia, SpecialChem)")
         layout.addWidget(self.source_label)
 

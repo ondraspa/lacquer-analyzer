@@ -597,7 +597,7 @@ class DataExplorerDialog(QDialog):
         self.map_detail.show_info(
             cat_name,
             f"{count} entradas<br><br>"
-            f"<span style='font-size:12px; color:#888;'>"
+            f"<span style='font-size:12px; color:#aaa;'>"
             f"Doble clic para expandir entradas · Clic en entradas individuales para previsualizar"
             f"</span>"
         )

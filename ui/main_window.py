@@ -19,7 +19,6 @@ from ui.workspace.knowledge_hub import KnowledgeHub
 from ui.imports.tool_dialogs import DataImportDialog, ExpertNotesDialog
 from ui.knowledge.explorer import DataExplorerDialog
 from src.ingredient_loader import IngredientLoader
-from workflow.plating_rules import LacquerAnalyzer
 from src.llm_integration import LocalLLM, ForumKnowledgeBase
 from src.rag_config import RAGSettings
 from core.translations import T, translator
@@ -32,7 +31,6 @@ class MainWindow(QMainWindow):
         self.ingredient_loader = IngredientLoader(
             str(Path(__file__).parent.parent / "config")
         )
-        self.analyzer = LacquerAnalyzer()
         self.llm = LocalLLM(
             api_url=self.rag_settings.api_url,
             model=self.rag_settings.model,
@@ -114,7 +112,7 @@ class MainWindow(QMainWindow):
         self.main_tabs.currentChanged.connect(self._on_tab_changed)
 
         # Tab 1: Formulación
-        self.cutting_stage = CuttingStageWidget(self.ingredient_loader, self.analyzer)
+        self.cutting_stage = CuttingStageWidget(self.ingredient_loader)
         self.cutting_stage.analysis_requested.connect(self._on_analysis_complete)
         self.cutting_stage.translate_requested.connect(self._on_translate_requested)
         self.main_tabs.addTab(self.cutting_stage, "🧪 Formulación")

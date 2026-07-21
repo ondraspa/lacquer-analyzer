@@ -18,10 +18,8 @@ from PySide6.QtGui import QFont
 from ui.workspace.ingredient_editor import IngredientEditorDialog
 from ui.workspace.recipe_editor import RecipeEditorWidget
 from ui.workspace.ingredient_browser import IngredientBrowserWidget
-from ui.workspace.analysis_panel import AnalysisPanelWidget
 from ui.pipeline.base_stage import PipelineStageWidget, KnowledgeQAPanel, TroubleshootingPanel
 from src.ingredient_loader import IngredientLoader
-from workflow.plating_rules import LacquerAnalyzer
 from materials import PigmentDatabase
 from imports.specialchem_scraper import ChemicalIngredientSearch
 from imports.specialchem_scraper import COOKIE_PATH as SPECIALCHEM_COOKIE_PATH
@@ -497,11 +495,9 @@ class CuttingStageWidget(QWidget):
     analysis_requested = Signal(object)
     translate_requested = Signal(str, str)  # (text, target_lang)
 
-    def __init__(self, ingredient_loader: IngredientLoader,
-                 analyzer: LacquerAnalyzer, parent=None):
+    def __init__(self, ingredient_loader: IngredientLoader, parent=None):
         super().__init__(parent)
         self.ingredient_loader = ingredient_loader
-        self.analyzer = analyzer
         self._init_ui()
 
     def _init_ui(self):
@@ -539,9 +535,7 @@ class CuttingStageWidget(QWidget):
 
         right_tabs = QTabWidget()
         self.recipe_editor = RecipeEditorWidget(self.ingredient_loader)
-        self.analysis_panel = AnalysisPanelWidget()
         right_tabs.addTab(self.recipe_editor, "Editor de Recetas")
-        right_tabs.addTab(self.analysis_panel, "Análisis")
         right_layout.addWidget(right_tabs)
 
         self.knowledge_qa = KnowledgeQAPanel("cutting")
@@ -552,7 +546,9 @@ class CuttingStageWidget(QWidget):
         layout.addWidget(splitter, 1)
 
         self.ingredient_browser.ingredients_changed.connect(self.recipe_editor.refresh_selector)
-        self.recipe_editor.analysis_requested.connect(self._on_analyze)
+        self.recipe_editor.analysis_requested.connect(
+            lambda: self.analysis_requested.emit(None)
+        )
         self.recipe_editor.translate_requested.connect(
             lambda text, lang: self.translate_requested.emit(text, lang)
         )
@@ -574,15 +570,6 @@ class CuttingStageWidget(QWidget):
         else:
             self.ingredient_browser.refresh()
             self.recipe_editor.refresh_selector()
-
-    def _on_analyze(self):
-        recipe = self.recipe_editor.get_recipe()
-        if not recipe:
-            QMessageBox.warning(self, "Análisis", "Aún no se ha definido ninguna receta")
-            return
-        result = self.analyzer.analyze_recipe(recipe)
-        self.analysis_panel.show_results(result)
-        self.analysis_requested.emit(result)
 
     def set_llm(self, llm):
         self.knowledge_qa.set_llm(llm)

@@ -7,7 +7,7 @@ from PySide6.QtWidgets import (
     QSplitter, QMessageBox, QLineEdit, QListWidget,
     QListWidgetItem,
 )
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QThread
 
 
 class KnowledgeHub(QWidget):
@@ -187,9 +187,15 @@ class KnowledgeHub(QWidget):
             QMessageBox.warning(self, "Sanitizar", "No hay entradas para sanitizar.")
             return
         from imports.jobs import SanitizeJob
-        self.sanitize_job = SanitizeJob(self.kb, self.llm)
+        self.sanitize_thread = QThread(self)
+        self.sanitize_job = SanitizeJob(self.llm, list(self.kb.entries))
+        self.sanitize_job.moveToThread(self.sanitize_thread)
+        self.sanitize_thread.started.connect(self.sanitize_job.run)
         self.sanitize_job.progress.connect(lambda m: self.kb_preview.append(m))
-        self.sanitize_job.start()
+        self.sanitize_job.finished.connect(self.sanitize_thread.quit)
+        self.sanitize_job.finished.connect(self.sanitize_job.deleteLater)
+        self.sanitize_thread.finished.connect(self.sanitize_thread.deleteLater)
+        self.sanitize_thread.start()
 
     def _open_explorer(self):
         from ui.knowledge.explorer import DataExplorerDialog

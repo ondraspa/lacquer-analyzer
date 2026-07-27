@@ -65,6 +65,10 @@ class SectionCard(QFrame):
         hint.setAlignment(Qt.AlignRight)
         layout.addWidget(hint)
 
+        # All child clicks must pass through to the card
+        for child in self.findChildren(QLabel):
+            child.setAttribute(Qt.WA_TransparentForMouseEvents, True)
+
     def mousePressEvent(self, event):
         self.clicked.emit(self.tab_index)
         super().mousePressEvent(event)

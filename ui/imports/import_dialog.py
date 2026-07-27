@@ -282,7 +282,7 @@ class DataImportWidget(QWidget):
         layout = QVBoxLayout(self)
 
         tabs = QTabWidget()
-        self._tabs = tabs
+        self.tabs = tabs
 
         # === Tab 1: Lathe Trolls Scraper ===
         troll_tab = QWidget()

@@ -4,7 +4,7 @@ from collections import Counter
 from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
     QTextEdit, QLineEdit, QListWidget, QListWidgetItem, QTabWidget,
-    QGroupBox,
+    QGroupBox, QWidget,
 )
 from PySide6.QtCore import Qt
 

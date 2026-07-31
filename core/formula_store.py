@@ -410,6 +410,14 @@ class FormulaStore:
         _write_yaml(self._library_path(formula_id), {"_meta": meta, **self.get_formula(formula_id)})
         self._log(formula_id, "favorite", detail=str(bool(favorite)))
 
+    def update_meta(self, formula_id: str, **fields) -> None:
+        meta, data = self._read_library(formula_id)
+        for key, value in fields.items():
+            meta[key] = value
+        meta["updated"] = _now_human()
+        _write_yaml(self._library_path(formula_id), {"_meta": meta, **data})
+        self._log(formula_id, "meta", detail=",".join(fields.keys()))
+
     def rename_formula(self, formula_id: str, new_name: str) -> FormulaRef:
         if not new_name or not new_name.strip():
             raise ValueError("Formula name must not be empty")

@@ -13,6 +13,9 @@ class SectionCard(QFrame):
     def __init__(self, icon: str, title: str, description: str, features: list, tab_index: int, color: str):
         super().__init__()
         self.tab_index = tab_index
+        self.title_key = title
+        self.desc_key = description
+        self.feature_keys = list(features)
         self.setCursor(Qt.PointingHandCursor)
         self.setStyleSheet(f"""
             SectionCard {{
@@ -33,42 +36,51 @@ class SectionCard(QFrame):
         layout.setSpacing(10)
 
         header = QHBoxLayout()
-        icon_label = QLabel(icon)
+        self.icon_label = QLabel(icon)
         icon_font = QFont()
         icon_font.setPointSize(32)
-        icon_label.setFont(icon_font)
-        header.addWidget(icon_label)
+        self.icon_label.setFont(icon_font)
+        header.addWidget(self.icon_label)
         header.addStretch()
         layout.addLayout(header)
 
-        title_label = QLabel(title)
+        self.title_label = QLabel(T(title))
         title_font = QFont()
         title_font.setPointSize(16)
         title_font.setBold(True)
-        title_label.setFont(title_font)
-        title_label.setStyleSheet("color: white;")
-        layout.addWidget(title_label)
+        self.title_label.setFont(title_font)
+        self.title_label.setStyleSheet("color: white;")
+        layout.addWidget(self.title_label)
 
-        desc_label = QLabel(description)
-        desc_label.setWordWrap(True)
-        desc_label.setStyleSheet("color: rgba(255,255,255,0.8); font-size: 12px;")
-        layout.addWidget(desc_label)
+        self.desc_label = QLabel(T(description))
+        self.desc_label.setWordWrap(True)
+        self.desc_label.setStyleSheet("color: rgba(255,255,255,0.8); font-size: 12px;")
+        layout.addWidget(self.desc_label)
 
         layout.addStretch()
 
-        for feat in features:
-            feat_label = QLabel(f"  ✓  {feat}")
+        self.feat_labels = []
+        for feat in self.feature_keys:
+            feat_label = QLabel(f"  ✓  {T(feat)}")
             feat_label.setStyleSheet("color: rgba(255,255,255,0.9); font-size: 11px;")
             layout.addWidget(feat_label)
+            self.feat_labels.append(feat_label)
 
-        hint = QLabel(T("🖱️ Haz clic para abrir"))
-        hint.setStyleSheet("color: rgba(255,255,255,0.5); font-size: 10px; font-style: italic;")
-        hint.setAlignment(Qt.AlignRight)
-        layout.addWidget(hint)
+        self.hint = QLabel(T("🖱️ Haz clic para abrir"))
+        self.hint.setStyleSheet("color: rgba(255,255,255,0.5); font-size: 10px; font-style: italic;")
+        self.hint.setAlignment(Qt.AlignRight)
+        layout.addWidget(self.hint)
 
         # All child clicks must pass through to the card
         for child in self.findChildren(QLabel):
             child.setAttribute(Qt.WA_TransparentForMouseEvents, True)
+
+    def retranslate(self):
+        self.title_label.setText(T(self.title_key))
+        self.desc_label.setText(T(self.desc_key))
+        for label, key in zip(self.feat_labels, self.feature_keys):
+            label.setText(f"  ✓  {T(key)}")
+        self.hint.setText(T("🖱️ Haz clic para abrir"))
 
     def mousePressEvent(self, event):
         self.clicked.emit(self.tab_index)
@@ -78,19 +90,23 @@ class SectionCard(QFrame):
 class StatusIndicator(QFrame):
     def __init__(self, icon: str, label: str, status: str, status_color: str):
         super().__init__()
+        self.label_key = label
         self.setStyleSheet("background: rgba(255,255,255,0.08); border-radius: 8px;")
         layout = QHBoxLayout(self)
         layout.setContentsMargins(12, 8, 12, 8)
-        icon_lbl = QLabel(icon)
-        icon_lbl.setStyleSheet("font-size: 18px;")
-        layout.addWidget(icon_lbl)
-        text = QLabel(label)
-        text.setStyleSheet("font-size: 12px;")
-        layout.addWidget(text)
+        self.icon_lbl = QLabel(icon)
+        self.icon_lbl.setStyleSheet("font-size: 18px;")
+        layout.addWidget(self.icon_lbl)
+        self.text = QLabel(T(label))
+        self.text.setStyleSheet("font-size: 12px;")
+        layout.addWidget(self.text)
         layout.addStretch()
-        status_lbl = QLabel(status)
-        status_lbl.setStyleSheet(f"font-size: 13px; font-weight: bold; color: {status_color};")
-        layout.addWidget(status_lbl)
+        self.status_lbl = QLabel(status)
+        self.status_lbl.setStyleSheet(f"font-size: 13px; font-weight: bold; color: {status_color};")
+        layout.addWidget(self.status_lbl)
+
+    def retranslate(self):
+        self.text.setText(T(self.label_key))
 
 
 class WelcomeScreen(QWidget):
@@ -113,95 +129,98 @@ class WelcomeScreen(QWidget):
         main_layout.setSpacing(16)
 
         # ── Header ──
-        header = QLabel(T("🏭  Lacquer Analyzer"))
+        self.header = QLabel(T("🏭  Lacquer Analyzer"))
         hf = QFont()
         hf.setPointSize(28)
         hf.setBold(True)
-        header.setFont(hf)
-        header.setStyleSheet("color: white;")
-        main_layout.addWidget(header)
+        self.header.setFont(hf)
+        self.header.setStyleSheet("color: white;")
+        main_layout.addWidget(self.header)
 
-        subtitle = QLabel(T("Plataforma integral para formulación, análisis y control de calidad de lacas de corte"))
-        subtitle.setWordWrap(True)
-        subtitle.setStyleSheet("color: rgba(255,255,255,0.7); font-size: 14px;")
-        main_layout.addWidget(subtitle)
+        self.subtitle = QLabel(T("Plataforma integral para formulación, análisis y control de calidad de lacas de corte"))
+        self.subtitle.setWordWrap(True)
+        self.subtitle.setStyleSheet("color: rgba(255,255,255,0.7); font-size: 14px;")
+        main_layout.addWidget(self.subtitle)
 
         # ── Quick status bar ──
         status_row = QHBoxLayout()
         status_row.setSpacing(12)
         status_items = [
-            ("🧪", T("Ingredientes en BD"), T("—"), "#aaa"),
-            ("📋", T("Recetas cargadas"), T("—"), "#aaa"),
-            ("🧠", T("Base de Conocimiento"), T("—"), "#aaa"),
-            ("🔗", T("LLM"), T("No verificado"), "#ff9800"),
+            ("🧪", "Ingredientes en BD", "—", "#aaa"),
+            ("📋", "Recetas cargadas", "—", "#aaa"),
+            ("🧠", "Base de Conocimiento", "—", "#aaa"),
+            ("🔗", "LLM", "No verificado", "#ff9800"),
         ]
+        self.status_indicators = []
         for icon, label, status, color in status_items:
             s = StatusIndicator(icon, label, status, color)
+            self.status_indicators.append(s)
             status_row.addWidget(s)
         main_layout.addLayout(status_row)
 
         main_layout.addSpacing(12)
 
         # ── Section cards grid ──
-        grid_label = QLabel(T("Módulos del sistema"))
+        self.grid_label = QLabel(T("Módulos del sistema"))
         gf = QFont()
         gf.setPointSize(14)
         gf.setBold(True)
-        grid_label.setFont(gf)
-        grid_label.setStyleSheet("color: rgba(255,255,255,0.9);")
-        main_layout.addWidget(grid_label)
+        self.grid_label.setFont(gf)
+        self.grid_label.setStyleSheet("color: rgba(255,255,255,0.9);")
+        main_layout.addWidget(self.grid_label)
 
         cards = [
             SectionCard(
-                "🧪", T("Formulación de Laca"),
-                T("Crea, analiza y optimiza recetas de laca. Busca ingredientes, "
-                "ejecuta análisis físico-químico completo y compara variantes lado a lado."),
-                [T("Editor de recetas con tabla de componentes"), T("Análisis: viscosidad, evaporación, defectos, mojado"),
-                 T("Comparador de recetas lado a lado"), T("Búsqueda multi-fuente (PubChem, Wikipedia, SpecialChem)")],
+                "🧪", "Formulación de Laca",
+                "Crea, analiza y optimiza recetas de laca. Busca ingredientes, "
+                "ejecuta análisis físico-químico completo y compara variantes lado a lado.",
+                ["Editor de recetas con tabla de componentes", "Análisis: viscosidad, evaporación, defectos, mojado",
+                 "Comparador de recetas lado a lado", "Búsqueda multi-fuente (PubChem, Wikipedia, SpecialChem)"],
                 1, "#1a3a6a"
             ),
             SectionCard(
-                "🚀", T("Mejorador de Fórmulas (Enhancer)"),
-                T("Potencia tus formulaciones con análisis inteligente. "
-                "Recibe sugerencias de optimización basadas en propiedades objetivo."),
-                [T("Análisis de compatibilidad Hansen"), T("Puntuación global 0-100 con desglose"),
-                 T("Sugerencias de modificación automáticas"), T("Traducción de advertencias con LLM")],
+                "🚀", "Mejorador de Fórmulas (Enhancer)",
+                "Potencia tus formulaciones con análisis inteligente. "
+                "Recibe sugerencias de optimización basadas en propiedades objetivo.",
+                ["Análisis de compatibilidad Hansen", "Puntuación global 0-100 con desglose",
+                 "Sugerencias de modificación automáticas", "Traducción de advertencias con LLM"],
                 1, "#1a5a3a"
             ),
             SectionCard(
-                "🔧", T("Solucionador de Problemas"),
-                T("Diagnostica y resuelve defectos de formulación con la ayuda "
-                "de la base de conocimiento y el LLM."),
-                [T("Base de datos de defectos por etapa del proceso"), T("Buscador con filtros por severidad y etapa"),
-                 T("P&R con LLM sobre causas y soluciones"), T("Referencias del foro Lathe Trolls")],
+                "🔧", "Solucionador de Problemas",
+                "Diagnostica y resuelve defectos de formulación con la ayuda "
+                "de la base de conocimiento y el LLM.",
+                ["Base de datos de defectos por etapa del proceso", "Buscador con filtros por severidad y etapa",
+                 "P&R con LLM sobre causas y soluciones", "Referencias del foro Lathe Trolls"],
                 4, "#5a3a1a"
             ),
             SectionCard(
-                "⚡", T("Galvanoplastia"),
-                T("Configura y optimiza baños galvánicos de plata y níquel sulfamato "
-                "para procesos de electroformado."),
-                [T("Parámetros de baño: temperatura, pH, densidad de corriente"), T("Matriz de compatibilidad de solventes"),
-                 T("Guías de prevención de defectos galvánicos"), T("P&R especializado en galvanoplastia")],
+                "⚡", "Galvanoplastia",
+                "Configura y optimiza baños galvánicos de plata y níquel sulfamato "
+                "para procesos de electroformado.",
+                ["Parámetros de baño: temperatura, pH, densidad de corriente", "Matriz de compatibilidad de solventes",
+                 "Guías de prevención de defectos galvánicos", "P&R especializado en galvanoplastia"],
                 2, "#3a1a5a"
             ),
             SectionCard(
-                "🔄", T("Prensado"),
-                T("Gestiona parámetros de prensado, especificaciones de disco y "
-                "lleva el registro histórico de producción."),
-                [T("Temperatura, presión y tiempos de prensado/enfriamiento"), T("Especificaciones: tamaño, grosor, peso"),
-                 T("Registro de producción con historial"), T("Referencias de defectos de prensado")],
+                "🔄", "Prensado",
+                "Gestiona parámetros de prensado, especificaciones de disco y "
+                "lleva el registro histórico de producción.",
+                ["Temperatura, presión y tiempos de prensado/enfriamiento", "Especificaciones: tamaño, grosor, peso",
+                 "Registro de producción con historial", "Referencias de defectos de prensado"],
                 3, "#1a3a5a"
             ),
             SectionCard(
-                "🧠", T("RAG & Base de Conocimiento"),
-                T("Construye y consulta tu base de conocimiento con RAG. "
-                "Importa datos del foro, PDFs, patentes y haz preguntas con LLM."),
-                [T("Importación multi-fuente (foro, PDF, Wikipedia, PubChem)"), T("Pipeline RAG completo con fragmentación"),
-                 T("Q&A inteligente con contexto recuperado"), T("Explorador de datos con mapa mental")],
+                "🧠", "RAG & Base de Conocimiento",
+                "Construye y consulta tu base de conocimiento con RAG. "
+                "Importa datos del foro, PDFs, patentes y haz preguntas con LLM.",
+                ["Importación multi-fuente (foro, PDF, Wikipedia, PubChem)", "Pipeline RAG completo con fragmentación",
+                 "Q&A inteligente con contexto recuperado", "Explorador de datos con mapa mental"],
                 5, "#2a4a3a"
             ),
         ]
 
+        self.cards = cards
         grid = QGridLayout()
         grid.setSpacing(16)
         for i, card in enumerate(cards):
@@ -213,20 +232,34 @@ class WelcomeScreen(QWidget):
         main_layout.addStretch()
 
         # ── Footer ──
-        footer = QLabel(T(
+        self.footer = QLabel(T(
             "💡 Pasa el ratón sobre cualquier elemento para ver ayuda  ·  "
             "Usa el menú Ayuda → Guía de uso para una explicación detallada  ·  "
             "Selecciona 🇪🇸/🇬🇧 en la barra para cambiar idioma"
         ))
-        footer.setWordWrap(True)
-        footer.setStyleSheet("color: rgba(255,255,255,0.4); font-size: 11px;")
-        footer.setAlignment(Qt.AlignCenter)
-        main_layout.addWidget(footer)
+        self.footer.setWordWrap(True)
+        self.footer.setStyleSheet("color: rgba(255,255,255,0.4); font-size: 11px;")
+        self.footer.setAlignment(Qt.AlignCenter)
+        main_layout.addWidget(self.footer)
 
         scroll.setWidget(container)
         outer = QVBoxLayout(self)
         outer.setContentsMargins(0, 0, 0, 0)
         outer.addWidget(scroll)
+
+    def retranslate(self):
+        self.header.setText(T("🏭  Lacquer Analyzer"))
+        self.subtitle.setText(T("Plataforma integral para formulación, análisis y control de calidad de lacas de corte"))
+        self.grid_label.setText(T("Módulos del sistema"))
+        self.footer.setText(T(
+            "💡 Pasa el ratón sobre cualquier elemento para ver ayuda  ·  "
+            "Usa el menú Ayuda → Guía de uso para una explicación detallada  ·  "
+            "Selecciona 🇪🇸/🇬🇧 en la barra para cambiar idioma"
+        ))
+        for card in self.cards:
+            card.retranslate()
+        for s in self.status_indicators:
+            s.retranslate()
 
     def _on_card_clicked(self, tab_index: int):
         self.navigate_requested.emit(tab_index)

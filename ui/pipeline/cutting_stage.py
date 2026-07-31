@@ -517,29 +517,29 @@ class CuttingStageWidget(QWidget):
         self.ingredient_loader = ingredient_loader
         self._init_ui()
         from core.translations import translator
-        translator.language_changed.connect(lambda: None)
+        translator.language_changed.connect(self.retranslate)
 
     def _init_ui(self):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(4, 4, 4, 4)
 
-        header = QLabel(T("🧪 Formulación de Laca — Ingredientes, Recetas y Análisis"))
-        header.setStyleSheet("font-weight: bold; font-size: 16px; padding: 4px;")
-        header.setToolTip(T("🔹 Panel principal de formulación.\n🔹 Izquierda: ingredientes, pigmentos y búsqueda multi-fuente.\n🔹 Derecha: editor de recetas con análisis y comparación."))
+        self.header = QLabel(T("🧪 Formulación de Laca — Ingredientes, Recetas y Análisis"))
+        self.header.setStyleSheet("font-weight: bold; font-size: 16px; padding: 4px;")
+        self.header.setToolTip(T("🔹 Panel principal de formulación.\n🔹 Izquierda: ingredientes, pigmentos y búsqueda multi-fuente.\n🔹 Derecha: editor de recetas con análisis y comparación."))
 
         header_row = QHBoxLayout()
-        header_row.addWidget(header)
+        header_row.addWidget(self.header)
         header_row.addStretch()
-        manual_form_btn = QPushButton(T("📖 Manual — Formulación"))
-        manual_form_btn.setToolTip("Guía completa de formulación de lacas: historia, componentes y evolución")
-        manual_form_btn.clicked.connect(lambda: self._open_manual("lacquer_formulation"))
-        manual_form_btn.setMaximumHeight(28)
-        header_row.addWidget(manual_form_btn)
-        manual_cut_btn = QPushButton(T("📖 Manual — Corte"))
-        manual_cut_btn.setToolTip("Guía completa del corte de lacas: historia, cabezas y tecnología")
-        manual_cut_btn.clicked.connect(lambda: self._open_manual("cutting"))
-        manual_cut_btn.setMaximumHeight(28)
-        header_row.addWidget(manual_cut_btn)
+        self.manual_form_btn = QPushButton(T("📖 Manual — Formulación"))
+        self.manual_form_btn.setToolTip("Guía completa de formulación de lacas: historia, componentes y evolución")
+        self.manual_form_btn.clicked.connect(lambda: self._open_manual("lacquer_formulation"))
+        self.manual_form_btn.setMaximumHeight(28)
+        header_row.addWidget(self.manual_form_btn)
+        self.manual_cut_btn = QPushButton(T("📖 Manual — Corte"))
+        self.manual_cut_btn.setToolTip("Guía completa del corte de lacas: historia, cabezas y tecnología")
+        self.manual_cut_btn.clicked.connect(lambda: self._open_manual("cutting"))
+        self.manual_cut_btn.setMaximumHeight(28)
+        header_row.addWidget(self.manual_cut_btn)
         layout.addLayout(header_row)
 
         splitter = QSplitter(Qt.Horizontal)
@@ -548,17 +548,17 @@ class CuttingStageWidget(QWidget):
         left_layout = QVBoxLayout(left_panel)
         left_layout.setContentsMargins(0, 0, 0, 0)
 
-        left_tabs = QTabWidget()
-        left_tabs.setToolTip(T("Pestañas de ingredientes:\n• BD de Ingredientes — catálogo completo de ingredientes\n• Pigmentos y Solventes — búsqueda local de pigmentos\n• SpecialChem — búsqueda multi-fuente"))
+        self.left_tabs = QTabWidget()
+        self.left_tabs.setToolTip(T("Pestañas de ingredientes:\n• BD de Ingredientes — catálogo completo de ingredientes\n• Pigmentos y Solventes — búsqueda local de pigmentos\n• SpecialChem — búsqueda multi-fuente"))
         self.ingredient_browser = IngredientBrowserWidget(self.ingredient_loader)
-        left_tabs.addTab(self.ingredient_browser, T("BD de Ingredientes"))
+        self.left_tabs.addTab(self.ingredient_browser, T("BD de Ingredientes"))
         self.pigment_search = PigmentSearchWidget()
-        left_tabs.addTab(self.pigment_search, T("Pigmentos y Solventes"))
+        self.left_tabs.addTab(self.pigment_search, T("Pigmentos y Solventes"))
         self.pigment_search.add_to_recipe_requested.connect(self._on_pigment_add_to_recipe)
         self.specialchem_search = SpecialChemSearchWidget(self.ingredient_loader)
-        left_tabs.addTab(self.specialchem_search, T("SpecialChem"))
+        self.left_tabs.addTab(self.specialchem_search, T("SpecialChem"))
         self.specialchem_search.add_to_recipe_requested.connect(self._on_source_add_to_recipe)
-        left_layout.addWidget(left_tabs)
+        left_layout.addWidget(self.left_tabs)
 
         self.troubleshooting = TroubleshootingPanel("cutting")
         self.troubleshooting.setToolTip(T("🔍 Solución de problemas específicos de la etapa de corte. Busca defectos, causas y soluciones."))
@@ -569,11 +569,11 @@ class CuttingStageWidget(QWidget):
         right_layout = QVBoxLayout(right_panel)
         right_layout.setContentsMargins(0, 0, 0, 0)
 
-        right_tabs = QTabWidget()
-        right_tabs.setToolTip(T("Editor de recetas:\n• Componentes — añade/quita ingredientes\n• Pros/Contras — metadatos de la receta\n• Análisis de Laca — ejecuta análisis completo\n• Comparar Recetas — compara dos recetas lado a lado"))
+        self.right_tabs = QTabWidget()
+        self.right_tabs.setToolTip(T("Editor de recetas:\n• Componentes — añade/quita ingredientes\n• Pros/Contras — metadatos de la receta\n• Análisis de Laca — ejecuta análisis completo\n• Comparar Recetas — compara dos recetas lado a lado"))
         self.recipe_editor = RecipeEditorWidget(self.ingredient_loader)
-        right_tabs.addTab(self.recipe_editor, T("Editor de Recetas"))
-        right_layout.addWidget(right_tabs)
+        self.right_tabs.addTab(self.recipe_editor, T("Editor de Recetas"))
+        right_layout.addWidget(self.right_tabs)
 
         self.knowledge_qa = KnowledgeQAPanel("cutting")
         self.knowledge_qa.setToolTip(T("💡 Base de conocimiento y Q&A con LLM para la etapa de formulación. Consulta documentos del foro y haz preguntas."))
@@ -624,3 +624,17 @@ class CuttingStageWidget(QWidget):
     def _open_manual(self, process_key):
         dlg = ProcessManualDialog(process_key, self)
         dlg.exec()
+
+    def retranslate(self):
+        self.header.setText(T("🧪 Formulación de Laca — Ingredientes, Recetas y Análisis"))
+        self.header.setToolTip(T("🔹 Panel principal de formulación.\n🔹 Izquierda: ingredientes, pigmentos y búsqueda multi-fuente.\n🔹 Derecha: editor de recetas con análisis y comparación."))
+        self.manual_form_btn.setText(T("📖 Manual — Formulación"))
+        self.manual_form_btn.setToolTip("Guía completa de formulación de lacas: historia, componentes y evolución")
+        self.manual_cut_btn.setText(T("📖 Manual — Corte"))
+        self.manual_cut_btn.setToolTip("Guía completa del corte de lacas: historia, cabezas y tecnología")
+        if hasattr(self, 'left_tabs'):
+            self.left_tabs.setTabText(0, T("BD de Ingredientes"))
+            self.left_tabs.setTabText(1, T("Pigmentos y Solventes"))
+            self.left_tabs.setTabText(2, T("SpecialChem"))
+        if hasattr(self, 'right_tabs'):
+            self.right_tabs.setTabText(0, T("Editor de Recetas"))

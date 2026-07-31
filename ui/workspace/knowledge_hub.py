@@ -23,11 +23,11 @@ class KnowledgeHub(QWidget):
     def _init_ui(self):
         layout = QVBoxLayout(self)
 
-        header = QLabel(T("🧠 Centro de Conocimiento — Base de Conocimiento RAG"))
-        header.setStyleSheet("font-weight: bold; font-size: 16px; padding: 4px;")
-        layout.addWidget(header)
+        self.header = QLabel(T("🧠 Centro de Conocimiento — Base de Conocimiento RAG"))
+        self.header.setStyleSheet("font-weight: bold; font-size: 16px; padding: 4px;")
+        layout.addWidget(self.header)
 
-        tabs = QTabWidget()
+        self.tabs = QTabWidget()
 
         # Tab 1: Importación rápida
         import_tab = QWidget()
@@ -82,12 +82,12 @@ class KnowledgeHub(QWidget):
         import_layout.addLayout(btn_row2)
 
         import_layout.addStretch()
-        tabs.addTab(import_tab, T("Importación"))
+        self.tabs.addTab(import_tab, T("Importación"))
 
         # Tab 2: RAG Q&A
         from ui.pipeline.base_stage import KnowledgeQAPanel
         self.qa_hub = KnowledgeQAPanel("general")
-        tabs.addTab(self.qa_hub, T("P&R — Base de Conocimiento"))
+        self.tabs.addTab(self.qa_hub, T("P&R — Base de Conocimiento"))
 
         # Tab 3: Navegador KB
         kb_tab = QWidget()
@@ -110,9 +110,24 @@ class KnowledgeHub(QWidget):
         self.kb_preview.setToolTip(T("Vista previa del contenido de la entrada de conocimiento seleccionada"))
         kb_layout.addWidget(self.kb_preview)
 
-        tabs.addTab(kb_tab, T("Navegador BC"))
+        self.tabs.addTab(kb_tab, T("Navegador BC"))
 
-        layout.addWidget(tabs)
+        layout.addWidget(self.tabs)
+
+    def retranslate(self):
+        self.header.setText(T("🧠 Centro de Conocimiento — Base de Conocimiento RAG"))
+        self.import_mirror_btn.setText(T("🌐 Duplicar Foro (Lathe Trolls)"))
+        self.import_md_btn.setText(T("📂 Importar Markdown"))
+        self.import_ltkb_btn.setText(T("📁 lathetrolls_knowledge_base"))
+        self.import_pdf_btn.setText(T("📄 Libros Escaneados"))
+        self.full_import_btn.setText(T("🔧 Importador Completo..."))
+        self.sanitize_btn.setText(T("🧹 Sanitizar BC"))
+        self.explorer_btn.setText(T("📊 Explorador de Datos"))
+        self.kb_search.setPlaceholderText(T("Buscar en la base de conocimiento..."))
+        self.kb_preview.setPlaceholderText(T("Selecciona una entrada para ver su contenido..."))
+        self.tabs.setTabText(0, T("Importación"))
+        self.tabs.setTabText(1, T("P&R — Base de Conocimiento"))
+        self.tabs.setTabText(2, T("Navegador BC"))
 
     def set_kb_and_llm(self, kb, llm, settings=None):
         self.kb = kb

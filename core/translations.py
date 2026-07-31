@@ -416,6 +416,38 @@ class Translator(QObject):
         _("Explorador de Datos", "Data Explorer")
         _("Buscar en BC...", "Search KB...")
         _("Sin resultados", "No results")
+        _("🧠 Centro de Conocimiento — Base de Conocimiento RAG", "🧠 Knowledge Center — RAG Knowledge Base")
+        _("🌐 Duplicar Foro (Lathe Trolls)", "🌐 Mirror Forum (Lathe Trolls)")
+        _("📂 Importar Markdown", "📂 Import Markdown")
+        _("📁 lathetrolls_knowledge_base", "📁 lathetrolls_knowledge_base")
+        _("📄 Libros Escaneados", "📄 Scanned Books")
+        _("🔧 Importador Completo...", "🔧 Full Importer...")
+        _("🧹 Sanitizar BC", "🧹 Sanitize KB")
+        _("📊 Explorador de Datos", "📊 Data Explorer")
+        _("Buscar en la base de conocimiento...", "Search the knowledge base...")
+        _("Selecciona una entrada para ver su contenido...", "Select an entry to view its content...")
+        _("""
+        <h4>Defectos comunes de prensado</h4>
+        <ul>
+        <li><b>No llena</b> — temperatura o presión insuficientes</li>
+        <li><b>Rebaba excesiva</b> — exceso de material o presión demasiado alta</li>
+        <li><b>Disco pegado al molde</b> — agente desmoldante insuficiente</li>
+        <li><b>Deformación (warp)</b> — enfriamiento desigual o humedad en el material</li>
+        <li><b>Marca de estampador</b> — estampador desgastado o dañado</li>
+        <li><b>Burbujas atrapadas</b> — desgasificado insuficiente o material húmedo</li>
+        </ul>
+        """,
+        """
+        <h4>Common pressing defects</h4>
+        <ul>
+        <li><b>Short fill</b> — insufficient temperature or pressure</li>
+        <li><b>Excessive flash</b> — excess material or pressure too high</li>
+        <li><b>Stuck disc</b> — insufficient release agent</li>
+        <li><b>Warping</b> — uneven cooling or material moisture</li>
+        <li><b>Stamper mark</b> — worn or damaged stamper</li>
+        <li><b>Trapped bubbles</b> — insufficient degassing or wet material</li>
+        </ul>
+        """)
 
         # ── Pipeline Stage ──
         _("Editar Parámetros", "Edit Parameters")

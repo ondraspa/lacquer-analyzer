@@ -12,6 +12,8 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QFont
 
+from core.translations import T
+
 
 CUSTOM_KNOWLEDGE_PATH = str(Path(__file__).parent.parent / "data" / "custom_knowledge.json")
 
@@ -77,7 +79,7 @@ class ExpertNotesWidget(QWidget):
         self._rebuild_topic_selector()
         self.topic_selector.currentIndexChanged.connect(self._show_topic)
         self.topic_selector.setToolTip("Selecciona un tema de referencia de experto para ver su contenido")
-        ref_layout.addWidget(QLabel("Temas de Experto:"))
+        ref_layout.addWidget(QLabel(T("Temas de Experto:")))
         ref_layout.addWidget(self.topic_selector)
 
         self.ref_content = QTextEdit()
@@ -86,13 +88,13 @@ class ExpertNotesWidget(QWidget):
         ref_layout.addWidget(self.ref_content)
 
         edit_row = QHBoxLayout()
-        self.save_topic_btn = QPushButton("Guardar Tema")
+        self.save_topic_btn = QPushButton(T("Guardar Tema"))
         self.save_topic_btn.clicked.connect(self._save_topic)
         self.save_topic_btn.setToolTip("Guarda los cambios realizados en el contenido del tema")
-        self.add_topic_btn = QPushButton("Añadir Tema")
+        self.add_topic_btn = QPushButton(T("Añadir Tema"))
         self.add_topic_btn.clicked.connect(self._add_topic)
         self.add_topic_btn.setToolTip("Añade un nuevo tema de referencia")
-        self.delete_topic_btn = QPushButton("Eliminar Tema")
+        self.delete_topic_btn = QPushButton(T("Eliminar Tema"))
         self.delete_topic_btn.setStyleSheet("color: red;")
         self.delete_topic_btn.clicked.connect(self._delete_topic)
         self.delete_topic_btn.setToolTip("Elimina el tema de referencia seleccionado")
@@ -102,30 +104,30 @@ class ExpertNotesWidget(QWidget):
         edit_row.addStretch()
         ref_layout.addLayout(edit_row)
 
-        tabs.addTab(ref_widget, "Referencia")
+        tabs.addTab(ref_widget, T("Referencia"))
 
         custom_widget = QWidget()
         custom_layout = QVBoxLayout(custom_widget)
 
         self.notes_title_input = QLineEdit()
-        self.notes_title_input.setPlaceholderText("Título de la nota...")
+        self.notes_title_input.setPlaceholderText(T("Título de la nota..."))
         self.notes_title_input.setToolTip("Título de la nota personal o conversación")
         custom_layout.addWidget(self.notes_title_input)
 
         self.notes_input = QTextEdit()
-        self.notes_input.setPlaceholderText(
+        self.notes_input.setPlaceholderText(T(
             "Escriba sus notas de experto aquí...\n"
             "Ejemplo: 'Encontramos que Butyl Cellosolve al 5% mejora la estabilidad de la cortina'\n"
             "Formato: Use - para listas, ** para negrita"
-        )
+        ))
         self.notes_input.setToolTip("Contenido de la nota personal")
         custom_layout.addWidget(self.notes_input)
 
         note_btn_row = QHBoxLayout()
-        save_note = QPushButton("Guardar Nota")
+        save_note = QPushButton(T("Guardar Nota"))
         save_note.clicked.connect(self._save_note)
         save_note.setToolTip("Guarda la nota personal")
-        toggle_conversation = QPushButton("Alternar Modo Conversación")
+        toggle_conversation = QPushButton(T("Alternar Modo Conversación"))
         toggle_conversation.clicked.connect(self._toggle_conversation)
         toggle_conversation.setToolTip("Alterna entre vista de notas y vista de conversación con el LLM")
         note_btn_row.addWidget(save_note)
@@ -134,13 +136,13 @@ class ExpertNotesWidget(QWidget):
 
         self.conversation_log = QTextEdit()
         self.conversation_log.setReadOnly(True)
-        self.conversation_log.setPlaceholderText(
+        self.conversation_log.setPlaceholderText(T(
             "Registro de conversación - aquí aparecerán las discusiones sobre cambios de formulación"
-        )
+        ))
         self.conversation_log.setToolTip("Historial de la conversación con el LLM sobre este tema")
         custom_layout.addWidget(self.conversation_log)
 
-        tabs.addTab(custom_widget, "Notas Personalizadas / Conversación")
+        tabs.addTab(custom_widget, T("Notas Personalizadas / Conversación"))
 
         layout.addWidget(tabs)
         self._show_topic(0)
@@ -166,7 +168,7 @@ class ExpertNotesWidget(QWidget):
             return
         content = self.ref_content.toPlainText().strip()
         if not content:
-            QMessageBox.warning(self, "Guardar Tema", "El contenido no puede estar vacío")
+            QMessageBox.warning(self, T("Guardar Tema"), T("El contenido no puede estar vacío"))
             return
         custom = _load_custom_knowledge()
         custom[key] = {
@@ -175,14 +177,14 @@ class ExpertNotesWidget(QWidget):
         }
         _save_custom_knowledge(custom)
         self._rebuild_topic_selector()
-        QMessageBox.information(self, "Guardado", f"Tema '{key}' guardado en custom_knowledge.json")
+        QMessageBox.information(self, T("Guardado"), f"{T('Tema')} '{key}' {T('guardado en custom_knowledge.json')}")
 
     def _add_topic(self):
         from PySide6.QtWidgets import QInputDialog
-        key, ok = QInputDialog.getText(self, "Añadir Tema", "Clave del tema (ej. mi_nuevo_tema):")
+        key, ok = QInputDialog.getText(self, T("Añadir Tema"), T("Clave del tema (ej. mi_nuevo_tema):"))
         if not ok or not key.strip():
             return
-        title, ok2 = QInputDialog.getText(self, "Añadir Tema", "Título mostrado:")
+        title, ok2 = QInputDialog.getText(self, T("Añadir Tema"), T("Título mostrado:"))
         if not ok2 or not title.strip():
             return
         custom = _load_custom_knowledge()
@@ -198,9 +200,9 @@ class ExpertNotesWidget(QWidget):
         if not key:
             return
         if key in BUILTIN_KNOWLEDGE:
-            QMessageBox.warning(self, "Eliminar Tema", "No se pueden eliminar temas incorporados")
+            QMessageBox.warning(self, T("Eliminar Tema"), T("No se pueden eliminar temas incorporados"))
             return
-        reply = QMessageBox.question(self, "Eliminar", f"¿Eliminar tema '{key}'?",
+        reply = QMessageBox.question(self, T("Eliminar"), f"{T('¿Eliminar tema')} '{key}'?",
                                       QMessageBox.Yes | QMessageBox.No)
         if reply == QMessageBox.Yes:
             custom = _load_custom_knowledge()
@@ -217,7 +219,7 @@ class ExpertNotesWidget(QWidget):
         title = self.notes_title_input.text().strip()
         content = self.notes_input.toPlainText().strip()
         if not title or not content:
-            QMessageBox.warning(self, "Guardar Nota", "Se requieren título y contenido")
+            QMessageBox.warning(self, T("Guardar Nota"), T("Se requieren título y contenido"))
             return
 
         self.custom_notes_path.parent.mkdir(parents=True, exist_ok=True)
@@ -244,7 +246,7 @@ class ExpertNotesWidget(QWidget):
 
         self.notes_input.clear()
         self.notes_title_input.clear()
-        QMessageBox.information(self, "Guardado", f"Nota '{title}' guardada")
+        QMessageBox.information(self, T("Guardado"), f"{T('Nota')} '{title}' {T('guardada')}")
 
     def _load_custom_notes(self):
         if self.custom_notes_path.exists():

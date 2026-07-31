@@ -31,6 +31,8 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, QThread, Signal, Slot, QObject, QTimer
 from PySide6.QtGui import QFont
 
+from core.translations import T
+
 from imports.forum import (
     LatheTrollsScraper, PubChemImporter, WikipediaChemicalImporter,
     ForumPost, save_to_custom_ingredients, run_ingest_pipeline
@@ -135,22 +137,22 @@ class DataImportWidget(QWidget):
 
         info = QMessageBox(self)
         info.setIcon(QMessageBox.Information)
-        info.setWindowTitle("Inicio de Sesión en Lathe Trolls")
+        info.setWindowTitle(T("Inicio de Sesión en Lathe Trolls"))
         info.setText(
-            "Se abrirá una ventana del navegador Chromium.\n\n"
+            T("Se abrirá una ventana del navegador Chromium.\n\n"
             "1. Inicia sesión en lathetrolls.com\n"
             "2. Marca 'Recordarme automáticamente en cada visita'\n"
             "3. Haz clic en Iniciar Sesión y espera a que cargue la página principal\n"
-            "4. Vuelve a esta ventana y haz clic en 'Guardar Sesión'"
+            "4. Vuelve a esta ventana y haz clic en 'Guardar Sesión'")
         )
         info.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
         if info.exec() != QMessageBox.Ok:
             return
 
         if not LatheTrollsScraper._playwright_available():
-            QMessageBox.warning(self, "Playwright",
-                "Playwright o Chromium no instalados.\n"
-                "Ejecuta:  pip install playwright && playwright install chromium")
+            QMessageBox.warning(self, T("Playwright"),
+                T("Playwright o Chromium no instalados.\n"
+                "Ejecuta:  pip install playwright && playwright install chromium"))
             return
 
         from playwright.sync_api import sync_playwright
@@ -171,7 +173,7 @@ class DataImportWidget(QWidget):
 
             # Show a modal dialog that waits for the user to confirm login
             confirm = QDialog(self)
-            confirm.setWindowTitle("Confirmar Inicio de Sesión")
+            confirm.setWindowTitle(T("Confirmar Inicio de Sesión"))
             confirm.setModal(True)
             confirm.setMinimumWidth(400)
             layout = QVBoxLayout(confirm)
@@ -186,10 +188,10 @@ class DataImportWidget(QWidget):
             label.setWordWrap(True)
             layout.addWidget(label)
             btn_row = QHBoxLayout()
-            save_btn = QPushButton("✓ Guardar Sesión")
+            save_btn = QPushButton(T("✓ Guardar Sesión"))
             save_btn.setStyleSheet("background: #4CAF50; color: white; padding: 8px 16px; font-size: 14px;")
             save_btn.clicked.connect(confirm.accept)
-            cancel_btn = QPushButton("Cancelar")
+            cancel_btn = QPushButton(T("Cancelar"))
             cancel_btn.clicked.connect(confirm.reject)
             btn_row.addStretch()
             btn_row.addWidget(save_btn)
@@ -288,12 +290,12 @@ class DataImportWidget(QWidget):
         troll_tab = QWidget()
         troll_layout = QVBoxLayout(troll_tab)
 
-        info_label = QLabel(
+        info_label = QLabel(T(
             "<b>Importación de Lathe Trolls</b><br>"
             "Extrae conocimiento de <a href='https://lathetrolls.com'>lathetrolls.com</a> — "
             "el foro sobre corte de lacas para discos, plateado y electroconformado.<br>"
             "Extrae menciones de ingredientes, recetas de formulaciones y conocimiento de procesos."
-        )
+        ))
         info_label.setWordWrap(True)
         info_label.setOpenExternalLinks(True)
         troll_layout.addWidget(info_label)
@@ -302,15 +304,15 @@ class DataImportWidget(QWidget):
         kw_layout = QHBoxLayout()
         self.keyword_input = QLineEdit()
         self.keyword_input.setToolTip("Palabras clave para buscar en el foro de Lathe Trolls")
-        self.keyword_input.setPlaceholderText("Palabras clave (separadas por comas, ej. nitrocellulose, silver nitrate)")
+        self.keyword_input.setPlaceholderText(T("Palabras clave (separadas por comas, ej. nitrocellulose, silver nitrate)"))
         self.keyword_input.setText("nitrocellulose, butyl acetate, lacquer, silver nitrate, castor oil")
-        kw_layout.addWidget(QLabel("Palabras clave:"))
+        kw_layout.addWidget(QLabel(T("Palabras clave:")))
         kw_layout.addWidget(self.keyword_input)
         troll_layout.addLayout(kw_layout)
 
         # Options
         opts_layout = QHBoxLayout()
-        self.use_seed_threads = QCheckBox("Usar solo hilos semilla (sin búsqueda)")
+        self.use_seed_threads = QCheckBox(T("Usar solo hilos semilla (sin búsqueda)"))
         self.use_seed_threads.setChecked(True)
         self.use_seed_threads.setToolTip("Raspar hilos de formulación conocidos sin buscar")
         opts_layout.addWidget(self.use_seed_threads)
@@ -318,13 +320,13 @@ class DataImportWidget(QWidget):
 
         # Max pages
         pages_layout = QHBoxLayout()
-        pages_layout.addWidget(QLabel("Máx. páginas de búsqueda:"))
+        pages_layout.addWidget(QLabel(T("Máx. páginas de búsqueda:")))
         self.scrape_search_pages = QSpinBox()
         self.scrape_search_pages.setRange(1, 100)
         self.scrape_search_pages.setToolTip("Número máximo de páginas de resultados de búsqueda a procesar (1–100)")
         self.scrape_search_pages.setValue(self.settings.scrape_search_max_pages)
         pages_layout.addWidget(self.scrape_search_pages)
-        pages_layout.addWidget(QLabel("Máx. páginas del foro:"))
+        pages_layout.addWidget(QLabel(T("Máx. páginas del foro:")))
         self.scrape_forum_pages = QSpinBox()
         self.scrape_forum_pages.setRange(1, 100)
         self.scrape_forum_pages.setValue(self.settings.scrape_forum_max_pages)
@@ -339,15 +341,15 @@ class DataImportWidget(QWidget):
         self.auth_status.setStyleSheet("padding: 4px 8px; border-radius: 4px;")
         self.auth_status.setToolTip("Estado de la sesión en Lathe Trolls")
         self.update_auth_status()
-        self.login_btn = QPushButton("Iniciar Sesión con el Navegador")
+        self.login_btn = QPushButton(T("Iniciar Sesión con el Navegador"))
         self.login_btn.setToolTip(
             "Abrir un navegador Chromium real para iniciar sesión en lathetrolls.com interactivamente"
         )
         self.login_btn.clicked.connect(self._open_login_browser)
-        self.clear_auth_btn = QPushButton("Limpiar Autenticación")
+        self.clear_auth_btn = QPushButton(T("Limpiar Autenticación"))
         self.clear_auth_btn.clicked.connect(self._clear_auth)
         self.clear_auth_btn.setToolTip("Eliminar estado de inicio de sesión guardado")
-        auth_layout.addWidget(QLabel("Sesión:"))
+        auth_layout.addWidget(QLabel(T("Sesión:")))
         auth_layout.addWidget(self.auth_status)
         auth_layout.addStretch()
         auth_layout.addWidget(self.login_btn)
@@ -356,14 +358,14 @@ class DataImportWidget(QWidget):
 
         # Buttons
         btn_layout = QHBoxLayout()
-        self.scrape_btn = QPushButton("Raspar Lathe Trolls")
+        self.scrape_btn = QPushButton(T("Raspar Lathe Trolls"))
         self.scrape_btn.setToolTip("Inicia el raspado de Lathe Trolls para extraer conocimiento del foro")
         self.scrape_btn.clicked.connect(self._run_scrape)
-        self.export_btn = QPushButton("Exportar a YAML")
+        self.export_btn = QPushButton(T("Exportar a YAML"))
         self.export_btn.setToolTip("Exporta los mensajes raspados a un archivo YAML/JSON")
         self.export_btn.clicked.connect(self._export_scraped)
         self.export_btn.setEnabled(False)
-        self.scrape_stop_btn = QPushButton("Detener")
+        self.scrape_stop_btn = QPushButton(T("Detener"))
         self.scrape_stop_btn.setToolTip("Detiene la operación de raspado en curso")
         self.scrape_stop_btn.clicked.connect(self._stop_scrape)
         self.scrape_stop_btn.setStyleSheet("background: #f44336; color: white; font-weight: bold;")
@@ -382,17 +384,17 @@ class DataImportWidget(QWidget):
         self.scrape_log = QTextEdit()
         self.scrape_log.setReadOnly(True)
         self.scrape_log.setToolTip("Registro de eventos y mensajes durante el raspado")
-        self.scrape_log.setPlaceholderText("El resultado del raspado aparecerá aquí...")
+        self.scrape_log.setPlaceholderText(T("El resultado del raspado aparecerá aquí..."))
         troll_layout.addWidget(self.scrape_log)
 
         # Extracted ingredients list
         self.ingredient_list = QListWidget()
         self.ingredient_list.setMaximumHeight(200)
         self.ingredient_list.setToolTip("Lista de ingredientes extraídos de los mensajes del foro, ordenados por número de menciones")
-        troll_layout.addWidget(QLabel("Ingredientes Extraídos:"))
+        troll_layout.addWidget(QLabel(T("Ingredientes Extraídos:")))
         troll_layout.addWidget(self.ingredient_list)
 
-        tabs.addTab(troll_tab, "Lathe Trolls")
+        tabs.addTab(troll_tab, T("Lathe Trolls"))
 
         # === Tab 2: PubChem ===
         chem_tab = QWidget()
@@ -402,9 +404,9 @@ class DataImportWidget(QWidget):
         search_layout = QHBoxLayout()
         self.pubchem_search = QLineEdit()
         self.pubchem_search.setToolTip("Busca compuestos químicos en PubChem por nombre")
-        self.pubchem_search.setPlaceholderText("Buscar en PubChem por nombre químico (ej. nitrocellulose, butyl acetate)...")
+        self.pubchem_search.setPlaceholderText(T("Buscar en PubChem por nombre químico (ej. nitrocellulose, butyl acetate)..."))
         self.pubchem_search.returnPressed.connect(self._pubchem_search)
-        self.pubchem_search_btn = QPushButton("Buscar")
+        self.pubchem_search_btn = QPushButton(T("Buscar"))
         self.pubchem_search_btn.setToolTip("Ejecuta la búsqueda en PubChem")
         self.pubchem_search_btn.clicked.connect(self._pubchem_search)
         search_layout.addWidget(self.pubchem_search)
@@ -412,7 +414,7 @@ class DataImportWidget(QWidget):
         chem_layout.addLayout(search_layout)
 
         # Results list
-        chem_layout.addWidget(QLabel("Resultados de Búsqueda:"))
+        chem_layout.addWidget(QLabel(T("Resultados de Búsqueda:")))
         self.pubchem_results = QListWidget()
         self.pubchem_results.setMaximumHeight(200)
         self.pubchem_results.setToolTip("Resultados de la búsqueda en PubChem")
@@ -420,7 +422,7 @@ class DataImportWidget(QWidget):
 
         # Add selected to ingredients
         add_layout = QHBoxLayout()
-        self.pubchem_add_btn = QPushButton("Añadir Seleccionado a BD de Ingredientes")
+        self.pubchem_add_btn = QPushButton(T("Añadir Seleccionado a BD de Ingredientes"))
         self.pubchem_add_btn.setToolTip("Añade el compuesto seleccionado a la base de datos de ingredientes")
         self.pubchem_add_btn.clicked.connect(self._pubchem_add)
         self.pubchem_add_btn.setStyleSheet("background: #4CAF50; color: white; padding: 6px;")
@@ -428,7 +430,7 @@ class DataImportWidget(QWidget):
         self.pubchem_category = QComboBox()
         self.pubchem_category.setToolTip("Categoría química del compuesto a añadir")
         self.pubchem_category.addItems(["resins", "solvents", "additives", "pigments"])
-        add_layout.addWidget(QLabel("Categoría:"))
+        add_layout.addWidget(QLabel(T("Categoría:")))
         add_layout.addWidget(self.pubchem_category)
         add_layout.addWidget(self.pubchem_add_btn)
         add_layout.addStretch()
@@ -440,10 +442,10 @@ class DataImportWidget(QWidget):
         chem_layout.addWidget(sep)
 
         chem_btn_layout = QHBoxLayout()
-        self.enrich_btn = QPushButton("Enriquecer Ingredientes desde PubChem")
+        self.enrich_btn = QPushButton(T("Enriquecer Ingredientes desde PubChem"))
         self.enrich_btn.setToolTip("Enriquece todos los ingredientes existentes con datos fisicoquímicos de PubChem")
         self.enrich_btn.clicked.connect(self._run_enrich)
-        self.enrich_stop_btn = QPushButton("Detener")
+        self.enrich_stop_btn = QPushButton(T("Detener"))
         self.enrich_stop_btn.setToolTip("Detiene el enriquecimiento por lotes en curso")
         self.enrich_stop_btn.clicked.connect(self._stop_enrich)
         self.enrich_stop_btn.setStyleSheet("background: #f44336; color: white; font-weight: bold;")
@@ -458,7 +460,7 @@ class DataImportWidget(QWidget):
         self.chem_log.setToolTip("Registro de eventos y resultados de PubChem")
         chem_layout.addWidget(self.chem_log)
 
-        tabs.addTab(chem_tab, "PubChem")
+        tabs.addTab(chem_tab, T("PubChem"))
 
         # === Tab 3: Wikipedia Chemical Search ===
         wiki_tab = QWidget()
@@ -476,23 +478,23 @@ class DataImportWidget(QWidget):
         wiki_search_layout = QHBoxLayout()
         self.wiki_search = QLineEdit()
         self.wiki_search.setToolTip("Busca propiedades químicas en Wikipedia por nombre")
-        self.wiki_search.setPlaceholderText("Buscar en Wikipedia un químico (ej. nitrocellulose, acetone)...")
+        self.wiki_search.setPlaceholderText(T("Buscar en Wikipedia un químico (ej. nitrocellulose, acetone)..."))
         self.wiki_search.returnPressed.connect(self._wiki_search)
-        self.wiki_search_btn = QPushButton("Buscar")
+        self.wiki_search_btn = QPushButton(T("Buscar"))
         self.wiki_search_btn.setToolTip("Ejecuta la búsqueda en Wikipedia")
         self.wiki_search_btn.clicked.connect(self._wiki_search)
         wiki_search_layout.addWidget(self.wiki_search)
         wiki_search_layout.addWidget(self.wiki_search_btn)
         wiki_layout.addLayout(wiki_search_layout)
 
-        wiki_layout.addWidget(QLabel("Resultados de Búsqueda:"))
+        wiki_layout.addWidget(QLabel(T("Resultados de Búsqueda:")))
         self.wiki_results = QListWidget()
         self.wiki_results.setMaximumHeight(200)
         self.wiki_results.setToolTip("Resultados de la búsqueda en Wikipedia")
         wiki_layout.addWidget(self.wiki_results)
 
         wiki_add_layout = QHBoxLayout()
-        self.wiki_add_btn = QPushButton("Añadir Seleccionado a BD de Ingredientes")
+        self.wiki_add_btn = QPushButton(T("Añadir Seleccionado a BD de Ingredientes"))
         self.wiki_add_btn.setToolTip("Añade el artículo químico seleccionado a la base de datos de ingredientes")
         self.wiki_add_btn.clicked.connect(self._wiki_add)
         self.wiki_add_btn.setStyleSheet("background: #4CAF50; color: white; padding: 6px;")
@@ -500,7 +502,7 @@ class DataImportWidget(QWidget):
         self.wiki_category = QComboBox()
         self.wiki_category.setToolTip("Categoría química del artículo a añadir")
         self.wiki_category.addItems(["resins", "solvents", "additives", "pigments"])
-        wiki_add_layout.addWidget(QLabel("Categoría:"))
+        wiki_add_layout.addWidget(QLabel(T("Categoría:")))
         wiki_add_layout.addWidget(self.wiki_category)
         wiki_add_layout.addWidget(self.wiki_add_btn)
         wiki_add_layout.addStretch()
@@ -511,7 +513,7 @@ class DataImportWidget(QWidget):
         self.wiki_log.setToolTip("Registro de eventos y resultados de Wikipedia")
         wiki_layout.addWidget(self.wiki_log)
 
-        tabs.addTab(wiki_tab, "Wikipedia")
+        tabs.addTab(wiki_tab, T("Wikipedia"))
 
         # === Tab 3: Import from File ===
         file_tab = QWidget()
@@ -528,16 +530,16 @@ class DataImportWidget(QWidget):
         file_layout.addWidget(file_info)
 
         file_btn_layout = QHBoxLayout()
-        self.import_yaml_btn = QPushButton("Importar YAML/JSON")
+        self.import_yaml_btn = QPushButton(T("Importar YAML/JSON"))
         self.import_yaml_btn.setToolTip("Importa ingredientes desde un archivo YAML o JSON")
         self.import_yaml_btn.clicked.connect(self._import_file)
-        self.import_csv_btn = QPushButton("Importar CSV")
+        self.import_csv_btn = QPushButton(T("Importar CSV"))
         self.import_csv_btn.setToolTip("Importa ingredientes desde un archivo CSV de proveedores")
         self.import_csv_btn.clicked.connect(self._import_csv)
         file_btn_layout.addWidget(self.import_yaml_btn)
         file_btn_layout.addWidget(self.import_csv_btn)
 
-        self.import_markdown_btn = QPushButton("Examinar Markdown...")
+        self.import_markdown_btn = QPushButton(T("Examinar Markdown..."))
         self.import_markdown_btn.setStyleSheet("background: #FF9800; color: white; padding: 6px;")
         self.import_markdown_btn.setToolTip(
             "Examinar archivos markdown raspados por troll_scraper_stealth.py"
@@ -545,7 +547,7 @@ class DataImportWidget(QWidget):
         self.import_markdown_btn.clicked.connect(self._load_playwright_markdown)
         file_btn_layout.addWidget(self.import_markdown_btn)
 
-        self.import_ltkb_btn = QPushButton("Importar base_de_conocimiento_lathetrolls")
+        self.import_ltkb_btn = QPushButton(T("Importar base_de_conocimiento_lathetrolls"))
         self.import_ltkb_btn.setStyleSheet("background: #4CAF50; color: white; padding: 6px; font-weight: bold;")
         self.import_ltkb_btn.setToolTip(
             "Importar directamente desde /home/ondra/lathetrolls_knowledge_base/ "
@@ -562,7 +564,7 @@ class DataImportWidget(QWidget):
         self.file_log.setToolTip("Registro de eventos y resultados de la importación de archivos")
         file_layout.addWidget(self.file_log)
 
-        tabs.addTab(file_tab, "Importar Archivo")
+        tabs.addTab(file_tab, T("Importar Archivo"))
 
         # === Tab 4: Forum Mirror ===
         mirror_tab = QWidget()
@@ -581,7 +583,7 @@ class DataImportWidget(QWidget):
 
         # Thread ID range
         range_layout = QHBoxLayout()
-        range_layout.addWidget(QLabel("Rango de hilos:"))
+        range_layout.addWidget(QLabel(T("Rango de hilos:")))
         self.mirror_start_id = QSpinBox()
         self.mirror_start_id.setRange(1, 999999)
         self.mirror_start_id.setValue(2)
@@ -597,19 +599,19 @@ class DataImportWidget(QWidget):
         self.mirror_end_id.setSpecialValueText("Automático")
         self.mirror_end_id.setToolTip("ID del último hilo a duplicar (0 = descubrir automáticamente)")
         range_layout.addWidget(self.mirror_end_id)
-        range_layout.addWidget(QLabel("(0 = descubrir automáticamente)"))
+        range_layout.addWidget(QLabel(T("(0 = descubrir automáticamente)")))
         range_layout.addStretch()
         mirror_layout.addLayout(range_layout)
 
         mirror_btn_layout = QHBoxLayout()
-        self.mirror_btn = QPushButton("Duplicar Todas las Categorías")
+        self.mirror_btn = QPushButton(T("Duplicar Todas las Categorías"))
         self.mirror_btn.setToolTip("Duplica todas las categorías del foro a archivos markdown mediante Playwright")
         self.mirror_btn.clicked.connect(self._run_mirror)
-        self.mirror_export_btn = QPushButton("Exportar Todo a YAML")
+        self.mirror_export_btn = QPushButton(T("Exportar Todo a YAML"))
         self.mirror_export_btn.setToolTip("Exporta el contenido duplicado a un archivo YAML")
         self.mirror_export_btn.clicked.connect(self._export_mirror)
         self.mirror_export_btn.setEnabled(False)
-        self.mirror_stop_btn = QPushButton("Detener")
+        self.mirror_stop_btn = QPushButton(T("Detener"))
         self.mirror_stop_btn.setToolTip("Detiene la operación de duplicación en curso")
         self.mirror_stop_btn.clicked.connect(self._stop_mirror)
         self.mirror_stop_btn.setStyleSheet("background: #f44336; color: white; font-weight: bold;")
@@ -621,12 +623,12 @@ class DataImportWidget(QWidget):
         mirror_layout.addLayout(mirror_btn_layout)
 
         mirror_btn_row2 = QHBoxLayout()
-        self.mirror_import_btn = QPushButton("Importar carpeta de caché...")
+        self.mirror_import_btn = QPushButton(T("Importar carpeta de caché..."))
         self.mirror_import_btn.setToolTip("Importa una carpeta de caché con archivos JSON del foro a la base de conocimiento")
         self.mirror_import_btn.clicked.connect(self._mirror_import_cache)
         self.mirror_import_btn.setStyleSheet("background: #2196F3; color: white; padding: 4px;")
         mirror_btn_row2.addWidget(self.mirror_import_btn)
-        self.mirror_backfill_btn = QPushButton("Rellenar imágenes desde caché")
+        self.mirror_backfill_btn = QPushButton(T("Rellenar imágenes desde caché"))
         self.mirror_backfill_btn.setToolTip("Descarga imágenes faltantes desde los mensajes del foro en caché")
         self.mirror_backfill_btn.clicked.connect(self._mirror_backfill_images)
         self.mirror_backfill_btn.setStyleSheet("background: #FF9800; color: white; padding: 4px;")
@@ -642,11 +644,11 @@ class DataImportWidget(QWidget):
         self.mirror_log = QTextEdit()
         self.mirror_log.setReadOnly(True)
         self.mirror_log.setToolTip("Registro de eventos durante la duplicación del foro")
-        self.mirror_log.setPlaceholderText("El resultado de la duplicación aparecerá aquí...\n1. Inicia Sesión con el Navegador en la pestaña Lathe Trolls\n2. Haz clic en Duplicar Todas las Categorías")
+        self.mirror_log.setPlaceholderText(T("El resultado de la duplicación aparecerá aquí...\n1. Inicia Sesión con el Navegador en la pestaña Lathe Trolls\n2. Haz clic en Duplicar Todas las Categorías"))
         self.mirror_log.setStyleSheet("font-family: monospace; font-size: 11px;")
         mirror_layout.addWidget(self.mirror_log, 1)
 
-        tabs.addTab(mirror_tab, "Duplicar Foro")
+        tabs.addTab(mirror_tab, T("Duplicar Foro"))
 
         # === Tab 5b: WhatsApp Import ===
         wa_tab = QWidget()
@@ -665,22 +667,22 @@ class DataImportWidget(QWidget):
         wa_splitter = QSplitter(Qt.Vertical)
 
         # ── Top: File import ──
-        wa_file_group = QGroupBox("Método A: Importar Archivo .txt Exportado")
+        wa_file_group = QGroupBox(T("Método A: Importar Archivo .txt Exportado"))
         wa_file_layout = QVBoxLayout(wa_file_group)
 
         wa_file_row = QHBoxLayout()
         self.wa_file_path = QLineEdit()
         self.wa_file_path.setToolTip("Ruta del archivo .txt exportado de WhatsApp")
-        self.wa_file_path.setPlaceholderText("Seleccionar archivo .txt exportado de WhatsApp...")
+        self.wa_file_path.setPlaceholderText(T("Seleccionar archivo .txt exportado de WhatsApp..."))
         self.wa_file_path.setReadOnly(True)
         wa_file_row.addWidget(self.wa_file_path)
 
-        wa_browse_btn = QPushButton("Examinar...")
+        wa_browse_btn = QPushButton(T("Examinar..."))
         wa_browse_btn.setToolTip("Selecciona un archivo .txt exportado de WhatsApp")
         wa_browse_btn.clicked.connect(self._wa_browse)
         wa_file_row.addWidget(wa_browse_btn)
 
-        self.wa_preview_file_btn = QPushButton("Vista Previa")
+        self.wa_preview_file_btn = QPushButton(T("Vista Previa"))
         self.wa_preview_file_btn.setToolTip("Muestra una vista previa de los mensajes del archivo seleccionado")
         self.wa_preview_file_btn.clicked.connect(self._wa_preview_file)
         self.wa_preview_file_btn.setEnabled(False)
@@ -689,7 +691,7 @@ class DataImportWidget(QWidget):
         wa_splitter.addWidget(wa_file_group)
 
         # ── Bottom: Paste from clipboard ──
-        wa_paste_group = QGroupBox("Método B: Pegar desde WhatsApp Web")
+        wa_paste_group = QGroupBox(T("Método B: Pegar desde WhatsApp Web"))
         wa_paste_layout = QVBoxLayout(wa_paste_group)
 
         self.wa_paste_area = QTextEdit()
@@ -709,12 +711,12 @@ class DataImportWidget(QWidget):
 
         # ── Options + buttons ──
         wa_opts = QHBoxLayout()
-        wa_opts.addWidget(QLabel("Etiqueta de origen:"))
+        wa_opts.addWidget(QLabel(T("Etiqueta de origen:")))
         self.wa_source = QLineEdit("Grupo de Vinilos WhatsApp")
         self.wa_source.setToolTip("Etiqueta de origen para los mensajes importados")
         wa_opts.addWidget(self.wa_source)
 
-        wa_opts.addWidget(QLabel("Filtro de etapa:"))
+        wa_opts.addWidget(QLabel(T("Filtro de etapa:")))
         self.wa_stage_filter = QComboBox()
         self.wa_stage_filter.setToolTip("Filtra los mensajes por etapa del proceso de fabricación")
         self.wa_stage_filter.addItems(["auto", "cutting", "silvering", "plating", "pressing", "qc", "general"])
@@ -722,14 +724,14 @@ class DataImportWidget(QWidget):
         wa_layout.addLayout(wa_opts)
 
         wa_btn_layout = QHBoxLayout()
-        self.wa_import_btn = QPushButton("Importar Archivo Seleccionado")
+        self.wa_import_btn = QPushButton(T("Importar Archivo Seleccionado"))
         self.wa_import_btn.setToolTip("Importa el archivo de WhatsApp seleccionado a la base de conocimiento")
         self.wa_import_btn.clicked.connect(self._wa_import)
         self.wa_import_btn.setStyleSheet("background: #4CAF50; color: white; padding: 6px;")
         self.wa_import_btn.setEnabled(False)
         wa_btn_layout.addWidget(self.wa_import_btn)
 
-        self.wa_import_paste_btn = QPushButton("Importar Texto Pegado")
+        self.wa_import_paste_btn = QPushButton(T("Importar Texto Pegado"))
         self.wa_import_paste_btn.setToolTip("Importa el texto pegado desde WhatsApp Web a la base de conocimiento")
         self.wa_import_paste_btn.clicked.connect(self._wa_import_paste)
         self.wa_import_paste_btn.setStyleSheet("background: #2196F3; color: white; padding: 6px;")
@@ -742,17 +744,17 @@ class DataImportWidget(QWidget):
         self.wa_log = QTextEdit()
         self.wa_log.setReadOnly(True)
         self.wa_log.setToolTip("Registro de eventos durante la importación de WhatsApp")
-        self.wa_log.setPlaceholderText("El registro de importación aparecerá aquí...")
+        self.wa_log.setPlaceholderText(T("El registro de importación aparecerá aquí..."))
         self.wa_log.setMaximumHeight(80)
         wa_layout.addWidget(self.wa_log)
 
-        wa_layout.addWidget(QLabel("Vista Previa de Mensajes:"))
+        wa_layout.addWidget(QLabel(T("Vista Previa de Mensajes:")))
         self.wa_preview = QListWidget()
         self.wa_preview.setMaximumHeight(150)
         self.wa_preview.setToolTip("Vista previa de los mensajes de WhatsApp analizados")
         wa_layout.addWidget(self.wa_preview)
 
-        tabs.addTab(wa_tab, "WhatsApp")
+        tabs.addTab(wa_tab, T("WhatsApp"))
 
         # === Tab 6: Scanned Books / PDF / Image Folders ===
         pdf_tab = QWidget()
@@ -781,16 +783,16 @@ class DataImportWidget(QWidget):
         pdf_file_row.addWidget(self.pdf_file_list, 1)
 
         pdf_btn_col = QVBoxLayout()
-        pdf_add_pdf = QPushButton("Añadir PDF...")
+        pdf_add_pdf = QPushButton(T("Añadir PDF..."))
         pdf_add_pdf.setToolTip("Añade uno o más archivos PDF a la lista de importación")
         pdf_add_pdf.clicked.connect(self._pdf_add_pdf)
-        pdf_add_dir = QPushButton("Añadir Carpeta de Imágenes...")
+        pdf_add_dir = QPushButton(T("Añadir Carpeta de Imágenes..."))
         pdf_add_dir.setToolTip("Añade una carpeta con imágenes de páginas escaneadas")
         pdf_add_dir.clicked.connect(self._pdf_add_folder)
-        pdf_add_zip = QPushButton("Añadir ZIP/RAR...")
+        pdf_add_zip = QPushButton(T("Añadir ZIP/RAR..."))
         pdf_add_zip.setToolTip("Añade un archivo ZIP/RAR con imágenes de páginas")
         pdf_add_zip.clicked.connect(self._pdf_add_archive)
-        pdf_clear_btn = QPushButton("Limpiar")
+        pdf_clear_btn = QPushButton(T("Limpiar"))
         pdf_clear_btn.setToolTip("Limpia la lista de archivos")
         pdf_clear_btn.clicked.connect(self.pdf_file_list.clear)
         pdf_btn_col.addWidget(pdf_add_pdf)
@@ -802,12 +804,12 @@ class DataImportWidget(QWidget):
 
         # Source label + language selector
         pdf_opts_row = QHBoxLayout()
-        pdf_opts_row.addWidget(QLabel("Etiqueta de origen:"))
+        pdf_opts_row.addWidget(QLabel(T("Etiqueta de origen:")))
         self.pdf_source_input = QLineEdit("Libro Escaneado")
         self.pdf_source_input.setToolTip("Etiqueta de origen para los libros importados")
         pdf_opts_row.addWidget(self.pdf_source_input, 1)
 
-        pdf_opts_row.addWidget(QLabel("Idioma OCR:"))
+        pdf_opts_row.addWidget(QLabel(T("Idioma OCR:")))
         self.pdf_lang_combo = QComboBox()
         self.pdf_lang_combo.setEditable(True)
         self.pdf_lang_combo.addItems(["ces", "eng", "deu", "fra", "spa", "rus", "eng+ces", "deu+eng", "ces+slk"])
@@ -823,19 +825,19 @@ class DataImportWidget(QWidget):
 
         # Buttons
         pdf_btn_row = QHBoxLayout()
-        self.pdf_import_btn = QPushButton("Importar Seleccionado")
+        self.pdf_import_btn = QPushButton(T("Importar Seleccionado"))
         self.pdf_import_btn.setToolTip("Importa los archivos seleccionados a la base de conocimiento mediante OCR")
         self.pdf_import_btn.clicked.connect(self._pdf_import)
         self.pdf_import_btn.setStyleSheet("background: #4CAF50; color: white; padding: 6px;")
         self.pdf_import_btn.setEnabled(False)
         pdf_btn_row.addWidget(self.pdf_import_btn)
 
-        self.pdf_check_btn = QPushButton("Verificar Dependencias")
+        self.pdf_check_btn = QPushButton(T("Verificar Dependencias"))
         self.pdf_check_btn.setToolTip("Verifica que las dependencias de OCR (Tesseract, PyMuPDF) estén instaladas")
         self.pdf_check_btn.clicked.connect(self._pdf_check_deps)
         pdf_btn_row.addWidget(self.pdf_check_btn)
 
-        self.pdf_install_btn = QPushButton("Instalar Dependencias")
+        self.pdf_install_btn = QPushButton(T("Instalar Dependencias"))
         self.pdf_install_btn.setStyleSheet("background: #FF9800; color: white; padding: 6px;")
         self.pdf_install_btn.setToolTip("Instalar PyMuPDF y pytesseract faltantes mediante pip")
         self.pdf_install_btn.clicked.connect(self._pdf_install_deps)
@@ -852,7 +854,7 @@ class DataImportWidget(QWidget):
         # Live preview during import
         pdf_preview_split = QSplitter(Qt.Horizontal)
 
-        self.pdf_preview_image = QLabel("Sin imagen")
+        self.pdf_preview_image = QLabel(T("Sin imagen"))
         self.pdf_preview_image.setToolTip("Vista previa de la imagen de la página escaneada")
         self.pdf_preview_image.setAlignment(Qt.AlignCenter)
         self.pdf_preview_image.setMinimumHeight(200)
@@ -863,7 +865,7 @@ class DataImportWidget(QWidget):
         self.pdf_preview_ocr = QTextEdit()
         self.pdf_preview_ocr.setReadOnly(True)
         self.pdf_preview_ocr.setToolTip("Texto extraído mediante OCR de la página actual")
-        self.pdf_preview_ocr.setPlaceholderText("El texto OCR aparecerá aquí...")
+        self.pdf_preview_ocr.setPlaceholderText(T("El texto OCR aparecerá aquí..."))
         self.pdf_preview_ocr.setStyleSheet("font-size: 11px;")
         pdf_preview_split.addWidget(self.pdf_preview_ocr)
 
@@ -872,17 +874,17 @@ class DataImportWidget(QWidget):
 
         # Preview controls
         pdf_preview_ctrl = QHBoxLayout()
-        self.pdf_prev_btn = QPushButton("◀ Anterior")
+        self.pdf_prev_btn = QPushButton(T("◀ Anterior"))
         self.pdf_prev_btn.setToolTip("Muestra la página anterior del libro")
         self.pdf_prev_btn.setEnabled(False)
         self.pdf_prev_btn.clicked.connect(self._pdf_prev_page)
         pdf_preview_ctrl.addWidget(self.pdf_prev_btn)
-        self.pdf_next_btn = QPushButton("Siguiente ▶")
+        self.pdf_next_btn = QPushButton(T("Siguiente ▶"))
         self.pdf_next_btn.setToolTip("Muestra la página siguiente del libro")
         self.pdf_next_btn.setEnabled(False)
         self.pdf_next_btn.clicked.connect(self._pdf_next_page)
         pdf_preview_ctrl.addWidget(self.pdf_next_btn)
-        self.pdf_remove_btn = QPushButton("✕ Quitar")
+        self.pdf_remove_btn = QPushButton(T("✕ Quitar"))
         self.pdf_remove_btn.setToolTip("Elimina la página actual de la base de conocimiento")
         self.pdf_remove_btn.setEnabled(False)
         self.pdf_remove_btn.setStyleSheet("color: #e74c3c;")
@@ -892,13 +894,13 @@ class DataImportWidget(QWidget):
         self.pdf_preview_page_label.setToolTip("Indicador de la página actual y total")
         pdf_preview_ctrl.addWidget(self.pdf_preview_page_label)
         pdf_preview_ctrl.addStretch()
-        self.pdf_stop_btn = QPushButton("⏹ Detener")
+        self.pdf_stop_btn = QPushButton(T("⏹ Detener"))
         self.pdf_stop_btn.setToolTip("Detiene la importación de libros en curso")
         self.pdf_stop_btn.setStyleSheet("background: #f44336; color: white; padding: 4px 12px;")
         self.pdf_stop_btn.clicked.connect(self._pdf_stop_import)
         self.pdf_stop_btn.setVisible(False)
         pdf_preview_ctrl.addWidget(self.pdf_stop_btn)
-        self.pdf_undo_btn = QPushButton("↩ Deshacer Última Importación")
+        self.pdf_undo_btn = QPushButton(T("↩ Deshacer Última Importación"))
         self.pdf_undo_btn.setToolTip("Deshace la última importación eliminando las entradas añadidas")
         self.pdf_undo_btn.setVisible(False)
         self.pdf_undo_btn.clicked.connect(self._pdf_undo_import)
@@ -913,10 +915,10 @@ class DataImportWidget(QWidget):
         self.pdf_log = QTextEdit()
         self.pdf_log.setReadOnly(True)
         self.pdf_log.setToolTip("Registro de eventos durante la importación de libros escaneados")
-        self.pdf_log.setPlaceholderText("Registro de importación...")
+        self.pdf_log.setPlaceholderText(T("Registro de importación..."))
         pdf_layout.addWidget(self.pdf_log, 1)
 
-        tabs.addTab(pdf_tab, "Libros Escaneados")
+        tabs.addTab(pdf_tab, T("Libros Escaneados"))
 
         # === Tab 7: LLM Q&A ===
         llm_tab = QWidget()
@@ -937,15 +939,15 @@ class DataImportWidget(QWidget):
         self.llm_status = QLabel("🔴 LM Studio no conectado")
         self.llm_status.setStyleSheet("padding: 4px 8px;")
         self.llm_status.setToolTip("Estado de conexión con LM Studio")
-        self.llm_refresh_btn = QPushButton("Actualizar")
+        self.llm_refresh_btn = QPushButton(T("Actualizar"))
         self.llm_refresh_btn.setToolTip("Actualiza el estado de conexión con LM Studio")
         self.llm_refresh_btn.clicked.connect(self._llm_refresh)
-        self.llm_settings_btn = QPushButton("⚙ Configuración")
+        self.llm_settings_btn = QPushButton(T("⚙ Configuración"))
         self.llm_settings_btn.setToolTip("Abre la configuración del modelo LLM y RAG")
         self.llm_settings_btn.clicked.connect(self._llm_open_settings)
         llm_top.addWidget(self.llm_status)
         llm_top.addStretch()
-        self.llm_sanitize_btn = QPushButton("🧹 Sanitizar base de conocimiento")
+        self.llm_sanitize_btn = QPushButton(T("🧹 Sanitizar base de conocimiento"))
         self.llm_sanitize_btn.setToolTip("Limpia y normaliza las entradas de la base de conocimiento usando el LLM")
         self.llm_sanitize_btn.setStyleSheet("color: #9C27B0;")
         self.llm_sanitize_btn.clicked.connect(self._llm_sanitize)
@@ -963,9 +965,9 @@ class DataImportWidget(QWidget):
         q_layout = QHBoxLayout()
         self.llm_question = QLineEdit()
         self.llm_question.setToolTip("Escribe tu pregunta sobre química de lacas aquí")
-        self.llm_question.setPlaceholderText("Haz una pregunta sobre química de lacas...")
+        self.llm_question.setPlaceholderText(T("Haz una pregunta sobre química de lacas..."))
         self.llm_question.returnPressed.connect(self._llm_ask)
-        self.llm_ask_btn = QPushButton("Preguntar")
+        self.llm_ask_btn = QPushButton(T("Preguntar"))
         self.llm_ask_btn.setToolTip("Envía la pregunta al LLM para obtener respuesta basada en la base de conocimiento")
         self.llm_ask_btn.clicked.connect(self._llm_ask)
         q_layout.addWidget(self.llm_question)
@@ -975,18 +977,18 @@ class DataImportWidget(QWidget):
         self.llm_answer = QTextEdit()
         self.llm_answer.setReadOnly(True)
         self.llm_answer.setToolTip("Respuesta generada por el LLM basada en la base de conocimiento")
-        self.llm_answer.setPlaceholderText("La respuesta aparecerá aquí...")
+        self.llm_answer.setPlaceholderText(T("La respuesta aparecerá aquí..."))
         llm_layout.addWidget(self.llm_answer)
 
         # Correction / feedback row
         correction_row = QHBoxLayout()
-        self.llm_correct_btn = QPushButton("✏ Corregir esta respuesta")
+        self.llm_correct_btn = QPushButton(T("✏ Corregir esta respuesta"))
         self.llm_correct_btn.setToolTip("Permite corregir la respuesta actual del LLM")
         self.llm_correct_btn.clicked.connect(self._llm_start_correct)
         self.llm_correct_btn.setEnabled(False)
         self.llm_correct_btn.setStyleSheet("color: #FF9800;")
         correction_row.addWidget(self.llm_correct_btn)
-        self.llm_inspect_btn = QPushButton("🔍 Inspeccionar contexto RAG")
+        self.llm_inspect_btn = QPushButton(T("🔍 Inspeccionar contexto RAG"))
         self.llm_inspect_btn.setToolTip("Mostrar qué entradas de conocimiento se usaron para esta respuesta")
         self.llm_inspect_btn.clicked.connect(self._llm_open_inspector)
         self.llm_inspect_btn.setVisible(False)
@@ -1003,16 +1005,16 @@ class DataImportWidget(QWidget):
         correct_edit_layout.setContentsMargins(8, 0, 0, 0)
         self.llm_correct_edit = QTextEdit()
         self.llm_correct_edit.setToolTip("Edita la respuesta correcta aquí")
-        self.llm_correct_edit.setPlaceholderText("Edita la respuesta correcta aquí...")
+        self.llm_correct_edit.setPlaceholderText(T("Edita la respuesta correcta aquí..."))
         self.llm_correct_edit.setMaximumHeight(120)
-        correct_edit_layout.addWidget(QLabel("Respuesta corregida:"))
+        correct_edit_layout.addWidget(QLabel(T("Respuesta corregida:")))
         correct_edit_layout.addWidget(self.llm_correct_edit)
         corr_btn_row = QHBoxLayout()
-        self.llm_correct_save_btn = QPushButton("✓ Guardar corrección")
+        self.llm_correct_save_btn = QPushButton(T("✓ Guardar corrección"))
         self.llm_correct_save_btn.setToolTip("Guarda la corrección de la respuesta")
         self.llm_correct_save_btn.setStyleSheet("background: #4CAF50; color: white;")
         self.llm_correct_save_btn.clicked.connect(self._llm_save_correction)
-        self.llm_correct_cancel_btn = QPushButton("Cancelar")
+        self.llm_correct_cancel_btn = QPushButton(T("Cancelar"))
         self.llm_correct_cancel_btn.setToolTip("Cancela la edición de la corrección")
         self.llm_correct_cancel_btn.clicked.connect(self._llm_cancel_correct)
         corr_btn_row.addWidget(self.llm_correct_save_btn)
@@ -1023,7 +1025,7 @@ class DataImportWidget(QWidget):
         llm_layout.addWidget(self.llm_correct_widget)
 
         # RAG details
-        self.llm_rag_details_btn = QPushButton("▶ Mostrar detalles del pipeline RAG")
+        self.llm_rag_details_btn = QPushButton(T("▶ Mostrar detalles del pipeline RAG"))
         self.llm_rag_details_btn.setToolTip("Muestra u oculta los detalles del pipeline RAG")
         self.llm_rag_details_btn.setStyleSheet("text-align: left; border: none; color: #999; font-size: 11px;")
         self.llm_rag_details_btn.setCheckable(True)
@@ -1038,7 +1040,7 @@ class DataImportWidget(QWidget):
         self.llm_rag_chunks.setReadOnly(True)
         self.llm_rag_chunks.setMaximumHeight(80)
         self.llm_rag_chunks.setToolTip("Fragmentos de conocimiento recuperados para la respuesta")
-        self.llm_rag_chunks.setPlaceholderText("Fragmentos de conocimiento recuperados...")
+        self.llm_rag_chunks.setPlaceholderText(T("Fragmentos de conocimiento recuperados..."))
         self.llm_rag_chunks.setStyleSheet("font-size: 10px; color: #aaa;")
         llm_rag_layout.addWidget(self.llm_rag_chunks)
 
@@ -1046,7 +1048,7 @@ class DataImportWidget(QWidget):
         self.llm_rag_prompt.setReadOnly(True)
         self.llm_rag_prompt.setMaximumHeight(100)
         self.llm_rag_prompt.setToolTip("Prompt completo enviado al modelo LLM")
-        self.llm_rag_prompt.setPlaceholderText("Prompt completo enviado al modelo...")
+        self.llm_rag_prompt.setPlaceholderText(T("Prompt completo enviado al modelo..."))
         self.llm_rag_prompt.setStyleSheet("font-size: 10px; color: #aaa;")
         llm_rag_layout.addWidget(self.llm_rag_prompt)
 
@@ -1054,7 +1056,7 @@ class DataImportWidget(QWidget):
         llm_layout.addWidget(self.llm_rag_widget)
 
         # Knowledge browser
-        llm_layout.addWidget(QLabel("Fragmentos de conocimiento relevantes:"))
+        llm_layout.addWidget(QLabel(T("Fragmentos de conocimiento relevantes:")))
         self.llm_snippets = QListWidget()
         self.llm_snippets.setMaximumHeight(120)
         self.llm_snippets.setToolTip("Fragmentos de conocimiento relevantes para la pregunta actual")
@@ -1081,11 +1083,11 @@ class DataImportWidget(QWidget):
             "US2636857A\nUS2648724A"
         )
         self.patent_input.setMaximumHeight(200)
-        patent_layout.addWidget(QLabel("Números de patente (uno por línea):"))
+        patent_layout.addWidget(QLabel(T("Números de patente (uno por línea):")))
         patent_layout.addWidget(self.patent_input)
 
         patent_btn_row = QHBoxLayout()
-        self.patent_import_btn = QPushButton("Importar Seleccionado")
+        self.patent_import_btn = QPushButton(T("Importar Seleccionado"))
         self.patent_import_btn.setToolTip("Importa las patentes desde Google Patents a la base de conocimiento")
         self.patent_import_btn.setStyleSheet("background: #4CAF50; color: white; padding: 6px;")
         self.patent_import_btn.clicked.connect(self._patent_import)
@@ -1103,12 +1105,12 @@ class DataImportWidget(QWidget):
         self.patent_log.setReadOnly(True)
         self.patent_log.setToolTip("Registro de eventos durante la importación de patentes")
         self.patent_log.setMaximumHeight(200)
-        patent_layout.addWidget(QLabel("Registro:"))
+        patent_layout.addWidget(QLabel(T("Registro:")))
         patent_layout.addWidget(self.patent_log)
 
-        tabs.addTab(patent_tab, "Patentes")
+        tabs.addTab(patent_tab, T("Patentes"))
 
-        tabs.addTab(llm_tab, "LLM P&R")
+        tabs.addTab(llm_tab, T("LLM P&R"))
 
         layout.addWidget(tabs)
 
@@ -1213,12 +1215,12 @@ class DataImportWidget(QWidget):
 
     def _export_scraped(self):
         if not self._last_posts:
-            QMessageBox.warning(self, "Exportar", "No hay datos para exportar")
+            QMessageBox.warning(self, T("Exportar"), T("No hay datos para exportar"))
             return
 
         path, _ = QFileDialog.getSaveFileName(
-            self, "Exportar Conocimiento", "data/lathe_trolls_knowledge.yaml",
-            "YAML (*.yaml);;JSON (*.json)"
+            self, T("Exportar Conocimiento"), "data/lathe_trolls_knowledge.yaml",
+            T("YAML (*.yaml);;JSON (*.json)")
         )
         if path:
             self.scraper.export_to_yaml(self._last_posts, path)
@@ -1397,8 +1399,8 @@ class DataImportWidget(QWidget):
 
     def _import_file(self):
         path, _ = QFileDialog.getOpenFileName(
-            self, "Importar Archivo de Ingredientes", "",
-            "Data Files (*.yaml *.json);;All Files (*)"
+            self, T("Importar Archivo de Ingredientes"), "",
+            T("Data Files (*.yaml *.json);;All Files (*)")
         )
         if not path:
             return
@@ -1442,7 +1444,7 @@ class DataImportWidget(QWidget):
 
     def _import_csv(self):
         path, _ = QFileDialog.getOpenFileName(
-            self, "Importar CSV", "", "CSV Files (*.csv);;All Files (*)"
+            self, T("Importar CSV"), "", T("CSV Files (*.csv);;All Files (*)")
         )
         if not path:
             return
@@ -1516,14 +1518,14 @@ class DataImportWidget(QWidget):
     def _load_playwright_markdown(self):
         from PySide6.QtWidgets import QMessageBox
         path = QFileDialog.getExistingDirectory(
-            self, "Seleccionar directorio de lathetrolls_knowledge_base", "",
+            self, T("Seleccionar directorio de lathetrolls_knowledge_base"), "",
         )
         if not path:
             return
 
         msg = QMessageBox(self)
-        msg.setWindowTitle("Modo de Importación")
-        msg.setText("Reemplazar limpia la BC antes de importar.\nAñadir agrega a los datos existentes.")
+        msg.setWindowTitle(T("Modo de Importación"))
+        msg.setText(T("Reemplazar limpia la BC antes de importar.\nAñadir agrega a los datos existentes."))
         replace_btn = msg.addButton("Reemplazar", QMessageBox.ActionRole)
         append_btn = msg.addButton("Añadir", QMessageBox.ActionRole)
         cancel_btn = msg.addButton("Cancelar", QMessageBox.RejectRole)
@@ -1544,15 +1546,15 @@ class DataImportWidget(QWidget):
             return
 
         msg = QMessageBox(self)
-        msg.setWindowTitle("Importar Base de Conocimiento de Lathe Trolls")
+        msg.setWindowTitle(T("Importar Base de Conocimiento de Lathe Trolls"))
         msg.setText(
-            f"Importar desde:\n{path}\n\n"
-            f"Reemplazar limpia la BC actual antes de importar.\n"
-            f"Añadir agrega a la BC existente (sin pérdida de datos)."
+            f"{T('Importar desde:')}\n{path}\n\n"
+            f"{T('Reemplazar limpia la BC actual antes de importar.')}\n"
+            f"{T('Añadir agrega a la BC existente (sin pérdida de datos).')}"
         )
-        replace_btn = msg.addButton("Reemplazar", QMessageBox.ActionRole)
-        append_btn = msg.addButton("Añadir", QMessageBox.ActionRole)
-        cancel_btn = msg.addButton("Cancelar", QMessageBox.RejectRole)
+        replace_btn = msg.addButton(T("Reemplazar"), QMessageBox.ActionRole)
+        append_btn = msg.addButton(T("Añadir"), QMessageBox.ActionRole)
+        cancel_btn = msg.addButton(T("Cancelar"), QMessageBox.RejectRole)
         msg.setDefaultButton(cancel_btn)
         msg.exec()
 
@@ -1755,15 +1757,15 @@ class DataImportWidget(QWidget):
 
     def _export_mirror(self):
         """No-op: markdown files are the output. Button kept for layout but does nothing."""
-        QMessageBox.information(self, "Exportar",
-            "Los archivos Markdown ya están en el disco en ~/lathetrolls_knowledge_base/\n\n"
+        QMessageBox.information(self, T("Exportar"),
+            T("Los archivos Markdown ya están en el disco en ~/lathetrolls_knowledge_base/\n\n"
             "Para cargarlos en la base de conocimiento RAG, haz clic en 'Duplicar Todas las Categorías' "
-            "que ahora importa automáticamente a la BC.")
+            "que ahora importa automáticamente a la BC."))
 
     def _mirror_import_cache(self):
         """Import a folder of cached JSON files into the knowledge base."""
         folder = QFileDialog.getExistingDirectory(
-            self, "Seleccionar carpeta con archivos JSON en caché",
+            self, T("Seleccionar carpeta con archivos JSON en caché"),
             str(self.scraper.cache_dir)
         )
         if not folder:
@@ -1821,7 +1823,7 @@ class DataImportWidget(QWidget):
 
     def _wa_browse(self):
         path, _ = QFileDialog.getOpenFileName(
-            self, "Seleccionar Exportación de WhatsApp", "", "Text Files (*.txt);;All Files (*)"
+            self, T("Seleccionar Exportación de WhatsApp"), "", T("Text Files (*.txt);;All Files (*)")
         )
         if path:
             self.wa_file_path.setText(path)
@@ -2241,7 +2243,7 @@ class DataImportWidget(QWidget):
 
     def _pdf_add_pdf(self):
         files, _ = QFileDialog.getOpenFileNames(
-            self, "Seleccionar archivos PDF", "", "PDF Files (*.pdf)"
+            self, T("Seleccionar archivos PDF"), "", T("PDF Files (*.pdf)")
         )
         for f in files:
             item = QListWidgetItem(f)
@@ -2250,7 +2252,7 @@ class DataImportWidget(QWidget):
 
     def _pdf_add_folder(self):
         folder = QFileDialog.getExistingDirectory(
-            self, "Seleccionar carpeta con imágenes de páginas escaneadas"
+            self, T("Seleccionar carpeta con imágenes de páginas escaneadas")
         )
         if not folder:
             return
@@ -2265,8 +2267,8 @@ class DataImportWidget(QWidget):
 
     def _pdf_add_archive(self):
         files, _ = QFileDialog.getOpenFileNames(
-            self, "Seleccionar archivos ZIP/RAR", "",
-            "Archives (*.zip *.rar)"
+            self, T("Seleccionar archivos ZIP/RAR"), "",
+            T("Archives (*.zip *.rar)")
         )
         from src.pdf_import import SUPPORTED_ARCHIVE_EXTS
         for f in files:

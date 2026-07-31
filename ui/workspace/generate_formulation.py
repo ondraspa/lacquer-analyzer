@@ -7,6 +7,8 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 
+from core.translations import T
+
 from src.models import (
     LacquerRecipe, RecipeComponent, Ingredient, IngredientType
 )
@@ -18,49 +20,49 @@ class GenerateFormulationDialog(QDialog):
         super().__init__(parent)
         self.loader = loader
         self._generated_recipe = None
-        self.setWindowTitle("Generar Formulación desde Especificación")
+        self.setWindowTitle(T("Generar Formulación desde Especificación"))
         self.setMinimumWidth(500)
         self._init_ui()
 
     def _init_ui(self):
         layout = QVBoxLayout(self)
 
-        req_group = QGroupBox("Requisitos")
+        req_group = QGroupBox(T("Requisitos"))
         req_layout = QFormLayout()
 
         self.application = QComboBox()
         self.application.addItems(["curtain_coater", "spray", "dip", "roller"])
         self.application.setToolTip("Método de aplicación objetivo: cortina (curtain_coater) o spin (spin_coater)")
-        req_layout.addRow("Aplicación:", self.application)
+        req_layout.addRow(T("Aplicación:"), self.application)
 
         self.target_viscosity = QDoubleSpinBox()
         self.target_viscosity.setRange(100, 3000)
         self.target_viscosity.setValue(600)
         self.target_viscosity.setSuffix(" mPa·s")
         self.target_viscosity.setToolTip("Viscosidad objetivo deseada en mPa·s")
-        req_layout.addRow("Viscosidad objetivo:", self.target_viscosity)
+        req_layout.addRow(T("Viscosidad objetivo:"), self.target_viscosity)
 
         self.target_solids = QDoubleSpinBox()
         self.target_solids.setRange(10, 60)
         self.target_solids.setValue(35)
         self.target_solids.setSuffix(" %")
         self.target_solids.setToolTip("Porcentaje de sólidos objetivo en la formulación final")
-        req_layout.addRow("Sólidos objetivo:", self.target_solids)
+        req_layout.addRow(T("Sólidos objetivo:"), self.target_solids)
 
         self.cure_type = QComboBox()
         self.cure_type.addItems(["ambient_dry", "forced_air_80C", "oven_150C", "uv_cure"])
         self.cure_type.setToolTip("Tipo de curado: temperatura ambiente (ambient) u horno (oven)")
-        req_layout.addRow("Tipo de curado:", self.cure_type)
+        req_layout.addRow(T("Tipo de curado:"), self.cure_type)
 
         self.film_type = QComboBox()
         self.film_type.addItems(["clear", "white", "black", "color"])
         self.film_type.setToolTip("Tipo de película: transparente (clear) o pigmentada (pigmented)")
-        req_layout.addRow("Tipo de película:", self.film_type)
+        req_layout.addRow(T("Tipo de película:"), self.film_type)
 
         req_group.setLayout(req_layout)
         layout.addWidget(req_group)
 
-        gen_btn = QPushButton("Generar Formulación")
+        gen_btn = QPushButton(T("Generar Formulación"))
         gen_btn.clicked.connect(self._generate)
         gen_btn.setToolTip("Genera una formulación sugerida basada en las especificaciones ingresadas")
         layout.addWidget(gen_btn)
@@ -71,11 +73,11 @@ class GenerateFormulationDialog(QDialog):
         layout.addWidget(self.result_text)
 
         btn_layout = QHBoxLayout()
-        self.accept_btn = QPushButton("Usar Esta Formulación")
+        self.accept_btn = QPushButton(T("Usar Esta Formulación"))
         self.accept_btn.clicked.connect(self.accept)
         self.accept_btn.setEnabled(False)
         self.accept_btn.setToolTip("Usa la formulación generada como receta actual")
-        cancel_btn = QPushButton("Cancelar")
+        cancel_btn = QPushButton(T("Cancelar"))
         cancel_btn.clicked.connect(self.reject)
         btn_layout.addWidget(self.accept_btn)
         btn_layout.addWidget(cancel_btn)
@@ -91,7 +93,7 @@ class GenerateFormulationDialog(QDialog):
         defoamer = self.loader.get_by_type(IngredientType.DEFOAMER)
 
         if not resins:
-            QMessageBox.warning(self, "Generación", "No se encontraron resinas base")
+            QMessageBox.warning(self, T("Generación"), T("No se encontraron resinas base"))
             return
 
         if resins:
@@ -115,7 +117,7 @@ class GenerateFormulationDialog(QDialog):
 
         self._generated_recipe = LacquerRecipe(
             id="generated",
-            name=f"Formulación {self.film_type.currentText()} Generada",
+            name=f"{T('Formulación')} {self.film_type.currentText()} {T('Generada')}",
             components=components,
             target_viscosity_mpas=self.target_viscosity.value(),
             target_solids_pct=self.target_solids.value()

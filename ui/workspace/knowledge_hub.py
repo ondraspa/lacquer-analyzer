@@ -9,6 +9,8 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt, QThread
 
+from core.translations import T
+
 
 class KnowledgeHub(QWidget):
     def __init__(self):
@@ -21,7 +23,7 @@ class KnowledgeHub(QWidget):
     def _init_ui(self):
         layout = QVBoxLayout(self)
 
-        header = QLabel("🧠 Centro de Conocimiento — Base de Conocimiento RAG")
+        header = QLabel(T("🧠 Centro de Conocimiento — Base de Conocimiento RAG"))
         header.setStyleSheet("font-weight: bold; font-size: 16px; padding: 4px;")
         layout.addWidget(header)
 
@@ -31,84 +33,84 @@ class KnowledgeHub(QWidget):
         import_tab = QWidget()
         import_layout = QVBoxLayout(import_tab)
 
-        info = QLabel(
+        info = QLabel(T(
             "<b>Importación rápida</b> — añade datos a la base de conocimiento.<br>"
             "Usa el <b>Importador Completo</b> para opciones avanzadas (Lathe Trolls, Wikipedia, WhatsApp, patentes)."
-        )
+        ))
         info.setWordWrap(True)
         import_layout.addWidget(info)
 
         btn_row = QHBoxLayout()
-        self.import_mirror_btn = QPushButton("🌐 Duplicar Foro (Lathe Trolls)")
+        self.import_mirror_btn = QPushButton(T("🌐 Duplicar Foro (Lathe Trolls)"))
         self.import_mirror_btn.clicked.connect(self._import_mirror)
-        self.import_mirror_btn.setToolTip("Duplica el foro completo (lathetrolls) en la base de conocimiento local")
+        self.import_mirror_btn.setToolTip(T("Duplica el foro completo (lathetrolls) en la base de conocimiento local"))
         btn_row.addWidget(self.import_mirror_btn)
 
-        self.import_md_btn = QPushButton("📂 Importar Markdown")
+        self.import_md_btn = QPushButton(T("📂 Importar Markdown"))
         self.import_md_btn.clicked.connect(self._import_markdown)
-        self.import_md_btn.setToolTip("Importa archivos Markdown con documentación técnica")
+        self.import_md_btn.setToolTip(T("Importa archivos Markdown con documentación técnica"))
         btn_row.addWidget(self.import_md_btn)
 
-        self.import_ltkb_btn = QPushButton("📁 lathetrolls_knowledge_base")
+        self.import_ltkb_btn = QPushButton(T("📁 lathetrolls_knowledge_base"))
         self.import_ltkb_btn.clicked.connect(self._import_ltkb)
-        self.import_ltkb_btn.setToolTip("Importa la base de conocimiento de lathetrolls (formato LTKB)")
+        self.import_ltkb_btn.setToolTip(T("Importa la base de conocimiento de lathetrolls (formato LTKB)"))
         btn_row.addWidget(self.import_ltkb_btn)
 
-        self.import_pdf_btn = QPushButton("📄 Libros Escaneados")
+        self.import_pdf_btn = QPushButton(T("📄 Libros Escaneados"))
         self.import_pdf_btn.clicked.connect(self._import_pdf)
-        self.import_pdf_btn.setToolTip("Importa libros escaneados o documentos PDF")
+        self.import_pdf_btn.setToolTip(T("Importa libros escaneados o documentos PDF"))
         btn_row.addWidget(self.import_pdf_btn)
 
         import_layout.addLayout(btn_row)
 
         btn_row2 = QHBoxLayout()
-        self.full_import_btn = QPushButton("🔧 Importador Completo...")
+        self.full_import_btn = QPushButton(T("🔧 Importador Completo..."))
         self.full_import_btn.clicked.connect(self._open_full_import)
-        self.full_import_btn.setToolTip("Abre el importador completo con todas las fuentes disponibles")
+        self.full_import_btn.setToolTip(T("Abre el importador completo con todas las fuentes disponibles"))
         btn_row2.addWidget(self.full_import_btn)
 
-        self.sanitize_btn = QPushButton("🧹 Sanitizar BC")
+        self.sanitize_btn = QPushButton(T("🧹 Sanitizar BC"))
         self.sanitize_btn.clicked.connect(self._sanitize_kb)
-        self.sanitize_btn.setToolTip("Limpia y normaliza la base de conocimiento (elimina duplicados, corrige formato)")
+        self.sanitize_btn.setToolTip(T("Limpia y normaliza la base de conocimiento (elimina duplicados, corrige formato)"))
         btn_row2.addWidget(self.sanitize_btn)
 
-        self.explorer_btn = QPushButton("📊 Explorador de Datos")
+        self.explorer_btn = QPushButton(T("📊 Explorador de Datos"))
         self.explorer_btn.clicked.connect(self._open_explorer)
-        self.explorer_btn.setToolTip("Abre el explorador de datos: navega, busca y organiza toda la base de conocimiento")
+        self.explorer_btn.setToolTip(T("Abre el explorador de datos: navega, busca y organiza toda la base de conocimiento"))
         btn_row2.addWidget(self.explorer_btn)
 
         import_layout.addLayout(btn_row2)
 
         import_layout.addStretch()
-        tabs.addTab(import_tab, "Importación")
+        tabs.addTab(import_tab, T("Importación"))
 
         # Tab 2: RAG Q&A
         from ui.pipeline.base_stage import KnowledgeQAPanel
         self.qa_hub = KnowledgeQAPanel("general")
-        tabs.addTab(self.qa_hub, "P&R — Base de Conocimiento")
+        tabs.addTab(self.qa_hub, T("P&R — Base de Conocimiento"))
 
         # Tab 3: Navegador KB
         kb_tab = QWidget()
         kb_layout = QVBoxLayout(kb_tab)
 
         self.kb_search = QLineEdit()
-        self.kb_search.setPlaceholderText("Buscar en la base de conocimiento...")
+        self.kb_search.setPlaceholderText(T("Buscar en la base de conocimiento..."))
         self.kb_search.textChanged.connect(self._filter_kb_list)
-        self.kb_search.setToolTip("Busca entradas en la base de conocimiento por palabra clave")
+        self.kb_search.setToolTip(T("Busca entradas en la base de conocimiento por palabra clave"))
         kb_layout.addWidget(self.kb_search)
 
         self.kb_list = QListWidget()
         self.kb_list.itemClicked.connect(self._show_kb_preview)
-        self.kb_list.setToolTip("Lista de entradas de conocimiento encontradas")
+        self.kb_list.setToolTip(T("Lista de entradas de conocimiento encontradas"))
         kb_layout.addWidget(self.kb_list)
 
         self.kb_preview = QTextEdit()
         self.kb_preview.setReadOnly(True)
-        self.kb_preview.setPlaceholderText("Selecciona una entrada para ver su contenido...")
-        self.kb_preview.setToolTip("Vista previa del contenido de la entrada de conocimiento seleccionada")
+        self.kb_preview.setPlaceholderText(T("Selecciona una entrada para ver su contenido..."))
+        self.kb_preview.setToolTip(T("Vista previa del contenido de la entrada de conocimiento seleccionada"))
         kb_layout.addWidget(self.kb_preview)
 
-        tabs.addTab(kb_tab, "Navegador BC")
+        tabs.addTab(kb_tab, T("Navegador BC"))
 
         layout.addWidget(tabs)
 
@@ -181,10 +183,10 @@ class KnowledgeHub(QWidget):
 
     def _sanitize_kb(self):
         if not self.llm or not self.llm.is_available():
-            QMessageBox.warning(self, "Sanitizar", "LLM no conectado. Inicia LM Studio primero.")
+            QMessageBox.warning(self, T("Sanitizar"), T("LLM no conectado. Inicia LM Studio primero."))
             return
         if not self.kb or not self.kb.entries:
-            QMessageBox.warning(self, "Sanitizar", "No hay entradas para sanitizar.")
+            QMessageBox.warning(self, T("Sanitizar"), T("No hay entradas para sanitizar."))
             return
         from imports.jobs import SanitizeJob
         self.sanitize_thread = QThread(self)

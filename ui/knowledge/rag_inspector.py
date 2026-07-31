@@ -7,6 +7,8 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 
+from core.translations import T
+
 
 class RagInspectorDialog(QDialog):
     """Inspect the knowledge used for a specific Q&A session.
@@ -18,7 +20,7 @@ class RagInspectorDialog(QDialog):
     def __init__(self, parent=None, question="", answer="",
                  retrieved_chunks=None, context="", stage=""):
         super().__init__(parent)
-        self.setWindowTitle("Inspector RAG")
+        self.setWindowTitle(T("Inspector RAG"))
         self.setMinimumSize(800, 600)
         self.resize(900, 650)
 
@@ -34,27 +36,27 @@ class RagInspectorDialog(QDialog):
         # ── 1. Question & Answer ──
         qa_tab = QWidget()
         qa_layout = QVBoxLayout(qa_tab)
-        qa_layout.addWidget(QLabel("<b>Pregunta:</b>"))
+        qa_layout.addWidget(QLabel(T("<b>Pregunta:</b>")))
         self.question_area = QTextEdit()
         self.question_area.setReadOnly(True)
         self.question_area.setPlainText(question)
         self.question_area.setMaximumHeight(80)
         self.question_area.setToolTip("Pregunta que se envió al LLM")
         qa_layout.addWidget(self.question_area)
-        qa_layout.addWidget(QLabel("<b>Respuesta:</b>"))
+        qa_layout.addWidget(QLabel(T("<b>Respuesta:</b>")))
         self.answer_area = QTextEdit()
         self.answer_area.setReadOnly(True)
         self.answer_area.setPlainText(answer)
         self.answer_area.setToolTip("Respuesta generada por el LLM")
         qa_layout.addWidget(self.answer_area, 1)
-        tabs.addTab(qa_tab, "P&R")
+        tabs.addTab(qa_tab, T("P&R"))
 
         # ── 2. Retrieved Chunks ──
         chunks_tab = QWidget()
         chunks_layout = QVBoxLayout(chunks_tab)
-        chunks_layout.addWidget(QLabel(
+        chunks_layout.addWidget(QLabel(T(
             "Entradas de conocimiento recuperadas como contexto para esta pregunta:"
-        ))
+        )))
         self.chunk_list = QListWidget()
         self.chunk_list.currentItemChanged.connect(self._on_chunk_select)
         self.chunk_list.setToolTip("Fragmentos de conocimiento recuperados y usados como contexto")
@@ -64,27 +66,27 @@ class RagInspectorDialog(QDialog):
         self.chunk_preview.setMaximumHeight(200)
         self.chunk_preview.setToolTip("Vista previa del fragmento de conocimiento seleccionado")
         chunks_layout.addWidget(self.chunk_preview)
-        tabs.addTab(chunks_tab, "Fragmentos Recuperados")
+        tabs.addTab(chunks_tab, T("Fragmentos Recuperados"))
 
         # ── 3. Full Context (system prompt) ──
         context_tab = QWidget()
         context_layout = QVBoxLayout(context_tab)
-        context_layout.addWidget(QLabel(
+        context_layout.addWidget(QLabel(T(
             "El prompt del sistema + contexto enviado al LLM:"
-        ))
+        )))
         self.context_area = QTextEdit()
         self.context_area.setReadOnly(True)
         self.context_area.setPlainText(context[:10000] if context else "(sin contexto)")
         self.context_area.setToolTip("Contexto completo enviado al LLM (fragmentos + pregunta)")
         context_layout.addWidget(self.context_area, 1)
-        tabs.addTab(context_tab, "Contexto del LLM")
+        tabs.addTab(context_tab, T("Contexto del LLM"))
 
         layout.addWidget(tabs, 1)
 
         # Bottom buttons
         btn_row = QHBoxLayout()
         btn_row.addStretch()
-        close_btn = QPushButton("Cerrar")
+        close_btn = QPushButton(T("Cerrar"))
         close_btn.clicked.connect(self.accept)
         close_btn.setMinimumWidth(120)
         btn_row.addWidget(close_btn)

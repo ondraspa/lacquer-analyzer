@@ -49,10 +49,10 @@ class MainWindow(QMainWindow):
         self._init_menu()
         self._load_data()
         # Conectar cambio de idioma
-        translator.language_changed.connect(self._on_language_changed)
+        translator.language_changed.connect(self._retranslate_ui)
 
     def _init_ui(self):
-        self.setWindowTitle("Analizador de Laca — Fabricación de Discos de Laca")
+        self.setWindowTitle(T("Analizador de Laca — Fabricación de Discos de Laca"))
         self.setMinimumSize(1400, 900)
 
         central = QWidget()
@@ -61,37 +61,37 @@ class MainWindow(QMainWindow):
         layout.setContentsMargins(0, 0, 0, 0)
 
         # Toolbar
-        toolbar = QToolBar("Herramientas")
+        toolbar = QToolBar(T("Herramientas"))
         toolbar.setMovable(False)
         toolbar.setIconSize(QSize(16, 16))
 
-        self.llm_status_btn = QPushButton("LLM: verificar")
+        self.llm_status_btn = QPushButton(T("LLM: verificar"))
         self.llm_status_btn.clicked.connect(self._check_llm)
-        self.llm_status_btn.setToolTip("Verifica la conexión con el servidor LLM (LM Studio). Muestra el estado en el botón")
+        self.llm_status_btn.setToolTip(T("Verifica la conexión con el servidor LLM (LM Studio). Muestra el estado en el botón"))
         toolbar.addWidget(self.llm_status_btn)
 
-        self.kb_status_btn = QPushButton("BC: vacía")
+        self.kb_status_btn = QPushButton(T("BC: vacía"))
         self.kb_status_btn.clicked.connect(self._open_kb_browser)
-        self.kb_status_btn.setToolTip("Abre el navegador de la base de conocimiento: busca, navega y gestiona entradas")
+        self.kb_status_btn.setToolTip(T("Abre el navegador de la base de conocimiento: busca, navega y gestiona entradas"))
         toolbar.addWidget(self.kb_status_btn)
 
         toolbar.addSeparator()
 
-        expert_btn = QPushButton("📝 Notas de Experto")
-        expert_btn.setToolTip("Abre el bloc de notas de experto: temas de referencia y notas personales")
+        expert_btn = QPushButton(T("📝 Notas de Experto"))
+        expert_btn.setToolTip(T("Abre el bloc de notas de experto: temas de referencia y notas personales"))
         expert_btn.clicked.connect(self._open_expert_notes)
         toolbar.addWidget(expert_btn)
 
-        rag_btn = QPushButton("⚙ Configuración RAG")
+        rag_btn = QPushButton(T("⚙ Configuración RAG"))
         rag_btn.clicked.connect(self._open_rag_settings)
-        rag_btn.setToolTip("Configura el pipeline RAG: conexión LLM, generación, recuperación y agentes")
+        rag_btn.setToolTip(T("Configura el pipeline RAG: conexión LLM, generación, recuperación y agentes"))
         toolbar.addWidget(rag_btn)
 
         toolbar.addSeparator()
 
-        gen_btn = QPushButton("🎯 Generar Receta")
+        gen_btn = QPushButton(T("🎯 Generar Receta"))
         gen_btn.clicked.connect(self._generate_from_spec)
-        gen_btn.setToolTip("Genera una formulación automática a partir de especificaciones (viscosidad, sólidos, curado)")
+        gen_btn.setToolTip(T("Genera una formulación automática a partir de especificaciones (viscosidad, sólidos, curado)"))
         toolbar.addWidget(gen_btn)
 
         toolbar.addSeparator()
@@ -103,7 +103,7 @@ class MainWindow(QMainWindow):
         self.lang_selector.addItem("EN", "en")
         self.lang_selector.addItem("ES", "es")
         self.lang_selector.setCurrentIndex(1)  # ES por defecto
-        self.lang_selector.setToolTip("Cambia el idioma de la interfaz entre Español e Inglés")
+        self.lang_selector.setToolTip(T("Cambia el idioma de la interfaz entre Español e Inglés"))
         self.lang_selector.currentIndexChanged.connect(
             lambda i: translator.set_language(self.lang_selector.itemData(i))
         )
@@ -114,107 +114,107 @@ class MainWindow(QMainWindow):
 
         # Main area tabs
         self.main_tabs = QTabWidget()
-        self.main_tabs.setToolTip("Pestañas principales del flujo de trabajo:\n• Inicio — panel de navegación\n• Formulación — formulación de lacas\n• Galvánica — parámetros de baños\n• Prensado — parámetros de prensado\n• Control de Calidad — defectos y solución de problemas\n• Conocimiento — base de conocimiento y RAG")
+        self.main_tabs.setToolTip(T("Pestañas principales del flujo de trabajo:\n• Inicio — panel de navegación\n• Formulación — formulación de lacas\n• Galvánica — parámetros de baños\n• Prensado — parámetros de prensado\n• Control de Calidad — defectos y solución de problemas\n• Conocimiento — base de conocimiento y RAG"))
         self.main_tabs.currentChanged.connect(self._on_tab_changed)
 
         # Tab 0: Inicio (Welcome)
         self.welcome_screen = WelcomeScreen()
         self.welcome_screen.navigate_requested.connect(self._navigate_to_tab)
-        self.main_tabs.addTab(self.welcome_screen, "🏠 Inicio")
+        self.main_tabs.addTab(self.welcome_screen, T("🏠 Inicio"))
 
         # Tab 1: Formulación
         self.cutting_stage = CuttingStageWidget(self.ingredient_loader)
         self.cutting_stage.analysis_requested.connect(self._on_analysis_complete)
         self.cutting_stage.translate_requested.connect(self._on_translate_requested)
-        self.main_tabs.addTab(self.cutting_stage, "🧪 Formulación")
+        self.main_tabs.addTab(self.cutting_stage, T("🧪 Formulación"))
 
         # Tab 2: Galvánica
         self.galvanics_tab = GalvanicsWorkspace()
-        self.main_tabs.addTab(self.galvanics_tab, "⚡ Galvánica")
+        self.main_tabs.addTab(self.galvanics_tab, T("⚡ Galvánica"))
 
         # Tab 3: Prensado
         self.pressing_tab = PressingWorkspace()
-        self.main_tabs.addTab(self.pressing_tab, "🔄 Prensado")
+        self.main_tabs.addTab(self.pressing_tab, T("🔄 Prensado"))
 
         # Tab 4: Control de Calidad
         self.qc_stage = PipelineStageWidget("qc")
-        self.main_tabs.addTab(self.qc_stage, "🔍 Control de Calidad")
+        self.main_tabs.addTab(self.qc_stage, T("🔍 Control de Calidad"))
 
         # Tab 5: Conocimiento
         self.knowledge_hub = KnowledgeHub()
-        self.main_tabs.addTab(self.knowledge_hub, "🧠 Conocimiento")
+        self.main_tabs.addTab(self.knowledge_hub, T("🧠 Conocimiento"))
 
         layout.addWidget(self.main_tabs, 1)
 
-        self.statusBar().showMessage("Listo")
+        self.statusBar().showMessage(T("Listo"))
 
     def _init_menu(self):
         menubar = self.menuBar()
 
-        file_menu = menubar.addMenu("Archivo")
-        import_action = QAction("Importar Receta (JSON/YAML)", self)
-        import_action.setToolTip("Importa una receta desde un archivo YAML o JSON")
+        file_menu = menubar.addMenu(T("Archivo"))
+        import_action = QAction(T("Importar Receta (JSON/YAML)"), self)
+        import_action.setToolTip(T("Importa una receta desde un archivo YAML o JSON"))
         import_action.triggered.connect(self._import_recipe)
         file_menu.addAction(import_action)
 
-        export_action = QAction("Exportar Receta", self)
-        export_action.setToolTip("Exporta la receta actual a un archivo YAML")
+        export_action = QAction(T("Exportar Receta"), self)
+        export_action.setToolTip(T("Exporta la receta actual a un archivo YAML"))
         export_action.triggered.connect(self._export_recipe)
         file_menu.addAction(export_action)
 
         file_menu.addSeparator()
-        exit_action = QAction("Salir", self)
-        exit_action.setToolTip("Cierra la aplicación")
+        exit_action = QAction(T("Salir"), self)
+        exit_action.setToolTip(T("Cierra la aplicación"))
         exit_action.triggered.connect(self.close)
         file_menu.addAction(exit_action)
 
-        tools_menu = menubar.addMenu("Herramientas")
-        data_action = QAction("Importar Datos...", self)
-        data_action.setToolTip("Abre el importador de datos: foros, PubChem, Wikipedia, PDFs, etc.")
+        tools_menu = menubar.addMenu(T("Herramientas"))
+        data_action = QAction(T("Importar Datos..."), self)
+        data_action.setToolTip(T("Abre el importador de datos: foros, PubChem, Wikipedia, PDFs, etc."))
         data_action.triggered.connect(self._open_data_import)
         tools_menu.addAction(data_action)
 
-        expert_action = QAction("Notas de Experto...", self)
-        expert_action.setToolTip("Abre el bloc de notas de experto con temas de referencia")
+        expert_action = QAction(T("Notas de Experto..."), self)
+        expert_action.setToolTip(T("Abre el bloc de notas de experto con temas de referencia"))
         expert_action.triggered.connect(self._open_expert_notes)
         tools_menu.addAction(expert_action)
 
         tools_menu.addSeparator()
 
-        ing_action = QAction("Editor de Ingredientes...", self)
-        ing_action.setToolTip("Abre el editor para añadir o modificar ingredientes en la base de datos")
+        ing_action = QAction(T("Editor de Ingredientes..."), self)
+        ing_action.setToolTip(T("Abre el editor para añadir o modificar ingredientes en la base de datos"))
         ing_action.triggered.connect(self._open_ingredient_editor)
         tools_menu.addAction(ing_action)
 
-        plating_action = QAction("Editor de Reglas de Galvánica...", self)
-        plating_action.setToolTip("Edita las reglas de formulación para baños galvánicos (plata, níquel)")
+        plating_action = QAction(T("Editor de Reglas de Galvánica..."), self)
+        plating_action.setToolTip(T("Edita las reglas de formulación para baños galvánicos (plata, níquel)"))
         plating_action.triggered.connect(self._open_plating_rules)
         tools_menu.addAction(plating_action)
 
-        defect_action = QAction("Editor de Defectos...", self)
-        defect_action.setToolTip("Gestiona la base de datos de defectos: añade, edita o elimina entradas")
+        defect_action = QAction(T("Editor de Defectos..."), self)
+        defect_action.setToolTip(T("Gestiona la base de datos de defectos: añade, edita o elimina entradas"))
         defect_action.triggered.connect(self._open_defect_editor)
         tools_menu.addAction(defect_action)
 
         tools_menu.addSeparator()
 
-        gen_action = QAction("Generar Formulación desde Especificación...", self)
-        gen_action.setToolTip("Genera una receta automática a partir de especificaciones técnicas")
+        gen_action = QAction(T("Generar Formulación desde Especificación..."), self)
+        gen_action.setToolTip(T("Genera una receta automática a partir de especificaciones técnicas"))
         gen_action.triggered.connect(self._generate_from_spec)
         tools_menu.addAction(gen_action)
 
-        settings_action = QAction("Configuración RAG...", self)
-        settings_action.setToolTip("Configura el pipeline RAG, los agentes LLM y los parámetros de búsqueda")
+        settings_action = QAction(T("Configuración RAG..."), self)
+        settings_action.setToolTip(T("Configura el pipeline RAG, los agentes LLM y los parámetros de búsqueda"))
         settings_action.triggered.connect(self._open_rag_settings)
         tools_menu.addAction(settings_action)
 
-        help_menu = menubar.addMenu("Ayuda")
-        guide_action = QAction("📖 Guía de uso", self)
-        guide_action.setToolTip("Abre una guía completa sobre cómo usar cada sección de la aplicación")
+        help_menu = menubar.addMenu(T("Ayuda"))
+        guide_action = QAction(T("📖 Guía de uso"), self)
+        guide_action.setToolTip(T("Abre una guía completa sobre cómo usar cada sección de la aplicación"))
         guide_action.triggered.connect(self._show_usage_guide)
         help_menu.addAction(guide_action)
-        about_action = QAction("Acerca de", self)
-        about_action.setToolTip("Muestra información sobre la aplicación y la versión")
+        about_action = QAction(T("Acerca de"), self)
+        about_action.setToolTip(T("Muestra información sobre la aplicación y la versión"))
         about_action.triggered.connect(self._show_about)
         help_menu.addAction(about_action)
 
@@ -226,14 +226,8 @@ class MainWindow(QMainWindow):
         self._check_llm()
         self._retranslate_ui()
 
-    def _on_language_changed(self, lang: str):
-        self._retranslate_ui()
-
     def _retranslate_ui(self):
-        self.setWindowTitle(T("app_title"))
-        self.main_tabs.setTabText(0, "🧪 " + T("components_tab"))
-        self.main_tabs.setTabText(1, "⚡ " + T("plating_recipes"))
-        self.statusBar().showMessage(T("loading") if False else "Listo" if translator.current_language == "es" else "Ready")
+        pass
 
     def _update_stage_settings(self):
         for tab_name in ("cutting_stage", "galvanics_tab", "pressing_tab", "qc_stage", "knowledge_hub"):
@@ -278,7 +272,7 @@ class MainWindow(QMainWindow):
             self._update_kb_status()
             self._update_stage_knowledge()
             n = len(self.kb.entries) if self.kb else 0
-            self.statusBar().showMessage(f"Base de conocimiento actualizada ({n} entradas totales)")
+            self.statusBar().showMessage(T(f"Base de conocimiento actualizada ({n} entradas totales)"))
             self._data_import_dialog = None
 
     def _open_expert_notes(self):
@@ -292,7 +286,7 @@ class MainWindow(QMainWindow):
             self.ingredient_loader.load_all()
             self.cutting_stage.ingredient_browser.refresh()
             self.cutting_stage.recipe_editor.refresh_selector()
-            self.statusBar().showMessage("Base de datos de ingredientes actualizada")
+            self.statusBar().showMessage(T("Base de datos de ingredientes actualizada"))
 
     def _open_plating_rules(self):
         from ui.workspace.plating_rules_editor import PlatingRulesEditorDialog
@@ -311,7 +305,7 @@ class MainWindow(QMainWindow):
             recipe = dlg.get_recipe()
             self.cutting_stage.recipe_editor.set_recipe(recipe)
             self.main_tabs.setCurrentIndex(1)
-            self.statusBar().showMessage("Formulación generada cargada en etapa de Formulación")
+            self.statusBar().showMessage(T("Formulación generada cargada en etapa de Formulación"))
 
     def _check_llm(self):
         if self.llm.is_available():
@@ -323,7 +317,7 @@ class MainWindow(QMainWindow):
             self.llm_status_btn.setStyleSheet(
                 "background: #4CAF50; color: white; padding: 4px 8px; border-radius: 4px;")
         else:
-            self.llm_status_btn.setText("LLM desconectado")
+            self.llm_status_btn.setText(T("LLM desconectado"))
             self.llm_status_btn.setStyleSheet(
                 "background: #f44336; color: white; padding: 4px 8px; border-radius: 4px;")
         self._update_kb_status()
@@ -332,9 +326,9 @@ class MainWindow(QMainWindow):
     def _update_kb_status(self):
         n = self.kb.total_chunks if self.kb else 0
         corr = len(self.llm.corrections.corrections) if self.llm and hasattr(self.llm, 'corrections') else 0
-        label = f"BC: {n} fragmentos"
+        label = T(f"BC: {n} fragmentos")
         if corr:
-            label += f" (+{corr} correcciones)"
+            label += T(f" (+{corr} correcciones)")
         self.kb_status_btn.setText(label)
         self.kb_status_btn.setStyleSheet("color: #ccc; padding: 4px 8px;")
 
@@ -354,8 +348,8 @@ class MainWindow(QMainWindow):
             self._update_kb_status()
         except Exception as e:
             import traceback
-            QMessageBox.critical(self, "Error del Explorador de Datos",
-                                 f"Error al abrir el Explorador de Datos:\n{e}\n\n{traceback.format_exc()}")
+            QMessageBox.critical(self, T("Error del Explorador de Datos"),
+                                 T(f"Error al abrir el Explorador de Datos:\n{e}\n\n{traceback.format_exc()}"))
             traceback.print_exc()
 
     def _open_rag_settings(self):
@@ -375,17 +369,17 @@ class MainWindow(QMainWindow):
             self.kb.cache_dir.mkdir(parents=True, exist_ok=True)
             self._update_stage_settings()
             self.statusBar().showMessage(
-                f"RAG: modelo={self.rag_settings.model}, "
+                T(f"RAG: modelo={self.rag_settings.model}, "
                 f"top_k={self.rag_settings.top_k}, "
                 f"temp={self.rag_settings.temperature}, "
-                f"chunk={self.rag_settings.chunk_size}"
+                f"chunk={self.rag_settings.chunk_size}")
             )
 
     def _on_analysis_complete(self, result):
-        self.statusBar().showMessage("Análisis completo")
+        self.statusBar().showMessage(T("Análisis completo"))
 
     def _on_translate_requested(self, text: str, target_lang: str):
-        self.statusBar().showMessage("Traduciendo...")
+        self.statusBar().showMessage(T("Traduciendo..."))
 
         class Worker(QObject):
             finished = Signal(str)
@@ -405,14 +399,14 @@ class MainWindow(QMainWindow):
         worker.moveToThread(thread)
         thread.started.connect(worker.run)
         worker.finished.connect(lambda res: self._show_translation(res, thread))
-        worker.finished.connect(lambda: self.statusBar().showMessage("Traducción completa"))
+        worker.finished.connect(lambda: self.statusBar().showMessage(T("Traducción completa")))
         worker.finished.connect(worker.deleteLater)
         thread.finished.connect(thread.deleteLater)
         thread.start()
 
     def _show_translation(self, translated: str, thread: QThread):
         dialog = QMessageBox(self)
-        dialog.setWindowTitle("Traducción")
+        dialog.setWindowTitle(T("Traducción"))
         dialog.setText(translated)
         dialog.exec()
         thread.quit()
@@ -421,7 +415,7 @@ class MainWindow(QMainWindow):
     def _import_recipe(self):
         from PySide6.QtWidgets import QFileDialog
         path, _ = QFileDialog.getOpenFileName(
-            self, "Importar Receta", "", "Formulaciones (*.yaml *.json)"
+            self, T("Importar Receta"), "", T("Formulaciones (*.yaml *.json)")
         )
         if path:
             self.cutting_stage.recipe_editor.import_recipe(path)
@@ -430,14 +424,14 @@ class MainWindow(QMainWindow):
     def _export_recipe(self):
         from PySide6.QtWidgets import QFileDialog
         path, _ = QFileDialog.getSaveFileName(
-            self, "Exportar Receta", "recipe.yaml", "Formulaciones (*.yaml)"
+            self, T("Exportar Receta"), "recipe.yaml", T("Formulaciones (*.yaml)")
         )
         if path:
             self.cutting_stage.recipe_editor.export_recipe(path)
 
     def _show_usage_guide(self):
         guide = QMessageBox(self)
-        guide.setWindowTitle("📖 Guía de Uso — Lacquer Analyzer")
+        guide.setWindowTitle(T("📖 Guía de Uso — Lacquer Analyzer"))
         guide.setTextFormat(Qt.RichText)
         guide.setText(
             "<h2>🧪 Lacquer Analyzer — Guía de Uso</h2>"
@@ -508,12 +502,12 @@ class MainWindow(QMainWindow):
 
     def _show_about(self):
         QMessageBox.about(
-            self, "Acerca de",
-            "Analizador Químico de Laca v0.3\n"
+            self, T("Acerca de"),
+            T("Analizador Químico de Laca v0.3\n"
             "Áreas de trabajo:\n"
             "🧪 Formulación → ⚡ Galvánica → 🔄 Prensado → 🔍 Control de Calidad\n"
             "🧠 Base de Conocimiento RAG integrada\n"
-            "Análisis de formulación: química de NC, sistemas de solventes, pigmentos"
+            "Análisis de formulación: química de NC, sistemas de solventes, pigmentos")
         )
 
     def closeEvent(self, event):

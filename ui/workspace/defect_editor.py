@@ -12,6 +12,8 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 
+from core.translations import T
+
 from src.troubleshooting import (
     DEFECT_DATABASE, Defect, get_defects_by_stage,
 )
@@ -40,7 +42,7 @@ class ListEditWidget(QWidget):
         self.remove_btn = QPushButton("-")
         self.remove_btn.setMaximumWidth(30)
         self.remove_btn.clicked.connect(self._remove)
-        self.edit_btn = QPushButton("Editar")
+        self.edit_btn = QPushButton(T("Editar"))
         self.edit_btn.clicked.connect(self._edit)
         btn_row.addWidget(self.add_btn)
         btn_row.addWidget(self.remove_btn)
@@ -54,7 +56,7 @@ class ListEditWidget(QWidget):
 
     def _add(self):
         from PySide6.QtWidgets import QInputDialog
-        text, ok = QInputDialog.getText(self, "Añadir", "Ingrese texto:")
+        text, ok = QInputDialog.getText(self, T("Añadir"), T("Ingrese texto:"))
         if ok and text.strip():
             self.list_widget.addItem(QListWidgetItem(text.strip()))
 
@@ -67,7 +69,7 @@ class ListEditWidget(QWidget):
         if not item:
             return
         from PySide6.QtWidgets import QInputDialog
-        text, ok = QInputDialog.getText(self, "Editar", "Valor:", text=item.text())
+        text, ok = QInputDialog.getText(self, T("Editar"), T("Valor:"), text=item.text())
         if ok and text.strip():
             item.setText(text.strip())
 
@@ -80,7 +82,7 @@ class DefectEditorDialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Editor de Base de Datos de Defectos")
+        self.setWindowTitle(T("Editor de Base de Datos de Defectos"))
         self.setMinimumSize(800, 600)
         self._current_defect: Optional[Defect] = None
         self._init_ui()
@@ -96,10 +98,10 @@ class DefectEditorDialog(QDialog):
         left_layout.setContentsMargins(0, 0, 0, 0)
 
         self.stage_filter = QComboBox()
-        self.stage_filter.addItems(["Todas"] + STAGES)
+        self.stage_filter.addItems([T("Todas")] + STAGES)
         self.stage_filter.currentTextChanged.connect(self._populate_list)
         self.stage_filter.setToolTip("Filtra defectos por etapa del proceso")
-        left_layout.addWidget(QLabel("Filtrar por etapa:"))
+        left_layout.addWidget(QLabel(T("Filtrar por etapa:")))
         left_layout.addWidget(self.stage_filter)
 
         self.defect_list = QListWidget()
@@ -108,10 +110,10 @@ class DefectEditorDialog(QDialog):
         left_layout.addWidget(self.defect_list, 1)
 
         list_btn_row = QHBoxLayout()
-        add_new_btn = QPushButton("Añadir Nuevo")
+        add_new_btn = QPushButton(T("Añadir Nuevo"))
         add_new_btn.clicked.connect(self._add_new)
         add_new_btn.setToolTip("Añade un nuevo defecto a la base de datos")
-        delete_btn = QPushButton("Eliminar")
+        delete_btn = QPushButton(T("Eliminar"))
         delete_btn.setStyleSheet("color: red;")
         delete_btn.clicked.connect(self._delete)
         delete_btn.setToolTip("Elimina el defecto seleccionado de la base de datos")
@@ -128,57 +130,57 @@ class DefectEditorDialog(QDialog):
         form = QFormLayout()
 
         self.name_input = QLineEdit()
-        self.name_input.setPlaceholderText("Nombre del defecto...")
+        self.name_input.setPlaceholderText(T("Nombre del defecto..."))
         self.name_input.setToolTip("Nombre del defecto")
-        form.addRow("Nombre:", self.name_input)
+        form.addRow(T("Nombre:"), self.name_input)
 
         self.stage_combo = QComboBox()
         self.stage_combo.addItems(STAGES)
         self.stage_combo.setToolTip("Etapa del proceso donde ocurre este defecto")
-        form.addRow("Etapa:", self.stage_combo)
+        form.addRow(T("Etapa:"), self.stage_combo)
 
         self.severity_combo = QComboBox()
         self.severity_combo.addItems(SEVERITIES)
         self.severity_combo.setToolTip("Severidad del defecto: baja, media o alta")
-        form.addRow("Gravedad:", self.severity_combo)
+        form.addRow(T("Gravedad:"), self.severity_combo)
 
         self.desc_input = QTextEdit()
         self.desc_input.setMaximumHeight(60)
-        self.desc_input.setPlaceholderText("Descripción...")
+        self.desc_input.setPlaceholderText(T("Descripción..."))
         self.desc_input.setToolTip("Descripción general del defecto")
-        form.addRow("Descripción:", self.desc_input)
+        form.addRow(T("Descripción:"), self.desc_input)
 
         right_layout.addLayout(form)
 
-        sym_group = QGroupBox("Síntomas")
+        sym_group = QGroupBox(T("Síntomas"))
         sym_layout = QVBoxLayout(sym_group)
         self.symptoms_editor = ListEditWidget()
         self.symptoms_editor.setToolTip("Edita la lista de items. Usa + para añadir, lápiz para editar, - para eliminar")
         sym_layout.addWidget(self.symptoms_editor)
         right_layout.addWidget(sym_group)
 
-        cause_group = QGroupBox("Causas")
+        cause_group = QGroupBox(T("Causas"))
         cause_layout = QVBoxLayout(cause_group)
         self.causes_editor = ListEditWidget()
         self.causes_editor.setToolTip("Edita la lista de items. Usa + para añadir, lápiz para editar, - para eliminar")
         cause_layout.addWidget(self.causes_editor)
         right_layout.addWidget(cause_group)
 
-        sol_group = QGroupBox("Soluciones")
+        sol_group = QGroupBox(T("Soluciones"))
         sol_layout = QVBoxLayout(sol_group)
         self.solutions_editor = ListEditWidget()
         self.solutions_editor.setToolTip("Edita la lista de items. Usa + para añadir, lápiz para editar, - para eliminar")
         sol_layout.addWidget(self.solutions_editor)
         right_layout.addWidget(sol_group)
 
-        ref_group = QGroupBox("Referencias del Foro")
+        ref_group = QGroupBox(T("Referencias del Foro"))
         ref_layout = QVBoxLayout(ref_group)
-        self.refs_editor = ListEditWidget(placeholder="ej. viewtopic.php?t=8634")
+        self.refs_editor = ListEditWidget(placeholder=T("ej. viewtopic.php?t=8634"))
         self.refs_editor.setToolTip("Edita la lista de items. Usa + para añadir, lápiz para editar, - para eliminar")
         ref_layout.addWidget(self.refs_editor)
         right_layout.addWidget(ref_group)
 
-        save_btn = QPushButton("Guardar Cambios")
+        save_btn = QPushButton(T("Guardar Cambios"))
         save_btn.clicked.connect(self._save_current)
         save_btn.setStyleSheet("background: #4CAF50; color: white; font-weight: bold;")
         save_btn.setToolTip("Guarda todos los cambios realizados en el defecto")
@@ -243,7 +245,7 @@ class DefectEditorDialog(QDialog):
 
         new_defect = Defect(
             id=new_id,
-            name="Nuevo Defecto",
+            name=T("Nuevo Defecto"),
             stage="cutting",
             description="",
             symptoms=[],
@@ -264,8 +266,8 @@ class DefectEditorDialog(QDialog):
         if not self._current_defect:
             return
         reply = QMessageBox.question(
-            self, "Eliminar Defecto",
-            f"¿Eliminar '{self._current_defect.name}'?",
+            self, T("Eliminar Defecto"),
+            f"{T('¿Eliminar')} '{self._current_defect.name}'?",
             QMessageBox.Yes | QMessageBox.No
         )
         if reply == QMessageBox.Yes:
@@ -277,11 +279,11 @@ class DefectEditorDialog(QDialog):
 
     def _save_current(self):
         if not self._current_defect:
-            QMessageBox.warning(self, "Guardar", "No hay defecto seleccionado")
+            QMessageBox.warning(self, T("Guardar"), T("No hay defecto seleccionado"))
             return
 
         d = self._current_defect
-        d.name = self.name_input.text().strip() or "Sin Nombre"
+        d.name = self.name_input.text().strip() or T("Sin Nombre")
         d.stage = self.stage_combo.currentText()
         d.severity = self.severity_combo.currentText()
         d.description = self.desc_input.toPlainText().strip()
@@ -290,5 +292,5 @@ class DefectEditorDialog(QDialog):
         d.solutions = self.solutions_editor.get_items()
         d.forum_refs = self.refs_editor.get_items()
 
-        QMessageBox.information(self, "Guardado", f"Defecto '{d.name}' guardado")
+        QMessageBox.information(self, T("Guardado"), f"{T('Defecto')} '{d.name}' {T('guardado')}")
         self._populate_list()

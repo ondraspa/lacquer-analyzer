@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt, Signal
 
+from core.translations import T
 from src.models import Ingredient, IngredientType
 from src.ingredient_loader import IngredientLoader
 
@@ -24,43 +25,43 @@ class IngredientBrowserWidget(QWidget):
 
         filter_row = QHBoxLayout()
         self.search_input = QLineEdit()
-        self.search_input.setPlaceholderText("Buscar ingredientes...")
-        self.search_input.setToolTip("Filtra ingredientes por nombre. La búsqueda es incremental")
+        self.search_input.setPlaceholderText(T("Buscar ingredientes..."))
+        self.search_input.setToolTip(T("Filtra ingredientes por nombre. La búsqueda es incremental"))
         self.search_input.textChanged.connect(self._filter_tree)
         self.type_filter = QComboBox()
-        self.type_filter.addItems(["Todos los Tipos"] + [t.value for t in IngredientType])
-        self.type_filter.setToolTip("Filtra ingredientes por tipo (base_resin, solvent, pigmento, aditivo, etc.)")
+        self.type_filter.addItems([T("Todos los Tipos")] + [t.value for t in IngredientType])
+        self.type_filter.setToolTip(T("Filtra ingredientes por tipo (base_resin, solvent, pigmento, aditivo, etc.)"))
         self.type_filter.currentTextChanged.connect(self._filter_tree)
         filter_row.addWidget(self.search_input)
-        filter_row.addWidget(QLabel("Tipo:"))
+        filter_row.addWidget(QLabel(T("Tipo:")))
         filter_row.addWidget(self.type_filter)
         layout.addLayout(filter_row)
 
         self.tree = QTreeWidget()
         self.tree.setColumnCount(3)
-        self.tree.setHeaderLabels(["Ingrediente", "Tipo", "Categoría"])
+        self.tree.setHeaderLabels([T("Ingrediente"), T("Tipo"), T("Categoría")])
         self.tree.setAlternatingRowColors(True)
-        self.tree.setToolTip("Árbol de ingredientes agrupados por tipo. Muestra nombre, tipo y categoría. Haz clic para ver detalles")
+        self.tree.setToolTip(T("Árbol de ingredientes agrupados por tipo. Muestra nombre, tipo y categoría. Haz clic para ver detalles"))
         self.tree.itemClicked.connect(self._show_detail)
         layout.addWidget(self.tree)
 
-        self.detail_group = QGroupBox("Detalles del Ingrediente")
-        self.detail_group.setToolTip("Información detallada del ingrediente seleccionado. Puedes editar o añadir ingredientes desde aquí")
+        self.detail_group = QGroupBox(T("Detalles del Ingrediente"))
+        self.detail_group.setToolTip(T("Información detallada del ingrediente seleccionado. Puedes editar o añadir ingredientes desde aquí"))
         detail_layout = QVBoxLayout()
         self.detail_text = QTextEdit()
         self.detail_text.setReadOnly(True)
         self.detail_text.setMaximumHeight(160)
-        self.detail_text.setToolTip("Propiedades completas del ingrediente seleccionado: punto de ebullición, densidad, viscosidad, etc.")
+        self.detail_text.setToolTip(T("Propiedades completas del ingrediente seleccionado: punto de ebullición, densidad, viscosidad, etc."))
         detail_layout.addWidget(self.detail_text)
 
         detail_btn_row = QHBoxLayout()
-        self.edit_btn = QPushButton("Editar Seleccionado")
-        self.edit_btn.setToolTip("Abre el editor para modificar el ingrediente seleccionado")
+        self.edit_btn = QPushButton(T("Editar Seleccionado"))
+        self.edit_btn.setToolTip(T("Abre el editor para modificar el ingrediente seleccionado"))
         self.edit_btn.clicked.connect(self._edit_selected)
         self.edit_btn.setEnabled(False)
         detail_btn_row.addWidget(self.edit_btn)
-        self.add_btn = QPushButton("Añadir Nuevo Ingrediente")
-        self.add_btn.setToolTip("Abre el editor para añadir un nuevo ingrediente a la base de datos")
+        self.add_btn = QPushButton(T("Añadir Nuevo Ingrediente"))
+        self.add_btn.setToolTip(T("Abre el editor para añadir un nuevo ingrediente a la base de datos"))
         self.add_btn.clicked.connect(self._add_new)
         self.add_btn.setStyleSheet("background: #4CAF50; color: white;")
         detail_btn_row.addWidget(self.add_btn)
@@ -97,7 +98,7 @@ class IngredientBrowserWidget(QWidget):
                 child = parent.child(j)
                 ing = child.data(0, Qt.UserRole)
                 matches_search = not search or search in ing.name.lower()
-                matches_type = type_filter == "Todos los Tipos" or type_filter == ing.type.value
+                matches_type = type_filter == T("Todos los Tipos") or type_filter == ing.type.value
                 child.setHidden(not (matches_search and matches_type))
                 if not child.isHidden():
                     visible_children += 1
@@ -111,29 +112,29 @@ class IngredientBrowserWidget(QWidget):
         self.edit_btn.setEnabled(True)
 
         text = f"<h3>{ing.name} ({ing.id})</h3>"
-        text += f"<p><b>Tipo:</b> {ing.type.value}</p>"
+        text += f"<p><b>{T('Tipo:')}</b> {ing.type.value}</p>"
 
         if ing.properties:
-            text += "<p><b>Propiedades:</b></p><ul>"
+            text += f"<p><b>{T('Propiedades:')}</b></p><ul>"
             for k, v in ing.properties.items():
                 text += f"<li>{k}: {v}</li>"
             text += "</ul>"
 
-        text += "<p><b>Propiedades del Recubrimiento:</b></p>"
+        text += f"<p><b>{T('Propiedades del Recubrimiento:')}</b></p>"
         cp = ing.coating_properties
-        text += f"<p>Sólidos: {cp.solids_content_pct or 'N/D'}%</p>"
-        text += f"<p>Viscosidad: {cp.viscosity_mpas or 'N/D'} mPa·s</p>"
-        text += f"<p>Tensión Superficial: {cp.surface_tension_dynes} dynes/cm</p>"
-        text += f"<p>Tasa de Evaporación: {cp.evaporation_rate or 'N/D'}</p>"
+        text += f"<p>{T('Sólidos:')} {cp.solids_content_pct or 'N/D'}%</p>"
+        text += f"<p>{T('Viscosidad:')} {cp.viscosity_mpas or 'N/D'} mPa·s</p>"
+        text += f"<p>{T('Tensión Superficial:')} {cp.surface_tension_dynes} dynes/cm</p>"
+        text += f"<p>{T('Tasa de Evaporación:')} {cp.evaporation_rate or 'N/D'}</p>"
 
         if ing.warnings:
-            text += "<p><b>Advertencias:</b></p><ul>"
+            text += f"<p><b>{T('Advertencias:')}</b></p><ul>"
             for w in ing.warnings:
                 text += f"<li style='color:red;'>{w}</li>"
             text += "</ul>"
 
         if ing.notes:
-            text += f"<p><b>Notas:</b> {ing.notes}</p>"
+            text += f"<p><b>{T('Notas:')}</b> {ing.notes}</p>"
 
         self.detail_text.setHtml(text)
 

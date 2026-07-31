@@ -13,6 +13,8 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 
+from core.translations import T
+
 
 RULES_PATH = str(Path(__file__).parent.parent / "config" / "plating_compatibility.yaml")
 
@@ -31,13 +33,13 @@ class ListEditor(QWidget):
         layout.addWidget(self.list_widget)
 
         btn_row = QHBoxLayout()
-        self.add_btn = QPushButton("Añadir")
+        self.add_btn = QPushButton(T("Añadir"))
         self.add_btn.clicked.connect(self._add)
         self.add_btn.setToolTip("Añade un nuevo elemento a la lista")
-        self.remove_btn = QPushButton("Quitar")
+        self.remove_btn = QPushButton(T("Quitar"))
         self.remove_btn.clicked.connect(self._remove)
         self.remove_btn.setToolTip("Elimina el elemento seleccionado de la lista")
-        self.edit_btn = QPushButton("Editar")
+        self.edit_btn = QPushButton(T("Editar"))
         self.edit_btn.clicked.connect(self._edit)
         self.edit_btn.setToolTip("Edita el elemento seleccionado de la lista")
         btn_row.addWidget(self.add_btn)
@@ -51,7 +53,7 @@ class ListEditor(QWidget):
 
     def _add(self):
         from PySide6.QtWidgets import QInputDialog
-        text, ok = QInputDialog.getText(self, "Añadir Elemento", self.placeholder or "Ingrese valor:")
+        text, ok = QInputDialog.getText(self, T("Añadir Elemento"), self.placeholder or T("Ingrese valor:"))
         if ok and text.strip():
             self.list_widget.addItem(QListWidgetItem(text.strip()))
 
@@ -65,7 +67,7 @@ class ListEditor(QWidget):
             return
         from PySide6.QtWidgets import QInputDialog
         text, ok = QInputDialog.getText(
-            self, "Editar Elemento", "Valor:", text=item.text()
+            self, T("Editar Elemento"), T("Valor:"), text=item.text()
         )
         if ok and text.strip():
             item.setText(text.strip())
@@ -79,7 +81,7 @@ class PlatingRulesEditorDialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Editor de Reglas de Formulación de Recubrimientos")
+        self.setWindowTitle(T("Editor de Reglas de Formulación de Recubrimientos"))
         self.setMinimumSize(700, 500)
         self._data = self._load()
         self._init_ui()
@@ -102,24 +104,24 @@ class PlatingRulesEditorDialog(QDialog):
         tabs = QTabWidget()
 
         silver_tab = self._build_plating_tab("silvering")
-        tabs.addTab(silver_tab, "Plateado")
+        tabs.addTab(silver_tab, T("Plateado"))
 
         nickel_tab = self._build_plating_tab("nickel_sulfamate")
-        tabs.addTab(nickel_tab, "Sulfamato de Níquel")
+        tabs.addTab(nickel_tab, T("Sulfamato de Níquel"))
 
         seq_tab = self._build_sequences_tab()
-        tabs.addTab(seq_tab, "Secuencias de Proceso")
+        tabs.addTab(seq_tab, T("Secuencias de Proceso"))
 
         layout.addWidget(tabs, 1)
 
         btn_row = QHBoxLayout()
         btn_row.addStretch()
-        save_btn = QPushButton("Guardar Reglas")
+        save_btn = QPushButton(T("Guardar Reglas"))
         save_btn.clicked.connect(self._save_and_close)
         save_btn.setStyleSheet("background: #4CAF50; color: white; font-weight: bold;")
         save_btn.setMinimumWidth(120)
         save_btn.setToolTip("Guarda todas las reglas en el archivo de configuración")
-        cancel_btn = QPushButton("Cancelar")
+        cancel_btn = QPushButton(T("Cancelar"))
         cancel_btn.clicked.connect(self.reject)
         cancel_btn.setMinimumWidth(100)
         cancel_btn.setToolTip("Descarta los cambios y cierra el editor")
@@ -137,37 +139,37 @@ class PlatingRulesEditorDialog(QDialog):
         self._name_inputs = getattr(self, '_name_inputs', {})
         self._name_inputs[key] = QLineEdit(config.get("name", ""))
         self._name_inputs[key].setToolTip("Nombre del baño químico")
-        info_form.addRow("Nombre:", self._name_inputs[key])
+        info_form.addRow(T("Nombre:"), self._name_inputs[key])
 
         desc_input = QTextEdit(config.get("description", ""))
         desc_input.setMaximumHeight(60)
         desc_input.setToolTip("Descripción del proceso")
         self._desc_inputs = getattr(self, '_desc_inputs', {})
         self._desc_inputs[key] = desc_input
-        info_form.addRow("Descripción:", desc_input)
+        info_form.addRow(T("Descripción:"), desc_input)
         layout.addLayout(info_form)
 
-        chem_group = QGroupBox("Químicos Prohibidos")
+        chem_group = QGroupBox(T("Químicos Prohibidos"))
         chem_layout = QVBoxLayout(chem_group)
         forbidden = config.get("forbidden_chemicals", [])
-        le = ListEditor(forbidden, "ej. MEK (Metil Etil Cetona)")
+        le = ListEditor(forbidden, T("ej. MEK (Metil Etil Cetona)"))
         le.setToolTip("Lista de elementos. Usa Añadir, Editar y Eliminar para gestionar")
         self._forbidden_lists = getattr(self, '_forbidden_lists', {})
         self._forbidden_lists[key] = le
         chem_layout.addWidget(le)
         layout.addWidget(chem_group)
 
-        bath_group = QGroupBox("Composición del Baño")
+        bath_group = QGroupBox(T("Composición del Baño"))
         bath_layout = QVBoxLayout(bath_group)
         bath = config.get("bath_composition", [])
-        le2 = ListEditor(bath, "ej. Cianuro de plata / Sulfamato de plata")
+        le2 = ListEditor(bath, T("ej. Cianuro de plata / Sulfamato de plata"))
         le2.setToolTip("Lista de elementos. Usa Añadir, Editar y Eliminar para gestionar")
         self._bath_lists = getattr(self, '_bath_lists', {})
         self._bath_lists[key] = le2
         bath_layout.addWidget(le2)
         layout.addWidget(bath_group)
 
-        prep_group = QGroupBox("Preparación de Superficie Requerida")
+        prep_group = QGroupBox(T("Preparación de Superficie Requerida"))
         prep_layout = QVBoxLayout(prep_group)
         prep = config.get("required_surface_prep", [])
         le3 = ListEditor(prep)
@@ -177,7 +179,7 @@ class PlatingRulesEditorDialog(QDialog):
         prep_layout.addWidget(le3)
         layout.addWidget(prep_group)
 
-        req_group = QGroupBox("Requisitos de la Laca")
+        req_group = QGroupBox(T("Requisitos de la Laca"))
         req_form = QFormLayout(req_group)
         lacq = config.get("lacquer_requirements", {})
         self._lacq_inputs = getattr(self, '_lacq_inputs', {})
@@ -187,7 +189,7 @@ class PlatingRulesEditorDialog(QDialog):
         min_ad.setSuffix(" MPa")
         min_ad.setValue(float(lacq.get("min_adhesion_mpa", 0)))
         min_ad.setToolTip("Adhesión mínima requerida en MPa")
-        req_form.addRow("Adhesión mínima:", min_ad)
+        req_form.addRow(T("Adhesión mínima:"), min_ad)
 
         max_solv = QDoubleSpinBox()
         max_solv.setRange(0, 10)
@@ -195,14 +197,14 @@ class PlatingRulesEditorDialog(QDialog):
         max_solv.setDecimals(2)
         max_solv.setValue(float(lacq.get("max_solvent_retention_pct", 0)))
         max_solv.setToolTip("Retención máxima de solvente permitida en %")
-        req_form.addRow("Retención máxima de solvente:", max_solv)
+        req_form.addRow(T("Retención máxima de solvente:"), max_solv)
 
         cure_temp = QSpinBox()
         cure_temp.setRange(0, 300)
         cure_temp.setSuffix(" °C")
         cure_temp.setValue(int(lacq.get("cure_temp_max_c", 0)))
         cure_temp.setToolTip("Temperatura máxima de curado en °C")
-        req_form.addRow("Temp. máxima de curado:", cure_temp)
+        req_form.addRow(T("Temp. máxima de curado:"), cure_temp)
 
         self._lacq_inputs[key] = {
             "min_adhesion_mpa": min_ad,
@@ -223,15 +225,15 @@ class PlatingRulesEditorDialog(QDialog):
         for i, rule in enumerate(rules):
             seq = rule.get("sequence", [])
             seq_key = " -> ".join(seq)
-            group = QGroupBox(f"Secuencia: {seq_key}")
+            group = QGroupBox(f"{T('Secuencia:')} {seq_key}")
             glayout = QVBoxLayout(group)
 
-            allowed_check = QCheckBox("Permitido")
+            allowed_check = QCheckBox(T("Permitido"))
             allowed_check.setChecked(rule.get("allowed", True))
             allowed_check.setToolTip("Permite o bloquea esta secuencia de proceso")
             glayout.addWidget(allowed_check)
 
-            glayout.addWidget(QLabel("Condiciones:"))
+            glayout.addWidget(QLabel(T("Condiciones:")))
             cond_editor = ListEditor(rule.get("conditions", []))
             cond_editor.setToolTip("Lista de elementos. Usa Añadir, Editar y Eliminar para gestionar")
             glayout.addWidget(cond_editor)
@@ -270,5 +272,5 @@ class PlatingRulesEditorDialog(QDialog):
                 rule["conditions"] = w["conditions"].get_items()
 
         self._save_data()
-        QMessageBox.information(self, "Guardado", "Reglas de recubrimiento guardadas en plating_compatibility.yaml")
+        QMessageBox.information(self, T("Guardado"), T("Reglas de recubrimiento guardadas en plating_compatibility.yaml"))
         self.accept()

@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 
+from core.translations import T
 from src.models import Ingredient, IngredientType
 from src.ingredient_loader import IngredientLoader
 
@@ -44,7 +45,7 @@ class IngredientEditorDialog(QDialog):
         self.loader = loader
         self.ingredient = ingredient
         self.is_new = ingredient is None
-        self.setWindowTitle("Añadir Ingrediente" if self.is_new else f"Editar {ingredient.name}")
+        self.setWindowTitle(T("Añadir Ingrediente") if self.is_new else T("Editar {name}").format(name=ingredient.name))
         self.setMinimumWidth(500)
         self._init_ui()
         if not self.is_new:
@@ -53,107 +54,107 @@ class IngredientEditorDialog(QDialog):
     def _init_ui(self):
         layout = QVBoxLayout(self)
 
-        basic_group = QGroupBox("Información Básica")
-        basic_group.setToolTip("Información básica del ingrediente: nombre, tipo y notas")
+        basic_group = QGroupBox(T("Información Básica"))
+        basic_group.setToolTip(T("Información básica del ingrediente: nombre, tipo y notas"))
         basic_form = QFormLayout(basic_group)
 
         self.name_input = QLineEdit()
-        self.name_input.setToolTip("Nombre único del ingrediente. Se usará para identificarlo en las recetas")
-        self.name_input.setPlaceholderText("ej. Nitrocelulosa RS 1/2 seg")
-        basic_form.addRow("Nombre:", self.name_input)
+        self.name_input.setToolTip(T("Nombre único del ingrediente. Se usará para identificarlo en las recetas"))
+        self.name_input.setPlaceholderText(T("ej. Nitrocelulosa RS 1/2 seg"))
+        basic_form.addRow(T("Nombre:"), self.name_input)
 
         self.type_combo = QComboBox()
-        self.type_combo.setToolTip("Tipo de ingrediente: resina base, solvente, plastificante, pigmento, aditivo, etc. Determina cómo se clasifica en la base de datos")
+        self.type_combo.setToolTip(T("Tipo de ingrediente: resina base, solvente, plastificante, pigmento, aditivo, etc. Determina cómo se clasifica en la base de datos"))
         self.type_combo.addItems(TYPE_CHOICES)
-        basic_form.addRow("Tipo:", self.type_combo)
+        basic_form.addRow(T("Tipo:"), self.type_combo)
 
         self.notes_input = QTextEdit()
-        self.notes_input.setToolTip("Notas adicionales: datos del fabricante, CAS, fórmula química, observaciones")
+        self.notes_input.setToolTip(T("Notas adicionales: datos del fabricante, CAS, fórmula química, observaciones"))
         self.notes_input.setMaximumHeight(60)
-        self.notes_input.setPlaceholderText("Notas opcionales...")
-        basic_form.addRow("Notas:", self.notes_input)
+        self.notes_input.setPlaceholderText(T("Notas opcionales..."))
+        basic_form.addRow(T("Notas:"), self.notes_input)
 
         layout.addWidget(basic_group)
 
-        props_group = QGroupBox("Propiedades del Recubrimiento")
-        props_group.setToolTip("Propiedades físico-químicas del ingrediente para cálculos de formulación y análisis")
+        props_group = QGroupBox(T("Propiedades del Recubrimiento"))
+        props_group.setToolTip(T("Propiedades físico-químicas del ingrediente para cálculos de formulación y análisis"))
         props_form = QFormLayout(props_group)
 
         self.solids_spin = QDoubleSpinBox()
-        self.solids_spin.setToolTip("Porcentaje de sólidos del ingrediente. Afecta al cálculo de sólidos totales de la receta")
+        self.solids_spin.setToolTip(T("Porcentaje de sólidos del ingrediente. Afecta al cálculo de sólidos totales de la receta"))
         self.solids_spin.setRange(0, 100)
         self.solids_spin.setSuffix(" %")
         self.solids_spin.setValue(100)
-        props_form.addRow("Contenido de sólidos:", self.solids_spin)
+        props_form.addRow(T("Contenido de sólidos:"), self.solids_spin)
 
         self.viscosity_spin = QSpinBox()
-        self.viscosity_spin.setToolTip("Viscosidad del ingrediente en mPa·s. Influye en la viscosidad estimada de la mezcla")
+        self.viscosity_spin.setToolTip(T("Viscosidad del ingrediente en mPa·s. Influye en la viscosidad estimada de la mezcla"))
         self.viscosity_spin.setRange(0, 50000)
         self.viscosity_spin.setSuffix(" mPa·s")
-        props_form.addRow("Viscosidad:", self.viscosity_spin)
+        props_form.addRow(T("Viscosidad:"), self.viscosity_spin)
 
         self.max_conc_spin = QDoubleSpinBox()
-        self.max_conc_spin.setToolTip("Concentración máxima recomendada en porcentaje. Ayuda a evitar sobre-dosificación")
+        self.max_conc_spin.setToolTip(T("Concentración máxima recomendada en porcentaje. Ayuda a evitar sobre-dosificación"))
         self.max_conc_spin.setRange(0, 100)
         self.max_conc_spin.setSuffix(" %")
-        props_form.addRow("Concentración máxima:", self.max_conc_spin)
+        props_form.addRow(T("Concentración máxima:"), self.max_conc_spin)
 
         self.dosage_spin = QDoubleSpinBox()
-        self.dosage_spin.setToolTip("Dosificación típica sugerida como punto de partida")
+        self.dosage_spin.setToolTip(T("Dosificación típica sugerida como punto de partida"))
         self.dosage_spin.setRange(0, 100)
         self.dosage_spin.setSuffix(" %")
         self.dosage_spin.setDecimals(2)
-        props_form.addRow("Dosis recomendada:", self.dosage_spin)
+        props_form.addRow(T("Dosis recomendada:"), self.dosage_spin)
 
         self.density_spin = QDoubleSpinBox()
-        self.density_spin.setToolTip("Densidad en g/cm³. Se usa para cálculos de formulación")
+        self.density_spin.setToolTip(T("Densidad en g/cm³. Se usa para cálculos de formulación"))
         self.density_spin.setRange(0, 20)
         self.density_spin.setDecimals(3)
         self.density_spin.setSuffix(" g/cm³")
-        props_form.addRow("Densidad:", self.density_spin)
+        props_form.addRow(T("Densidad:"), self.density_spin)
 
         self.evap_spin = QDoubleSpinBox()
-        self.evap_spin.setToolTip("Índice de evaporación relativo (butilacetato=1). Controla la velocidad de secado")
+        self.evap_spin.setToolTip(T("Índice de evaporación relativo (butilacetato=1). Controla la velocidad de secado"))
         self.evap_spin.setRange(0, 10)
         self.evap_spin.setSingleStep(0.1)
         self.evap_spin.setDecimals(2)
-        props_form.addRow("Tasa de evaporación:", self.evap_spin)
+        props_form.addRow(T("Tasa de evaporación:"), self.evap_spin)
 
         self.boiling_spin = QSpinBox()
-        self.boiling_spin.setToolTip("Punto de ebullición en °C. Importante para el perfil de evaporación")
+        self.boiling_spin.setToolTip(T("Punto de ebullición en °C. Importante para el perfil de evaporación"))
         self.boiling_spin.setRange(0, 500)
         self.boiling_spin.setSuffix(" °C")
-        props_form.addRow("Punto de ebullición:", self.boiling_spin)
+        props_form.addRow(T("Punto de ebullición:"), self.boiling_spin)
 
         self.surface_tension_spin = QDoubleSpinBox()
-        self.surface_tension_spin.setToolTip("Tensión superficial en mN/m. Afecta al mojado y la adhesión")
+        self.surface_tension_spin.setToolTip(T("Tensión superficial en mN/m. Afecta al mojado y la adhesión"))
         self.surface_tension_spin.setRange(0, 100)
         self.surface_tension_spin.setDecimals(1)
         self.surface_tension_spin.setSuffix(" dynes/cm")
         self.surface_tension_spin.setValue(35.0)
-        props_form.addRow("Tensión superficial:", self.surface_tension_spin)
+        props_form.addRow(T("Tensión superficial:"), self.surface_tension_spin)
 
         layout.addWidget(props_group)
 
-        warn_group = QGroupBox("Advertencias")
-        warn_group.setToolTip("Advertencias y precauciones de seguridad para la manipulación")
+        warn_group = QGroupBox(T("Advertencias"))
+        warn_group.setToolTip(T("Advertencias y precauciones de seguridad para la manipulación"))
         warn_layout = QVBoxLayout(warn_group)
         self.warnings_input = QTextEdit()
-        self.warnings_input.setToolTip("Advertencias de seguridad: toxicidad, inflamabilidad, irritación, manipulación requerida")
+        self.warnings_input.setToolTip(T("Advertencias de seguridad: toxicidad, inflamabilidad, irritación, manipulación requerida"))
         self.warnings_input.setMaximumHeight(60)
-        self.warnings_input.setPlaceholderText("Uno por línea, ej. Higroscópico — almacenar sellado")
+        self.warnings_input.setPlaceholderText(T("Uno por línea, ej. Higroscópico — almacenar sellado"))
         warn_layout.addWidget(self.warnings_input)
         layout.addWidget(warn_group)
 
         btn_row = QHBoxLayout()
         btn_row.addStretch()
-        save_btn = QPushButton("Guardar")
-        save_btn.setToolTip("Guarda el ingrediente en la base de datos personal (custom_ingredients.yaml)")
+        save_btn = QPushButton(T("Guardar"))
+        save_btn.setToolTip(T("Guarda el ingrediente en la base de datos personal (custom_ingredients.yaml)"))
         save_btn.clicked.connect(self._save)
         save_btn.setMinimumWidth(100)
         save_btn.setStyleSheet("background: #4CAF50; color: white; font-weight: bold;")
-        cancel_btn = QPushButton("Cancelar")
-        cancel_btn.setToolTip("Descarta los cambios y cierra el editor")
+        cancel_btn = QPushButton(T("Cancelar"))
+        cancel_btn.setToolTip(T("Descarta los cambios y cierra el editor"))
         cancel_btn.clicked.connect(self.reject)
         cancel_btn.setMinimumWidth(100)
         btn_row.addWidget(save_btn)
@@ -181,7 +182,7 @@ class IngredientEditorDialog(QDialog):
     def _save(self):
         name = self.name_input.text().strip()
         if not name:
-            QMessageBox.warning(self, "Guardar Ingrediente", "El nombre es obligatorio")
+            QMessageBox.warning(self, T("Guardar Ingrediente"), T("El nombre es obligatorio"))
             return
 
         ing_type = self.type_combo.currentText()
@@ -275,7 +276,7 @@ class IngredientEditorDialog(QDialog):
             yaml.dump(existing, f, default_flow_style=False, allow_unicode=True)
 
         QMessageBox.information(
-            self, "Guardado",
-            f"Ingrediente '{name}' guardado en custom_ingredients.yaml"
+            self, T("Guardado"),
+            T("Ingrediente '{name}' guardado en custom_ingredients.yaml").format(name=name)
         )
         self.accept()

@@ -8,13 +8,15 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 
+from core.translations import T
+
 
 class DataImportDialog(QDialog):
     """Full Data Import widget wrapped in a dialog."""
 
     def __init__(self, parent=None, llm=None, kb=None, settings=None):
         super().__init__(parent)
-        self.setWindowTitle("Herramientas de Importación de Datos")
+        self.setWindowTitle(T("Herramientas de Importación de Datos"))
         self.setMinimumSize(900, 700)
         self.resize(1000, 750)
 
@@ -27,7 +29,7 @@ class DataImportDialog(QDialog):
 
         btn_row = QHBoxLayout()
         btn_row.addStretch()
-        close_btn = QPushButton("Cerrar")
+        close_btn = QPushButton(T("Cerrar"))
         close_btn.setToolTip("Cierra el importador de datos")
         close_btn.clicked.connect(self.accept)
         close_btn.setMinimumWidth(120)
@@ -49,7 +51,7 @@ class ExpertNotesDialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Notas de Experto y Registro de Conversación")
+        self.setWindowTitle(T("Notas de Experto y Registro de Conversación"))
         self.setMinimumSize(600, 500)
 
         from ui.workspace.expert_notes import ExpertNotesWidget
@@ -59,7 +61,7 @@ class ExpertNotesDialog(QDialog):
 
         btn_row = QHBoxLayout()
         btn_row.addStretch()
-        close_btn = QPushButton("Cerrar")
+        close_btn = QPushButton(T("Cerrar"))
         close_btn.setToolTip("Cierra el bloc de notas de experto")
         close_btn.clicked.connect(self.accept)
         close_btn.setMinimumWidth(120)
@@ -72,7 +74,7 @@ class KnowledgeBrowserDialog(QDialog):
 
     def __init__(self, parent=None, kb=None, llm=None):
         super().__init__(parent)
-        self.setWindowTitle("Navegador de Base de Conocimiento")
+        self.setWindowTitle(T("Navegador de Base de Conocimiento"))
         self.setMinimumSize(750, 550)
         self.kb = kb
         self.llm = llm
@@ -106,14 +108,14 @@ class KnowledgeBrowserDialog(QDialog):
         self.browse_preview.setMaximumHeight(150)
         browse_layout.addWidget(self.browse_preview)
         filter_row = QHBoxLayout()
-        filter_row.addWidget(QLabel("Filtrar:"))
+        filter_row.addWidget(QLabel(T("Filtrar:")))
         self.browse_filter = QLineEdit()
         self.browse_filter.setToolTip("Filtra entradas por palabra clave")
-        self.browse_filter.setPlaceholderText("categoría o título...")
+        self.browse_filter.setPlaceholderText(T("categoría o título..."))
         self.browse_filter.textChanged.connect(self._populate_browse)
         filter_row.addWidget(self.browse_filter, 1)
         browse_layout.addLayout(filter_row)
-        tabs.addTab(browse_widget, "Navegar")
+        tabs.addTab(browse_widget, T("Navegar"))
 
         # Search tab
         search_widget = QWidget()
@@ -121,14 +123,14 @@ class KnowledgeBrowserDialog(QDialog):
         srow = QHBoxLayout()
         self.search_input = QLineEdit()
         self.search_input.setToolTip("Busca entradas en la base de conocimiento")
-        self.search_input.setPlaceholderText("Buscar en todo el conocimiento...")
+        self.search_input.setPlaceholderText(T("Buscar en todo el conocimiento..."))
         self.search_input.returnPressed.connect(self._do_search)
         srow.addWidget(self.search_input)
-        sbtn = QPushButton("Buscar")
+        sbtn = QPushButton(T("Buscar"))
         sbtn.setToolTip("Ejecuta la búsqueda")
         sbtn.clicked.connect(self._do_search)
         srow.addWidget(sbtn)
-        srow.addWidget(QLabel("Máx:"))
+        srow.addWidget(QLabel(T("Máx:")))
         self.search_max = QLineEdit("10")
         self.search_max.setMaximumWidth(50)
         self.search_max.setToolTip("Máximo de resultados a mostrar")
@@ -143,7 +145,7 @@ class KnowledgeBrowserDialog(QDialog):
         self.search_preview.setReadOnly(True)
         self.search_preview.setMaximumHeight(150)
         search_layout.addWidget(self.search_preview)
-        tabs.addTab(search_widget, "Buscar")
+        tabs.addTab(search_widget, T("Buscar"))
 
         # Corrections tab
         corr_widget = QWidget()
@@ -156,22 +158,22 @@ class KnowledgeBrowserDialog(QDialog):
         self.corr_preview.setReadOnly(True)
         self.corr_preview.setMaximumHeight(120)
         corr_layout.addWidget(self.corr_preview)
-        corr_del = QPushButton("Eliminar corrección seleccionada")
+        corr_del = QPushButton(T("Eliminar corrección seleccionada"))
         corr_del.setToolTip("Elimina la corrección seleccionada")
         corr_del.clicked.connect(self._delete_correction)
         corr_layout.addWidget(corr_del)
-        tabs.addTab(corr_widget, "Correcciones")
+        tabs.addTab(corr_widget, T("Correcciones"))
 
         layout.addWidget(tabs, 1)
 
         btn_row = QHBoxLayout()
         btn_row.addStretch()
-        qa_btn = QPushButton("Preguntar al LLM sobre seleccionado")
+        qa_btn = QPushButton(T("Preguntar al LLM sobre seleccionado"))
         qa_btn.setToolTip("Pregunta al LLM sobre el contenido seleccionado")
         qa_btn.clicked.connect(self._ask_llm_selected)
         if llm:
             btn_row.addWidget(qa_btn)
-        close_btn = QPushButton("Cerrar")
+        close_btn = QPushButton(T("Cerrar"))
         close_btn.setToolTip("Cierra el navegador de conocimiento")
         close_btn.clicked.connect(self.accept)
         close_btn.setMinimumWidth(120)
@@ -278,12 +280,12 @@ class KnowledgeBrowserDialog(QDialog):
         from PySide6.QtWidgets import QDialog as QD, QVBoxLayout as QVL, QTextEdit as QTE
         from PySide6.QtWidgets import QPushButton as QPB, QHBoxLayout as QHL
         dlg = QD(self)
-        dlg.setWindowTitle("Consulta LLM")
+        dlg.setWindowTitle(T("Consulta LLM"))
         dlg.setMinimumSize(600, 400)
         lay = QVL(dlg)
         qi = QTE()
         qi.setPlainText(f"Explica en el contexto de la química de lacas:\n\n{text[:2000]}")
-        lay.addWidget(QLabel("Pregunta:"))
+        lay.addWidget(QLabel(T("Pregunta:")))
         lay.addWidget(qi, 1)
         ao = QTE()
         ao.setReadOnly(True)
@@ -292,11 +294,11 @@ class KnowledgeBrowserDialog(QDialog):
         def _ask():
             ao.setPlainText("Pensando...")
             ao.setPlainText(self.llm.ask(qi.toPlainText(), max_tokens=1024))
-        ab = QPB("Preguntar")
+        ab = QPB(T("Preguntar"))
         ab.clicked.connect(_ask)
         br.addWidget(ab)
         br.addStretch()
-        cb = QPB("Cerrar")
+        cb = QPB(T("Cerrar"))
         cb.clicked.connect(dlg.accept)
         br.addWidget(cb)
         lay.addLayout(br)

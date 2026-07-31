@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 
+from core.translations import T
 from src.models import LacquerRecipe
 from analysis.lacquer_physics import (
     analyze_lacquer, AnalysisInput, AnalysisResult,
@@ -31,22 +32,22 @@ class RecipeComparisonWidget(QWidget):
         row1 = QHBoxLayout()
         self.recipe_a = QComboBox()
         self.recipe_a.setMinimumWidth(250)
-        self.recipe_a.setToolTip("Selecciona la primera receta para comparar (Receta A)")
+        self.recipe_a.setToolTip(T("Selecciona la primera receta para comparar (Receta A)"))
         self.recipe_b = QComboBox()
         self.recipe_b.setMinimumWidth(250)
-        self.recipe_b.setToolTip("Selecciona la segunda receta para comparar (Receta B)")
-        self.recipe_a.addItem("— Receta A —", None)
-        self.recipe_b.addItem("— Receta B —", None)
-        row1.addWidget(QLabel("Comparar:"))
+        self.recipe_b.setToolTip(T("Selecciona la segunda receta para comparar (Receta B)"))
+        self.recipe_a.addItem(T("— Receta A —"), None)
+        self.recipe_b.addItem(T("— Receta B —"), None)
+        row1.addWidget(QLabel(T("Comparar:")))
         row1.addWidget(self.recipe_a)
         row1.addWidget(QLabel("vs"))
         row1.addWidget(self.recipe_b)
-        self.compare_btn = QPushButton("Comparar")
+        self.compare_btn = QPushButton(T("Comparar"))
         self.compare_btn.setStyleSheet(
             "background-color: #FF9800; color: white; font-weight: bold; padding: 6px;"
         )
         self.compare_btn.clicked.connect(self._run_comparison)
-        self.compare_btn.setToolTip("Ejecuta la comparación lado a lado: composición, propiedades y análisis completo")
+        self.compare_btn.setToolTip(T("Ejecuta la comparación lado a lado: composición, propiedades y análisis completo"))
         row1.addWidget(self.compare_btn)
         row1.addStretch()
         layout.addLayout(row1)
@@ -60,23 +61,23 @@ class RecipeComparisonWidget(QWidget):
         self.comp_table = QTableWidget()
         self.comp_table.setColumnCount(5)
         self.comp_table.setHorizontalHeaderLabels([
-            "Componente", "Receta A (%)", "Receta B (%)", "Diferencia", "Notas"
+            T("Componente"), T("Receta A (%)"), T("Receta B (%)"), T("Diferencia"), T("Notas")
         ])
         self.comp_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-        self.comp_table.setToolTip("Comparación de composición: componente a componente con diferencias y notas")
+        self.comp_table.setToolTip(T("Comparación de composición: componente a componente con diferencias y notas"))
         comp_layout.addWidget(self.comp_table)
-        self.tabs.addTab(comp_widget, "Composición")
+        self.tabs.addTab(comp_widget, T("Composición"))
 
         # Tab: Propiedades analíticas
         prop_widget = QWidget()
         prop_layout = QVBoxLayout(prop_widget)
         self.prop_table = QTableWidget()
         self.prop_table.setColumnCount(3)
-        self.prop_table.setHorizontalHeaderLabels(["Propiedad", "Receta A", "Receta B"])
+        self.prop_table.setHorizontalHeaderLabels([T("Propiedad"), T("Receta A"), T("Receta B")])
         self.prop_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-        self.prop_table.setToolTip("Comparación de propiedades físico-químicas entre ambas recetas")
+        self.prop_table.setToolTip(T("Comparación de propiedades físico-químicas entre ambas recetas"))
         prop_layout.addWidget(self.prop_table)
-        self.tabs.addTab(prop_widget, "Propiedades")
+        self.tabs.addTab(prop_widget, T("Propiedades"))
 
         # Tab: Resultados visuales
         self.result_a = AnalysisResultWidget()
@@ -85,9 +86,9 @@ class RecipeComparisonWidget(QWidget):
         vis_layout = QHBoxLayout(vis_widget)
         vis_layout.addWidget(self.result_a)
         vis_layout.addWidget(self.result_b)
-        self.tabs.addTab(vis_widget, "Análisis Completo")
+        self.tabs.addTab(vis_widget, T("Análisis Completo"))
 
-        self.tabs.setToolTip("Resultados de la comparación:\n• Composición — tabla de ingredientes\n• Propiedades — tabla de propiedades\n• Análisis Completo — análisis lado a lado")
+        self.tabs.setToolTip(T("Resultados de la comparación:\n• Composición — tabla de ingredientes\n• Propiedades — tabla de propiedades\n• Análisis Completo — análisis lado a lado"))
         layout.addWidget(self.tabs)
 
     def set_recipes(self, recipes: List[LacquerRecipe]):
@@ -95,8 +96,8 @@ class RecipeComparisonWidget(QWidget):
         self._recipes = recipes
         self.recipe_a.clear()
         self.recipe_b.clear()
-        self.recipe_a.addItem("— Receta A —", None)
-        self.recipe_b.addItem("— Receta B —", None)
+        self.recipe_a.addItem(T("— Receta A —"), None)
+        self.recipe_b.addItem(T("— Receta B —"), None)
         for r in recipes:
             label = f"{r.name} ({r.id})"
             self.recipe_a.addItem(label, r)
@@ -175,36 +176,36 @@ class RecipeComparisonWidget(QWidget):
             # Notas sobre diferencias significativas
             notes = ""
             if data['a'] == 0:
-                notes = "Solo en B"
+                notes = T("Solo en B")
                 if abs(diff) > 5:
-                    notes += " — Diferencia significativa"
+                    notes += T(" — Diferencia significativa")
             elif data['b'] == 0:
-                notes = "Solo en A"
+                notes = T("Solo en A")
                 if abs(diff) > 5:
-                    notes += " — Diferencia significativa"
+                    notes += T(" — Diferencia significativa")
             elif abs(diff) > 5:
-                notes = "Diferencia significativa"
+                notes = T("Diferencia significativa")
             self.comp_table.setItem(i, 4, QTableWidgetItem(notes))
 
         # Properties table
         props = [
-            ("Viscosidad (mPa·s)", str(res_a.predicted_viscosity_mpas), str(res_b.predicted_viscosity_mpas)),
-            ("Ford Cup #4 (s)", str(res_a.ford_cup_4_seconds), str(res_b.ford_cup_4_seconds)),
-            ("Sólidos vol.%", str(res_a.solids_vol_pct), str(res_b.solids_vol_pct)),
-            ("Secado (min)", str(res_a.drying_time_min), str(res_b.drying_time_min)),
-            ("Tg final (°C)", str(res_a.final_tg_c), str(res_b.final_tg_c)),
-            ("Tensión superficial (mN/m)", str(res_a.surface_tension_mNm), str(res_b.surface_tension_mNm)),
-            ("Riesgo burbujas", f"{res_a.bubble_risk_category} ({res_a.bubble_risk_index:.2f})",
+            (T("Viscosidad (mPa·s)"), str(res_a.predicted_viscosity_mpas), str(res_b.predicted_viscosity_mpas)),
+            (T("Ford Cup #4 (s)"), str(res_a.ford_cup_4_seconds), str(res_b.ford_cup_4_seconds)),
+            (T("Sólidos vol.%"), str(res_a.solids_vol_pct), str(res_b.solids_vol_pct)),
+            (T("Secado (min)"), str(res_a.drying_time_min), str(res_b.drying_time_min)),
+            (T("Tg final (°C)"), str(res_a.final_tg_c), str(res_b.final_tg_c)),
+            (T("Tensión superficial (mN/m)"), str(res_a.surface_tension_mNm), str(res_b.surface_tension_mNm)),
+            (T("Riesgo burbujas"), f"{res_a.bubble_risk_category} ({res_a.bubble_risk_index:.2f})",
              f"{res_b.bubble_risk_category} ({res_b.bubble_risk_index:.2f})"),
-            ("Riesgo blush", f"{res_a.blush_risk_category} ({res_a.blush_risk_index:.2f})",
+            (T("Riesgo blush"), f"{res_a.blush_risk_category} ({res_a.blush_risk_index:.2f})",
              f"{res_b.blush_risk_category} ({res_b.blush_risk_index:.2f})"),
-            ("Orange peel", f"{res_a.orange_peel_category} ({res_a.orange_peel_index:.2f})",
+            (T("Orange peel"), f"{res_a.orange_peel_category} ({res_a.orange_peel_index:.2f})",
              f"{res_b.orange_peel_category} ({res_b.orange_peel_index:.2f})"),
-            ("Mojado", res_a.wetting_category, res_b.wetting_category),
-            ("Dureza", res_a.estimated_hardness, res_b.estimated_hardness),
-            ("Flexibilidad", res_a.estimated_flexibility, res_b.estimated_flexibility),
-            ("Hansen RED", f"{res_a.hansen_distance_to_nc}", f"{res_b.hansen_distance_to_nc}"),
-            ("Score global", f"{res_a.overall_score}/10", f"{res_b.overall_score}/10"),
+            (T("Mojado"), res_a.wetting_category, res_b.wetting_category),
+            (T("Dureza"), res_a.estimated_hardness, res_b.estimated_hardness),
+            (T("Flexibilidad"), res_a.estimated_flexibility, res_b.estimated_flexibility),
+            (T("Hansen RED"), f"{res_a.hansen_distance_to_nc}", f"{res_b.hansen_distance_to_nc}"),
+            (T("Score global"), f"{res_a.overall_score}/10", f"{res_b.overall_score}/10"),
         ]
         self.prop_table.setRowCount(len(props))
         for i, (name, va, vb) in enumerate(props):

@@ -69,8 +69,8 @@ class RecipeEditorWidget(QWidget):
 
     def _init_ui(self):
         layout = QVBoxLayout(self)
-        header_group = QGroupBox("Información de la Receta")
-        header_group.setToolTip("Define el nombre y los parámetros objetivo de la receta (viscosidad, sólidos)")
+        header_group = QGroupBox(T("Información de la Receta"))
+        header_group.setToolTip(T("Define el nombre y los parámetros objetivo de la receta (viscosidad, sólidos)"))
 
         header_layout = QFormLayout()
 
@@ -79,37 +79,37 @@ class RecipeEditorWidget(QWidget):
         self.preset_selector.setMinimumWidth(300)
         self._populate_presets()
         self.preset_selector.currentIndexChanged.connect(self._on_preset_selected)
-        self.preset_selector.setToolTip("Selecciona una receta predefinida como punto de partida. Las recetas se cargan desde preset_recipes.yaml")
-        preset_row.addWidget(QLabel("Predefinidas:"))
+        self.preset_selector.setToolTip(T("Selecciona una receta predefinida como punto de partida. Las recetas se cargan desde preset_recipes.yaml"))
+        preset_row.addWidget(QLabel(T("Predefinidas:")))
         preset_row.addWidget(self.preset_selector)
         preset_row.addStretch()
 
         self.name_input = QLineEdit()
-        self.name_input.setPlaceholderText("Nombre de la receta")
-        self.name_input.setToolTip("Nombre descriptivo para tu receta. Aparecerá en la lista de recetas y en los análisis")
+        self.name_input.setPlaceholderText(T("Nombre de la receta"))
+        self.name_input.setToolTip(T("Nombre descriptivo para tu receta. Aparecerá en la lista de recetas y en los análisis"))
         self.target_viscosity = QDoubleSpinBox()
         self.target_viscosity.setRange(50, 5000)
         self.target_viscosity.setSuffix(" mPa·s")
         self.target_viscosity.setValue(500)
-        self.target_viscosity.setToolTip("Viscosidad objetivo en mPa·s. Se usa como referencia en el análisis")
+        self.target_viscosity.setToolTip(T("Viscosidad objetivo en mPa·s. Se usa como referencia en el análisis"))
         self.target_solids = QDoubleSpinBox()
         self.target_solids.setRange(0, 80)
         self.target_solids.setSuffix(" %")
         self.target_solids.setValue(35)
         self.target_solids.setDecimals(1)
         self.target_solids.setSpecialValueText("N/A")
-        self.target_solids.setToolTip("Porcentaje de sólidos objetivo. Ayuda a calcular la formulación esperada")
+        self.target_solids.setToolTip(T("Porcentaje de sólidos objetivo. Ayuda a calcular la formulación esperada"))
 
         header_layout.addRow(preset_row)
-        header_layout.addRow("Nombre:", self.name_input)
-        header_layout.addRow("Viscosidad Objetivo:", self.target_viscosity)
-        header_layout.addRow("Sólidos Objetivo:", self.target_solids)
+        header_layout.addRow(T("Nombre:"), self.name_input)
+        header_layout.addRow(T("Viscosidad Objetivo:"), self.target_viscosity)
+        header_layout.addRow(T("Sólidos Objetivo:"), self.target_solids)
         header_group.setLayout(header_layout)
         layout.addWidget(header_group)
 
         # Tabs: componentes + metadata + análisis + comparación
         tabs = QTabWidget()
-        tabs.setToolTip("Tabs del editor de recetas:\n• Componentes — gestiona los ingredientes\n• Pros/Contras & Hardware — metadatos y notas\n• Análisis de Laca — análisis físico completo\n• Comparar Recetas — comparación lado a lado")
+        tabs.setToolTip(T("Tabs del editor de recetas:\n• Componentes — gestiona los ingredientes\n• Pros/Contras & Hardware — metadatos y notas\n• Análisis de Laca — análisis físico completo\n• Comparar Recetas — comparación lado a lado"))
 
         # Tab de componentes
         comp_widget = QWidget()
@@ -120,11 +120,11 @@ class RecipeEditorWidget(QWidget):
         self.ingredient_selector.setMinimumWidth(300)
         self.ingredient_selector_ingredients = []
         self._populate_selector()
-        self.ingredient_selector.setToolTip("Selecciona un ingrediente de la base de datos para añadirlo a la receta. Los ingredientes se filtran automáticamente")
-        self.add_btn = QPushButton("Añadir Componente")
+        self.ingredient_selector.setToolTip(T("Selecciona un ingrediente de la base de datos para añadirlo a la receta. Los ingredientes se filtran automáticamente"))
+        self.add_btn = QPushButton(T("Añadir Componente"))
         self.add_btn.clicked.connect(self._add_component)
-        self.add_btn.setToolTip("Añade el ingrediente seleccionado a la tabla de componentes con la concentración indicada")
-        add_row.addWidget(QLabel("Añadir desde BD:"))
+        self.add_btn.setToolTip(T("Añade el ingrediente seleccionado a la tabla de componentes con la concentración indicada"))
+        add_row.addWidget(QLabel(T("Añadir desde BD:")))
         add_row.addWidget(self.ingredient_selector)
         add_row.addWidget(self.add_btn)
         add_row.addStretch()
@@ -133,33 +133,33 @@ class RecipeEditorWidget(QWidget):
         self.table = QTableWidget()
         self.table.setColumnCount(4)
         self.table.setHorizontalHeaderLabels([
-            "Ingrediente", "Tipo", "Concentración %", "Máx %"
+            T("Ingrediente"), T("Tipo"), T("Concentración %"), T("Máx %")
         ])
         self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
-        self.table.setToolTip("Tabla de componentes de la receta. Cada fila es un ingrediente con su tipo, concentración y concentración máxima recomendada")
+        self.table.setToolTip(T("Tabla de componentes de la receta. Cada fila es un ingrediente con su tipo, concentración y concentración máxima recomendada"))
         comp_layout.addWidget(self.table)
 
         btn_row = QHBoxLayout()
-        self.remove_btn = QPushButton("Quitar Seleccionado")
+        self.remove_btn = QPushButton(T("Quitar Seleccionado"))
         self.remove_btn.clicked.connect(self._remove_component)
-        self.remove_btn.setToolTip("Elimina el componente seleccionado de la tabla")
-        self.clear_btn = QPushButton("Limpiar Todo")
+        self.remove_btn.setToolTip(T("Elimina el componente seleccionado de la tabla"))
+        self.clear_btn = QPushButton(T("Limpiar Todo"))
         self.clear_btn.clicked.connect(self._clear_recipe)
-        self.clear_btn.setToolTip("Elimina todos los componentes de la receta")
-        self.save_preset_btn = QPushButton("Guardar como Preset")
+        self.clear_btn.setToolTip(T("Elimina todos los componentes de la receta"))
+        self.save_preset_btn = QPushButton(T("Guardar como Preset"))
         self.save_preset_btn.setStyleSheet(
             "background-color: #FF9800; color: white; font-weight: bold; padding: 6px;"
         )
         self.save_preset_btn.clicked.connect(self._save_custom_preset)
-        self.save_preset_btn.setToolTip("Guarda la receta actual como un preset personalizado para usarlo después")
+        self.save_preset_btn.setToolTip(T("Guarda la receta actual como un preset personalizado para usarlo después"))
         btn_row.addWidget(self.remove_btn)
         btn_row.addWidget(self.clear_btn)
         btn_row.addStretch()
         btn_row.addWidget(self.save_preset_btn)
         comp_layout.addLayout(btn_row)
 
-        tabs.addTab(comp_widget, "Componentes")
+        tabs.addTab(comp_widget, T("Componentes"))
 
         # Tab de metadatos (pros/cons/hardware)
         meta_widget = QWidget()
@@ -167,22 +167,22 @@ class RecipeEditorWidget(QWidget):
 
         meta_header = QHBoxLayout()
         meta_header.addWidget(QLabel(""))
-        self.translate_meta_btn = QPushButton("🌐 Traducir")
+        self.translate_meta_btn = QPushButton(T("🌐 Traducir"))
         self.translate_meta_btn.setMaximumWidth(120)
         self.translate_meta_btn.clicked.connect(self._on_translate_meta)
-        self.translate_meta_btn.setToolTip("Traduce el contenido de metadatos al idioma seleccionado usando el LLM")
+        self.translate_meta_btn.setToolTip(T("Traduce el contenido de metadatos al idioma seleccionado usando el LLM"))
         meta_header.addWidget(self.translate_meta_btn)
         meta_header.addStretch()
         meta_layout.addLayout(meta_header)
         self.metadata_text = QTextEdit()
         self.metadata_text.setReadOnly(True)
-        self.metadata_text.setPlaceholderText(
+        self.metadata_text.setPlaceholderText(T(
             "Carga una receta predefinida para ver sus pros, contras, "
             "hardware recomendado y casos de uso."
-        )
-        self.metadata_text.setToolTip("Metadatos de la receta: mejores usos, pros, contras y notas de aplicación. Esta información se guarda con la receta")
+        ))
+        self.metadata_text.setToolTip(T("Metadatos de la receta: mejores usos, pros, contras y notas de aplicación. Esta información se guarda con la receta"))
         meta_layout.addWidget(self.metadata_text)
-        tabs.addTab(meta_widget, "Pros/Contras & Hardware")
+        tabs.addTab(meta_widget, T("Pros/Contras & Hardware"))
 
         # Tab de análisis
         self.analysis_panel = RecipeAnalysisPanel()
@@ -190,11 +190,11 @@ class RecipeEditorWidget(QWidget):
         self.analysis_panel.result_widget.translate_requested.connect(
             lambda text, lang: self.translate_requested.emit(text, lang)
         )
-        tabs.addTab(self.analysis_panel, "Análisis de Laca")
+        tabs.addTab(self.analysis_panel, T("Análisis de Laca"))
 
         # Tab de comparación
         self.comparison = RecipeComparisonWidget()
-        tabs.addTab(self.comparison, "Comparar Recetas")
+        tabs.addTab(self.comparison, T("Comparar Recetas"))
 
         layout.addWidget(tabs)
 
@@ -254,26 +254,26 @@ class RecipeEditorWidget(QWidget):
         """Guarda la receta actual como preset personalizado."""
         recipe = self.get_recipe()
         if not recipe:
-            QMessageBox.warning(self, "Guardar Preset", "No hay receta para guardar")
+            QMessageBox.warning(self, T("Guardar Preset"), T("No hay receta para guardar"))
             return
 
         from PySide6.QtWidgets import QDialog, QVBoxLayout, QFormLayout, QLineEdit, QTextEdit, QDialogButtonBox
 
         dialog = QDialog(self)
-        dialog.setWindowTitle("Guardar como Preset Personalizado")
+        dialog.setWindowTitle(T("Guardar como Preset Personalizado"))
         dialog.setMinimumWidth(450)
         layout = QVBoxLayout(dialog)
         form = QFormLayout()
 
         name_input = QLineEdit(recipe.name)
-        form.addRow("Nombre:", name_input)
+        form.addRow(T("Nombre:"), name_input)
 
         id_input = QLineEdit(f"CUSTOM-{int(time.time())}")
-        form.addRow("ID:", id_input)
+        form.addRow(T("ID:"), id_input)
 
         notes_input = QTextEdit()
-        notes_input.setPlaceholderText("Notas sobre esta receta...")
-        form.addRow("Notas:", notes_input)
+        notes_input.setPlaceholderText(T("Notas sobre esta receta..."))
+        form.addRow(T("Notas:"), notes_input)
 
         layout.addLayout(form)
 
@@ -294,8 +294,8 @@ class RecipeEditorWidget(QWidget):
             "coater": recipe.coater_type or "burkle",
             "notes": notes_input.toPlainText().strip(),
             "metadata": {
-                "best_for": "Preset personalizado",
-                "pros": ["Creado por el usuario"],
+                "best_for": T("Preset personalizado"),
+                "pros": [T("Creado por el usuario")],
                 "cons": [],
             },
             "components": [
@@ -347,16 +347,16 @@ class RecipeEditorWidget(QWidget):
             self._update_comparison_list()
 
             QMessageBox.information(
-                self, "Guardado",
-                f"Preset '{preset['name']}' guardado."
+                self, T("Guardado"),
+                T("Preset '{name}' guardado.").format(name=preset['name'])
             )
         except Exception as e:
-            QMessageBox.critical(self, "Error", f"No se pudo guardar: {e}")
+            QMessageBox.critical(self, T("Error"), T("No se pudo guardar: {error}").format(error=e))
 
     def _populate_presets(self):
         self.preset_selector.blockSignals(True)
         self.preset_selector.clear()
-        self.preset_selector.addItem("— Cargar receta predefinida —", None)
+        self.preset_selector.addItem(T("— Cargar receta predefinida —"), None)
         for p in self._presets:
             self.preset_selector.addItem(
                 f"{p.get('name', '?')}  ({p.get('id', '')})", p
@@ -387,7 +387,7 @@ class RecipeEditorWidget(QWidget):
 
         recipe = LacquerRecipe(
             id=data.get("id", "preset"),
-            name=data.get("name", "Receta Predefinida"),
+            name=data.get("name", T("Receta Predefinida")),
             components=components,
             target_viscosity_mpas=data.get("target_viscosity_mpas"),
             target_solids_pct=data.get("target_solids_pct"),
@@ -404,63 +404,63 @@ class RecipeEditorWidget(QWidget):
             meta = self.current_recipe.metadata
 
         if not meta:
-            self.metadata_text.setPlainText(
+            self.metadata_text.setPlainText(T(
                 "Esta receta no tiene metadatos asociados.\n"
                 "Los metadatos están disponibles solo para recetas predefinidas."
-            )
+            ))
             return
 
         lines = []
         if meta.get("best_for"):
-            lines.append("🎯 MEJOR PARA:")
+            lines.append(T("🎯 MEJOR PARA:"))
             lines.append(f"   {meta['best_for']}")
             lines.append("")
 
         if meta.get("pros"):
-            lines.append("✅ VENTAJAS:")
+            lines.append(T("✅ VENTAJAS:"))
             for p in meta["pros"]:
                 lines.append(f"   • {p}")
             lines.append("")
 
         if meta.get("cons"):
-            lines.append("⚠️  DESVENTAJAS:")
+            lines.append(T("⚠️  DESVENTAJAS:"))
             for c in meta["cons"]:
                 lines.append(f"   • {c}")
             lines.append("")
 
         if meta.get("hardware"):
             hw = meta["hardware"]
-            lines.append("🔧 HARDWARE RECOMENDADO:")
+            lines.append(T("🔧 HARDWARE RECOMENDADO:"))
             if hw.get("coater_type"):
-                lines.append(f"   Cortinado: {hw['coater_type']}")
+                lines.append(f"   {T('Cortinado:')} {hw['coater_type']}")
             if hw.get("drying"):
-                lines.append(f"   Secado: {hw['drying']}")
+                lines.append(f"   {T('Secado:')} {hw['drying']}")
             if hw.get("curing"):
-                lines.append(f"   Curado: {hw['curing']}")
+                lines.append(f"   {T('Curado:')} {hw['curing']}")
             if hw.get("cutting_lathe"):
-                lines.append(f"   Torno: {hw['cutting_lathe']}")
+                lines.append(f"   {T('Torno:')} {hw['cutting_lathe']}")
             if hw.get("stylus"):
-                lines.append(f"   Aguja: {hw['stylus']}")
+                lines.append(f"   {T('Aguja:')} {hw['stylus']}")
             if hw.get("rectifier"):
-                lines.append(f"   Rectificador: {hw['rectifier']}")
+                lines.append(f"   {T('Rectificador:')} {hw['rectifier']}")
             if hw.get("tank"):
-                lines.append(f"   Tanque: {hw['tank']}")
+                lines.append(f"   {T('Tanque:')} {hw['tank']}")
             if hw.get("anodes"):
-                lines.append(f"   Ánodos: {hw['anodes']}")
+                lines.append(f"   {T('Ánodos:')} {hw['anodes']}")
             if hw.get("filtration"):
-                lines.append(f"   Filtración: {hw['filtration']}")
+                lines.append(f"   {T('Filtración:')} {hw['filtration']}")
             if hw.get("temperature"):
-                lines.append(f"   Temperatura: {hw['temperature']}")
+                lines.append(f"   {T('Temperatura:')} {hw['temperature']}")
             lines.append("")
 
         if meta.get("common_issues"):
-            lines.append("🔴 PROBLEMAS COMUNES Y SOLUCIONES:")
+            lines.append(T("🔴 PROBLEMAS COMUNES Y SOLUCIONES:"))
             for issue in meta["common_issues"]:
                 lines.append(f"   • {issue}")
             lines.append("")
 
         if self.current_recipe and self.current_recipe.notes:
-            lines.append("📝 NOTAS:")
+            lines.append(T("📝 NOTAS:"))
             lines.append(f"   {self.current_recipe.notes}")
 
         self.metadata_text.setPlainText("\n".join(lines))
@@ -586,7 +586,7 @@ class RecipeEditorWidget(QWidget):
 
         return LacquerRecipe(
             id="manual",
-            name=self.name_input.text() or "Receta sin Título",
+            name=self.name_input.text() or T("Receta sin Título"),
             components=components,
             target_viscosity_mpas=self.target_viscosity.value(),
             target_solids_pct=self.target_solids.value()
@@ -662,7 +662,7 @@ class RecipeEditorWidget(QWidget):
 
             recipe = LacquerRecipe(
                 id=data.get("id", "imported"),
-                name=data.get("name", "Receta Importada"),
+                name=data.get("name", T("Receta Importada")),
                 components=components,
                 target_viscosity_mpas=data.get("target_viscosity_mpas"),
                 target_solids_pct=data.get("target_solids_pct"),
@@ -674,12 +674,12 @@ class RecipeEditorWidget(QWidget):
             self.set_recipe(recipe)
 
         except Exception as e:
-            QMessageBox.critical(self, "Error de Importación", str(e))
+            QMessageBox.critical(self, T("Error de Importación"), str(e))
 
     def export_recipe(self, path: str):
         recipe = self.get_recipe()
         if not recipe:
-            QMessageBox.warning(self, "Exportar", "No hay receta para exportar")
+            QMessageBox.warning(self, T("Exportar"), T("No hay receta para exportar"))
             return
         data = {
             "id": recipe.id,

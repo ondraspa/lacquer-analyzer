@@ -4,6 +4,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt, Signal, QSize
 from PySide6.QtGui import QFont, QPixmap, QPainter, QColor, QPen, QBrush
+from core.translations import T
 
 
 class SectionCard(QFrame):
@@ -60,7 +61,7 @@ class SectionCard(QFrame):
             feat_label.setStyleSheet("color: rgba(255,255,255,0.9); font-size: 11px;")
             layout.addWidget(feat_label)
 
-        hint = QLabel("🖱️ Haz clic para abrir")
+        hint = QLabel(T("🖱️ Haz clic para abrir"))
         hint.setStyleSheet("color: rgba(255,255,255,0.5); font-size: 10px; font-style: italic;")
         hint.setAlignment(Qt.AlignRight)
         layout.addWidget(hint)
@@ -112,7 +113,7 @@ class WelcomeScreen(QWidget):
         main_layout.setSpacing(16)
 
         # ── Header ──
-        header = QLabel("🏭  Lacquer Analyzer")
+        header = QLabel(T("🏭  Lacquer Analyzer"))
         hf = QFont()
         hf.setPointSize(28)
         hf.setBold(True)
@@ -120,7 +121,7 @@ class WelcomeScreen(QWidget):
         header.setStyleSheet("color: white;")
         main_layout.addWidget(header)
 
-        subtitle = QLabel("Plataforma integral para formulación, análisis y control de calidad de lacas de corte")
+        subtitle = QLabel(T("Plataforma integral para formulación, análisis y control de calidad de lacas de corte"))
         subtitle.setWordWrap(True)
         subtitle.setStyleSheet("color: rgba(255,255,255,0.7); font-size: 14px;")
         main_layout.addWidget(subtitle)
@@ -129,10 +130,10 @@ class WelcomeScreen(QWidget):
         status_row = QHBoxLayout()
         status_row.setSpacing(12)
         status_items = [
-            ("🧪", "Ingredientes en BD", "—", "#aaa"),
-            ("📋", "Recetas cargadas", "—", "#aaa"),
-            ("🧠", "Base de Conocimiento", "—", "#aaa"),
-            ("🔗", "LLM", "No verificado", "#ff9800"),
+            ("🧪", T("Ingredientes en BD"), T("—"), "#aaa"),
+            ("📋", T("Recetas cargadas"), T("—"), "#aaa"),
+            ("🧠", T("Base de Conocimiento"), T("—"), "#aaa"),
+            ("🔗", T("LLM"), T("No verificado"), "#ff9800"),
         ]
         for icon, label, status, color in status_items:
             s = StatusIndicator(icon, label, status, color)
@@ -142,7 +143,7 @@ class WelcomeScreen(QWidget):
         main_layout.addSpacing(12)
 
         # ── Section cards grid ──
-        grid_label = QLabel("Módulos del sistema")
+        grid_label = QLabel(T("Módulos del sistema"))
         gf = QFont()
         gf.setPointSize(14)
         gf.setBold(True)
@@ -152,51 +153,51 @@ class WelcomeScreen(QWidget):
 
         cards = [
             SectionCard(
-                "🧪", "Formulación de Laca",
-                "Crea, analiza y optimiza recetas de laca. Busca ingredientes, "
-                "ejecuta análisis físico-químico completo y compara variantes lado a lado.",
-                ["Editor de recetas con tabla de componentes", "Análisis: viscosidad, evaporación, defectos, mojado",
-                 "Comparador de recetas lado a lado", "Búsqueda multi-fuente (PubChem, Wikipedia, SpecialChem)"],
+                "🧪", T("Formulación de Laca"),
+                T("Crea, analiza y optimiza recetas de laca. Busca ingredientes, "
+                "ejecuta análisis físico-químico completo y compara variantes lado a lado."),
+                [T("Editor de recetas con tabla de componentes"), T("Análisis: viscosidad, evaporación, defectos, mojado"),
+                 T("Comparador de recetas lado a lado"), T("Búsqueda multi-fuente (PubChem, Wikipedia, SpecialChem)")],
                 1, "#1a3a6a"
             ),
             SectionCard(
-                "🚀", "Mejorador de Fórmulas (Enhancer)",
-                "Potencia tus formulaciones con análisis inteligente. "
-                "Recibe sugerencias de optimización basadas en propiedades objetivo.",
-                ["Análisis de compatibilidad Hansen", "Puntuación global 0-100 con desglose",
-                 "Sugerencias de modificación automáticas", "Traducción de advertencias con LLM"],
+                "🚀", T("Mejorador de Fórmulas (Enhancer)"),
+                T("Potencia tus formulaciones con análisis inteligente. "
+                "Recibe sugerencias de optimización basadas en propiedades objetivo."),
+                [T("Análisis de compatibilidad Hansen"), T("Puntuación global 0-100 con desglose"),
+                 T("Sugerencias de modificación automáticas"), T("Traducción de advertencias con LLM")],
                 1, "#1a5a3a"
             ),
             SectionCard(
-                "🔧", "Solucionador de Problemas",
-                "Diagnostica y resuelve defectos de formulación con la ayuda "
-                "de la base de conocimiento y el LLM.",
-                ["Base de datos de defectos por etapa del proceso", "Buscador con filtros por severidad y etapa",
-                 "P&R con LLM sobre causas y soluciones", "Referencias del foro Lathe Trolls"],
+                "🔧", T("Solucionador de Problemas"),
+                T("Diagnostica y resuelve defectos de formulación con la ayuda "
+                "de la base de conocimiento y el LLM."),
+                [T("Base de datos de defectos por etapa del proceso"), T("Buscador con filtros por severidad y etapa"),
+                 T("P&R con LLM sobre causas y soluciones"), T("Referencias del foro Lathe Trolls")],
                 4, "#5a3a1a"
             ),
             SectionCard(
-                "⚡", "Galvanoplastia",
-                "Configura y optimiza baños galvánicos de plata y níquel sulfamato "
-                "para procesos de electroformado.",
-                ["Parámetros de baño: temperatura, pH, densidad de corriente", "Matriz de compatibilidad de solventes",
-                 "Guías de prevención de defectos galvánicos", "P&R especializado en galvanoplastia"],
+                "⚡", T("Galvanoplastia"),
+                T("Configura y optimiza baños galvánicos de plata y níquel sulfamato "
+                "para procesos de electroformado."),
+                [T("Parámetros de baño: temperatura, pH, densidad de corriente"), T("Matriz de compatibilidad de solventes"),
+                 T("Guías de prevención de defectos galvánicos"), T("P&R especializado en galvanoplastia")],
                 2, "#3a1a5a"
             ),
             SectionCard(
-                "🔄", "Prensado",
-                "Gestiona parámetros de prensado, especificaciones de disco y "
-                "lleva el registro histórico de producción.",
-                ["Temperatura, presión y tiempos de prensado/enfriamiento", "Especificaciones: tamaño, grosor, peso",
-                 "Registro de producción con historial", "Referencias de defectos de prensado"],
+                "🔄", T("Prensado"),
+                T("Gestiona parámetros de prensado, especificaciones de disco y "
+                "lleva el registro histórico de producción."),
+                [T("Temperatura, presión y tiempos de prensado/enfriamiento"), T("Especificaciones: tamaño, grosor, peso"),
+                 T("Registro de producción con historial"), T("Referencias de defectos de prensado")],
                 3, "#1a3a5a"
             ),
             SectionCard(
-                "🧠", "RAG & Base de Conocimiento",
-                "Construye y consulta tu base de conocimiento con RAG. "
-                "Importa datos del foro, PDFs, patentes y haz preguntas con LLM.",
-                ["Importación multi-fuente (foro, PDF, Wikipedia, PubChem)", "Pipeline RAG completo con fragmentación",
-                 "Q&A inteligente con contexto recuperado", "Explorador de datos con mapa mental"],
+                "🧠", T("RAG & Base de Conocimiento"),
+                T("Construye y consulta tu base de conocimiento con RAG. "
+                "Importa datos del foro, PDFs, patentes y haz preguntas con LLM."),
+                [T("Importación multi-fuente (foro, PDF, Wikipedia, PubChem)"), T("Pipeline RAG completo con fragmentación"),
+                 T("Q&A inteligente con contexto recuperado"), T("Explorador de datos con mapa mental")],
                 5, "#2a4a3a"
             ),
         ]
@@ -212,11 +213,11 @@ class WelcomeScreen(QWidget):
         main_layout.addStretch()
 
         # ── Footer ──
-        footer = QLabel(
+        footer = QLabel(T(
             "💡 Pasa el ratón sobre cualquier elemento para ver ayuda  ·  "
             "Usa el menú Ayuda → Guía de uso para una explicación detallada  ·  "
             "Selecciona 🇪🇸/🇬🇧 en la barra para cambiar idioma"
-        )
+        ))
         footer.setWordWrap(True)
         footer.setStyleSheet("color: rgba(255,255,255,0.4); font-size: 11px;")
         footer.setAlignment(Qt.AlignCenter)

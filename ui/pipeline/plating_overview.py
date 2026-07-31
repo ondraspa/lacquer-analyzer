@@ -9,6 +9,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QBrush, QFont
 
 from core.models import FormulationAnalysisResult
+from core.translations import T
 
 
 class PlatingOverviewWidget(QWidget):
@@ -19,11 +20,11 @@ class PlatingOverviewWidget(QWidget):
     def _init_ui(self):
         layout = QVBoxLayout(self)
 
-        seq_group = QGroupBox("Parámetros de Recubrimiento Recomendados")
+        seq_group = QGroupBox(T("Parámetros de Recubrimiento Recomendados"))
         seq_layout = QVBoxLayout()
         self.seq_text = QTextEdit()
         self.seq_text.setReadOnly(True)
-        self.seq_text.setHtml("""
+        self.seq_text.setHtml(T("""
         <h3>Rangos de Parámetros de Recubrimiento</h3>
         <table border='1' cellpadding='5'>
         <tr><th>Parámetro</th><th>Rango Típico</th><th>Notas</th></tr>
@@ -38,19 +39,19 @@ class PlatingOverviewWidget(QWidget):
         <tr><td>Tasa de Evap. de Solvente</td><td>0.5–3.0 (BuOAc=1)</td>
           <td>Mezcla rápida/media/lenta para prevenir empañamiento</td></tr>
         </table>
-        """)
-        self.seq_text.setToolTip("Parámetros recomendados para cada etapa del recubrimiento galvánico: espesores, densidades de corriente, temperaturas")
+        """))
+        self.seq_text.setToolTip(T("Parámetros recomendados para cada etapa del recubrimiento galvánico: espesores, densidades de corriente, temperaturas"))
         seq_layout.addWidget(self.seq_text)
         seq_group.setLayout(seq_layout)
         layout.addWidget(seq_group)
 
-        cross_group = QGroupBox("Matriz de Compatibilidad de Solventes")
+        cross_group = QGroupBox(T("Matriz de Compatibilidad de Solventes"))
         cross_layout = QVBoxLayout()
 
         self.cross_table = QTableWidget()
         self.cross_table.setColumnCount(4)
         self.cross_table.setHorizontalHeaderLabels([
-            "Componente", "Solvente Activo", "Solvente de Cola", "Aditivo"
+            T("Componente"), T("Solvente Activo"), T("Solvente de Cola"), T("Aditivo")
         ])
 
         data = [
@@ -72,16 +73,16 @@ class PlatingOverviewWidget(QWidget):
                 self.cross_table.setItem(row, col, item)
 
         self.cross_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.cross_table.setToolTip("Matriz de compatibilidad entre solventes. Muestra qué solventes son miscibles entre sí")
+        self.cross_table.setToolTip(T("Matriz de compatibilidad entre solventes. Muestra qué solventes son miscibles entre sí"))
         cross_layout.addWidget(self.cross_table)
         cross_group.setLayout(cross_layout)
         layout.addWidget(cross_group)
 
-        mit_group = QGroupBox("Guías de Prevención de Defectos")
+        mit_group = QGroupBox(T("Guías de Prevención de Defectos"))
         mit_layout = QVBoxLayout()
         self.mit_text = QTextEdit()
         self.mit_text.setReadOnly(True)
-        self.mit_text.setHtml("""
+        self.mit_text.setHtml(T("""
         <h3>Prevención de Defectos Comunes de Recubrimiento</h3>
         <h4>Piel de Naranja:</h4>
         <ul>
@@ -102,8 +103,8 @@ class PlatingOverviewWidget(QWidget):
           <li>Controlar humedad (40–60% HR)</li>
           <li>Evitar fracciones altas de solvente rápido</li>
         </ul>
-        """)
-        self.mit_text.setToolTip("Guías de prevención de defectos comunes en galvanoplastia: causas y soluciones")
+        """))
+        self.mit_text.setToolTip(T("Guías de prevención de defectos comunes en galvanoplastia: causas y soluciones"))
         mit_layout.addWidget(self.mit_text)
         mit_group.setLayout(mit_layout)
         layout.addWidget(mit_group)
@@ -111,9 +112,15 @@ class PlatingOverviewWidget(QWidget):
     def show_results(self, result: FormulationAnalysisResult):
         c = result.coating_analysis
         self.seq_text.append(
-            f"\n<h3>Receta Actual: {result.recipe.name}</h3>"
-            f"<p>Balance de Solventes: <b>{c.solvent_balance.title()}</b></p>"
-            f"<p>Riesgo de Empañamiento: <b>{c.blush_risk.title()}</b></p>"
-            f"<p>Solvencia: <b>{c.solvency_quality.title()}</b></p>"
-            f"<p>Riesgo General: <b>{result.overall_risk}</b></p>"
+            T("\n<h3>Receta Actual: {name}</h3>"
+              "<p>Balance de Solventes: <b>{balance}</b></p>"
+              "<p>Riesgo de Empañamiento: <b>{blush}</b></p>"
+              "<p>Solvencia: <b>{solvency}</b></p>"
+              "<p>Riesgo General: <b>{risk}</b></p>").format(
+                name=result.recipe.name,
+                balance=c.solvent_balance.title(),
+                blush=c.blush_risk.title(),
+                solvency=c.solvency_quality.title(),
+                risk=result.overall_risk,
+            )
         )

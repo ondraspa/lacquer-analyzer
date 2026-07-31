@@ -13,6 +13,8 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, QTimer, Signal
 from PySide6.QtGui import QFont
 
+from core.translations import T
+
 from src.data_analyzer import analyze_entries
 from src.data_logger import ImportLog
 
@@ -34,7 +36,7 @@ class DataExplorerDialog(QDialog):
     def __init__(self, parent=None, kb=None, llm=None, scraper=None,
                  settings=None):
         super().__init__(parent)
-        self.setWindowTitle("Centro de Datos — Importación y Exploración")
+        self.setWindowTitle(T("Centro de Datos — Importación y Exploración"))
         self.setMinimumSize(950, 700)
         self.resize(1050, 750)
         self.kb = kb
@@ -56,7 +58,7 @@ class DataExplorerDialog(QDialog):
         tb_layout = QHBoxLayout(toolbar)
         tb_layout.setContentsMargins(4, 4, 4, 4)
 
-        tb_layout.addWidget(QLabel("<b>Importar:</b>"))
+        tb_layout.addWidget(QLabel(T("<b>Importar:</b>")))
 
         self.import_mirror_btn = QPushButton("🌐 Duplicar Foro")
         self.import_mirror_btn.setToolTip("Duplicar todas las categorías del foro Lathe Trolls")
@@ -118,11 +120,11 @@ class DataExplorerDialog(QDialog):
         map_layout.addWidget(map_splitter, 1)
 
         map_toolbar = QHBoxLayout()
-        map_fit_btn = QPushButton("⊞ Ajustar Todo")
+        map_fit_btn = QPushButton(T("⊞ Ajustar Todo"))
         map_fit_btn.setToolTip("Ajusta la vista del mapa al tamaño de la ventana")
         map_fit_btn.clicked.connect(lambda: self.map_view.fit_all())
         map_toolbar.addWidget(map_fit_btn)
-        map_collapse_btn = QPushButton("⊟ Colapsar Todo")
+        map_collapse_btn = QPushButton(T("⊟ Colapsar Todo"))
         map_collapse_btn.setToolTip("Colapsa todos los nodos del mapa")
         map_collapse_btn.clicked.connect(self._map_collapse_all)
         map_toolbar.addWidget(map_collapse_btn)
@@ -133,7 +135,7 @@ class DataExplorerDialog(QDialog):
         self.map_view.category_clicked.connect(self._map_category_clicked)
         self.map_view.rebuild_requested.connect(self._rebuild_map)
 
-        tabs.addTab(map_tab, "🗺 Vista de Mapa")
+        tabs.addTab(map_tab, T("🗺 Vista de Mapa"))
 
         # Tab 1: Overview
         overview = QWidget()
@@ -142,25 +144,25 @@ class DataExplorerDialog(QDialog):
         self.stats_area.setReadOnly(True)
         self.stats_area.setToolTip("Estadísticas de la base de conocimiento: número de entradas por tipo y categoría")
         overview_layout.addWidget(self.stats_area, 1)
-        refresh_btn = QPushButton("Actualizar Estadísticas")
+        refresh_btn = QPushButton(T("Actualizar Estadísticas"))
         refresh_btn.setToolTip("Actualiza las estadísticas")
         refresh_btn.clicked.connect(self._refresh_stats)
         overview_layout.addWidget(refresh_btn)
-        tabs.addTab(overview, "Resumen")
+        tabs.addTab(overview, T("Resumen"))
 
         # Tab 2: Browse
         browse = QWidget()
         browse_layout = QVBoxLayout(browse)
         filter_row = QHBoxLayout()
-        filter_row.addWidget(QLabel("Filtro:"))
+        filter_row.addWidget(QLabel(T("Filtro:")))
         self.browse_filter = QLineEdit()
         self.browse_filter.setToolTip("Filtra entradas por palabra clave")
-        self.browse_filter.setPlaceholderText("categoría, título u origen...")
+        self.browse_filter.setPlaceholderText(T("categoría, título u origen..."))
         self.browse_filter.textChanged.connect(self._populate_browse)
         filter_row.addWidget(self.browse_filter, 1)
         self.browse_source_filter = QLineEdit()
         self.browse_source_filter.setToolTip("Filtra entradas por fuente de importación")
-        self.browse_source_filter.setPlaceholderText("tipo de origen")
+        self.browse_source_filter.setPlaceholderText(T("tipo de origen"))
         self.browse_source_filter.textChanged.connect(self._populate_browse)
         filter_row.addWidget(self.browse_source_filter, 1)
         browse_layout.addLayout(filter_row)
@@ -173,23 +175,23 @@ class DataExplorerDialog(QDialog):
         self.browse_preview.setMaximumHeight(220)
         browse_layout.addWidget(self.browse_preview)
         browse_btn_row = QHBoxLayout()
-        self.browse_edit_cat_btn = QPushButton("✎ Editar Categoría")
+        self.browse_edit_cat_btn = QPushButton(T("✎ Editar Categoría"))
         self.browse_edit_cat_btn.setToolTip("Edita la entrada de conocimiento seleccionada")
         self.browse_edit_cat_btn.clicked.connect(self._browse_edit_category)
         browse_btn_row.addWidget(self.browse_edit_cat_btn)
-        self.browse_delete_btn = QPushButton("✕ Eliminar Entrada")
+        self.browse_delete_btn = QPushButton(T("✕ Eliminar Entrada"))
         self.browse_delete_btn.setToolTip("Elimina la entrada de conocimiento seleccionada")
         self.browse_delete_btn.setStyleSheet("color: #e74c3c;")
         self.browse_delete_btn.clicked.connect(self._browse_delete_entry)
         browse_btn_row.addWidget(self.browse_delete_btn)
         browse_btn_row.addStretch()
-        self.browse_delete_all_btn = QPushButton("🗑 Eliminar Todas las Entradas")
+        self.browse_delete_all_btn = QPushButton(T("🗑 Eliminar Todas las Entradas"))
         self.browse_delete_all_btn.setToolTip("Elimina TODAS las entradas de conocimiento (con confirmación)")
         self.browse_delete_all_btn.setStyleSheet("color: #c0392b; font-weight: bold;")
         self.browse_delete_all_btn.clicked.connect(self._browse_delete_all)
         browse_btn_row.addWidget(self.browse_delete_all_btn)
         browse_layout.addLayout(browse_btn_row)
-        tabs.addTab(browse, "Navegar")
+        tabs.addTab(browse, T("Navegar"))
 
         # Tab 3: Search
         search = QWidget()
@@ -197,14 +199,14 @@ class DataExplorerDialog(QDialog):
         srow = QHBoxLayout()
         self.search_input = QLineEdit()
         self.search_input.setToolTip("Término de búsqueda en la base de conocimiento")
-        self.search_input.setPlaceholderText("Buscar en todo el conocimiento...")
+        self.search_input.setPlaceholderText(T("Buscar en todo el conocimiento..."))
         self.search_input.returnPressed.connect(self._do_search)
         srow.addWidget(self.search_input)
-        sbtn = QPushButton("Buscar")
+        sbtn = QPushButton(T("Buscar"))
         sbtn.setToolTip("Ejecuta la búsqueda")
         sbtn.clicked.connect(self._do_search)
         srow.addWidget(sbtn)
-        srow.addWidget(QLabel("Máx:"))
+        srow.addWidget(QLabel(T("Máx:")))
         self.search_max = QLineEdit("20")
         self.search_max.setToolTip("Máximo de resultados a mostrar")
         self.search_max.setMaximumWidth(50)
@@ -218,7 +220,7 @@ class DataExplorerDialog(QDialog):
         self.search_preview.setToolTip("Vista previa del resultado seleccionado")
         self.search_preview.setMaximumHeight(220)
         search_layout.addWidget(self.search_preview)
-        tabs.addTab(search, "Buscar")
+        tabs.addTab(search, T("Buscar"))
 
         # Tab 4: Analysis
         analysis = QWidget()
@@ -227,11 +229,11 @@ class DataExplorerDialog(QDialog):
         self.analysis_area.setReadOnly(True)
         self.analysis_area.setToolTip("Análisis y estadísticas del contenido de la base de conocimiento")
         analysis_layout.addWidget(self.analysis_area, 1)
-        analyze_btn = QPushButton("Ejecutar Análisis de Compatibilidad")
+        analyze_btn = QPushButton(T("Ejecutar Análisis de Compatibilidad"))
         analyze_btn.setToolTip("Ejecuta el análisis de la base de conocimiento")
         analyze_btn.clicked.connect(self._run_analysis)
         analysis_layout.addWidget(analyze_btn)
-        tabs.addTab(analysis, "Análisis")
+        tabs.addTab(analysis, T("Análisis"))
 
         # Tab 5: Import Log
         log_tab = QWidget()
@@ -240,15 +242,15 @@ class DataExplorerDialog(QDialog):
         self.log_area.setReadOnly(True)
         self.log_area.setToolTip("Registro histórico de todas las importaciones realizadas")
         log_layout.addWidget(self.log_area, 1)
-        log_refresh_btn = QPushButton("Actualizar Registro")
+        log_refresh_btn = QPushButton(T("Actualizar Registro"))
         log_refresh_btn.setToolTip("Actualiza el registro de importación")
         log_refresh_btn.clicked.connect(self._refresh_log)
         log_layout.addWidget(log_refresh_btn)
-        log_clear_btn = QPushButton("Limpiar Registro")
+        log_clear_btn = QPushButton(T("Limpiar Registro"))
         log_clear_btn.setToolTip("Limpia el registro de importación")
         log_clear_btn.clicked.connect(self._clear_log)
         log_layout.addWidget(log_clear_btn)
-        tabs.addTab(log_tab, "Registro de Importación")
+        tabs.addTab(log_tab, T("Registro de Importación"))
 
         # Tab 6: Corrections
         corr_tab = QWidget()
@@ -262,11 +264,11 @@ class DataExplorerDialog(QDialog):
         self.corr_preview.setToolTip("Vista previa de la corrección seleccionada")
         self.corr_preview.setMaximumHeight(150)
         corr_layout.addWidget(self.corr_preview)
-        corr_del = QPushButton("Eliminar Corrección Seleccionada")
+        corr_del = QPushButton(T("Eliminar Corrección Seleccionada"))
         corr_del.setToolTip("Elimina la corrección seleccionada")
         corr_del.clicked.connect(self._delete_correction)
         corr_layout.addWidget(corr_del)
-        tabs.addTab(corr_tab, "Correcciones")
+        tabs.addTab(corr_tab, T("Correcciones"))
 
         # Tab 7: Organize
         org_tab = QWidget()
@@ -291,22 +293,22 @@ class DataExplorerDialog(QDialog):
         )
         org_layout.addWidget(org_instructions)
 
-        org_tools = QGroupBox("Herramientas de Organización")
+        org_tools = QGroupBox(T("Herramientas de Organización"))
         org_tools_layout = QVBoxLayout(org_tools)
 
         org_btn_row1 = QHBoxLayout()
-        self.org_dedup_btn = QPushButton("🔍 Desduplicar por Título")
+        self.org_dedup_btn = QPushButton(T("🔍 Desduplicar por Título"))
         self.org_dedup_btn.setToolTip("Elimina entradas duplicadas de la base de conocimiento")
         self.org_dedup_btn.clicked.connect(self._org_deduplicate)
         org_btn_row1.addWidget(self.org_dedup_btn)
-        self.org_clean_btn = QPushButton("🧹 Eliminar Entradas < 100 caracteres")
+        self.org_clean_btn = QPushButton(T("🧹 Eliminar Entradas < 100 caracteres"))
         self.org_clean_btn.setToolTip("Limpia y normaliza el formato de las entradas")
         self.org_clean_btn.clicked.connect(self._org_remove_short)
         org_btn_row1.addWidget(self.org_clean_btn)
         org_tools_layout.addLayout(org_btn_row1)
 
         org_btn_row2 = QHBoxLayout()
-        self.org_recat_btn = QPushButton("🏷 Recategorizar por Origen")
+        self.org_recat_btn = QPushButton(T("🏷 Recategorizar por Origen"))
         self.org_recat_btn.setToolTip("Recategoriza entradas según su contenido")
         self.org_recat_btn.clicked.connect(self._org_recategorize)
         org_btn_row2.addWidget(self.org_recat_btn)
@@ -317,10 +319,10 @@ class DataExplorerDialog(QDialog):
         self.org_log = QTextEdit()
         self.org_log.setReadOnly(True)
         self.org_log.setToolTip("Registro de operaciones de organización")
-        self.org_log.setPlaceholderText("Los resultados de organización aparecerán aquí...")
+        self.org_log.setPlaceholderText(T("Los resultados de organización aparecerán aquí..."))
         org_layout.addWidget(self.org_log, 1)
 
-        tabs.addTab(org_tab, "Organizar")
+        tabs.addTab(org_tab, T("Organizar"))
 
         # Tab 8: Export RAG
         export_tab = QWidget()
@@ -348,18 +350,18 @@ class DataExplorerDialog(QDialog):
         export_layout.addWidget(export_instructions)
 
         export_opts = QHBoxLayout()
-        export_opts.addWidget(QLabel("Formato de exportación:"))
+        export_opts.addWidget(QLabel(T("Formato de exportación:")))
         self.export_format = QComboBox()
         self.export_format.setToolTip("Formato de exportación: JSONL, Markdown o Texto Fragmentado")
         self.export_format.addItems(["JSONL", "Markdown", "Texto Fragmentado"])
         export_opts.addWidget(self.export_format)
         export_opts.addStretch()
-        self.export_btn = QPushButton("📦 Exportar Base de Conocimiento RAG")
-        self.export_btn.setToolTip("Exporta la base de conocimiento al formato seleccionado")
+        self.export_btn = QPushButton(T("📦 Exportar Base de Conocimiento RAG"))
+        self.export_btn.setToolTip(T("Exporta la base de conocimiento al formato seleccionado"))
         self.export_btn.setStyleSheet("background: #2196F3; color: white; padding: 6px 16px; font-weight: bold;")
         self.export_btn.clicked.connect(self._export_rag)
         export_opts.addWidget(self.export_btn)
-        self.export_open_btn = QPushButton("📂 Abrir Carpeta de Exportación")
+        self.export_open_btn = QPushButton(T("📂 Abrir Carpeta de Exportación"))
         self.export_open_btn.setToolTip("Abre la carpeta donde se exportaron los archivos")
         self.export_open_btn.clicked.connect(self._export_open_folder)
         export_opts.addWidget(self.export_open_btn)
@@ -368,10 +370,10 @@ class DataExplorerDialog(QDialog):
         self.export_log = QTextEdit()
         self.export_log.setReadOnly(True)
         self.export_log.setToolTip("Registro de la operación de exportación")
-        self.export_log.setPlaceholderText("El registro de exportación aparecerá aquí...")
+        self.export_log.setPlaceholderText(T("El registro de exportación aparecerá aquí..."))
         export_layout.addWidget(self.export_log, 1)
 
-        tabs.addTab(export_tab, "Exportar RAG")
+        tabs.addTab(export_tab, T("Exportar RAG"))
 
         layout.addWidget(tabs, 1)
 
@@ -385,7 +387,7 @@ class DataExplorerDialog(QDialog):
         self.status_label = QLabel("")
         self.status_label.setToolTip("Estado de la operación actual")
         btn_row.addWidget(self.status_label, 1)
-        close_btn = QPushButton("Cerrar")
+        close_btn = QPushButton(T("Cerrar"))
         close_btn.setToolTip("Cierra el explorador de datos")
         close_btn.clicked.connect(self.accept)
         close_btn.setMinimumWidth(120)
@@ -425,7 +427,7 @@ class DataExplorerDialog(QDialog):
         """Open the full Data Import dialog (mirror tab is the most complex)."""
         from gui.data_import import DataImportWidget
         dlg = QDialog(self)
-        dlg.setWindowTitle("Duplicar Foro")
+        dlg.setWindowTitle(T("Duplicar Foro"))
         dlg.setMinimumSize(800, 600)
         dlayout = QVBoxLayout(dlg)
         # Create a DataImportWidget and switch to mirror tab
@@ -434,7 +436,7 @@ class DataExplorerDialog(QDialog):
         dlayout.addWidget(w)
         btn_row = QHBoxLayout()
         btn_row.addStretch()
-        cb = QPushButton("Cerrar")
+        cb = QPushButton(T("Cerrar"))
         cb.clicked.connect(dlg.accept)
         btn_row.addWidget(cb)
         dlayout.addLayout(btn_row)
@@ -443,7 +445,7 @@ class DataExplorerDialog(QDialog):
 
     def _import_markdown(self):
         """Browse for a markdown directory and import (replace or append)."""
-        path = QFileDialog.getExistingDirectory(self, "Seleccionar directorio markdown", "")
+        path = QFileDialog.getExistingDirectory(self, T("Seleccionar directorio markdown"), "")
         if not path:
             return
         self._do_import_markdown(path)
@@ -452,9 +454,9 @@ class DataExplorerDialog(QDialog):
         """Directly import from the known lathetrolls_knowledge_base path."""
         path = str(Path.home() / "lathetrolls_knowledge_base")
         if not Path(path).is_dir():
-            QMessageBox.warning(self, "Ruta No Encontrada",
-                                f"Directorio no encontrado:\n{path}\n\n"
-                                "Ejecuta primero el raspador independiente para poblarlo.")
+            QMessageBox.warning(self, T("Ruta No Encontrada"),
+                                T("Directorio no encontrado:") + f"\n{path}\n\n"
+                                + T("Ejecuta primero el raspador independiente para poblarlo."))
             return
         self._do_import_markdown(path)
 
@@ -463,16 +465,16 @@ class DataExplorerDialog(QDialog):
         from pathlib import Path as _Path
         md_files = list(_Path(path).glob("*.md"))
         if not md_files:
-            QMessageBox.information(self, "Sin Datos", f"No se encontraron archivos .md en {path}")
+            QMessageBox.information(self, T("Sin Datos"), f"{T('No se encontraron archivos .md en')} {path}")
             return
 
         msg = QMessageBox(self)
-        msg.setWindowTitle("Importar Markdown")
-        msg.setText(f"Se encontraron {len(md_files)} archivos en {path}.\n\n"
-                     "Reemplazar limpia la BC actual. Añadir agrega a los datos existentes.")
-        replace_btn = msg.addButton("Reemplazar", QMessageBox.ActionRole)
-        append_btn = msg.addButton("Añadir", QMessageBox.ActionRole)
-        cancel_btn = msg.addButton("Cancelar", QMessageBox.RejectRole)
+        msg.setWindowTitle(T("Importar Markdown"))
+        msg.setText(f"{T('Se encontraron')} {len(md_files)} {T('archivos en')} {path}.\n\n"
+                    + T("Reemplazar limpia la BC actual. Añadir agrega a los datos existentes."))
+        replace_btn = msg.addButton(T("Reemplazar"), QMessageBox.ActionRole)
+        append_btn = msg.addButton(T("Añadir"), QMessageBox.ActionRole)
+        cancel_btn = msg.addButton(T("Cancelar"), QMessageBox.RejectRole)
         msg.setDefaultButton(cancel_btn)
         msg.exec()
         if msg.clickedButton() == cancel_btn:
@@ -503,7 +505,7 @@ class DataExplorerDialog(QDialog):
         """Open the PDF import dialog."""
         from gui.data_import import DataImportWidget
         dlg = QDialog(self)
-        dlg.setWindowTitle("Importar PDF / Libros Escaneados")
+        dlg.setWindowTitle(T("Importar PDF / Libros Escaneados"))
         dlg.setMinimumSize(800, 600)
         dlayout = QVBoxLayout(dlg)
         w = DataImportWidget(llm=self.llm, kb=self.kb, settings=self.settings)
@@ -511,7 +513,7 @@ class DataExplorerDialog(QDialog):
         dlayout.addWidget(w)
         btn_row = QHBoxLayout()
         btn_row.addStretch()
-        cb = QPushButton("Cerrar")
+        cb = QPushButton(T("Cerrar"))
         cb.clicked.connect(dlg.accept)
         btn_row.addWidget(cb)
         dlayout.addLayout(btn_row)
@@ -521,14 +523,14 @@ class DataExplorerDialog(QDialog):
     def _import_cache(self):
         """Import cached JSON files from a folder."""
         folder = QFileDialog.getExistingDirectory(
-            self, "Seleccionar carpeta de caché",
+            self, T("Seleccionar carpeta de caché"),
             str(Path("data/forum_cache").resolve())
         )
         if not folder:
             return
         if not self.scraper:
-            QMessageBox.warning(self, "Sin Raspador",
-                                "El raspador del foro no está disponible en este contexto.")
+            QMessageBox.warning(self, T("Sin Raspador"),
+                                T("El raspador del foro no está disponible en este contexto."))
             return
         self.progress_bar.setVisible(True)
         self.progress_bar.setRange(0, 0)
@@ -582,7 +584,7 @@ class DataExplorerDialog(QDialog):
         self._populate_corrections()
         self._rebuild_map()
         if self.kb:
-            self.status_label.setText(f"BC: {len(self.kb.entries)} entradas")
+            self.status_label.setText(f"{T('BC:')} {len(self.kb.entries)} {T('entradas')}")
 
     def _rebuild_map(self):
         if self.kb:
@@ -802,8 +804,8 @@ class DataExplorerDialog(QDialog):
         self.log_area.setPlainText(text)
 
     def _clear_log(self):
-        reply = QMessageBox.question(self, "Limpiar Registro",
-                                      "¿Eliminar todas las entradas del registro de importación?",
+        reply = QMessageBox.question(self, T("Limpiar Registro"),
+                                      T("¿Eliminar todas las entradas del registro de importación?"),
                                       QMessageBox.Yes | QMessageBox.No)
         if reply == QMessageBox.Yes:
             self.log.clear()
@@ -860,11 +862,11 @@ class DataExplorerDialog(QDialog):
     def _browse_edit_category(self):
         entry = self._get_selected_entry()
         if not entry:
-            QMessageBox.information(self, "Sin Selección", "Selecciona una entrada en la lista primero.")
+            QMessageBox.information(self, T("Sin Selección"), T("Selecciona una entrada en la lista primero."))
             return
         new_cat, ok = QInputDialog.getText(
-            self, "Editar Categoría",
-            f"Categoría actual: {entry.category}\nNueva categoría:",
+            self, T("Editar Categoría"),
+            f"{T('Categoría actual:')} {entry.category}\n{T('Nueva categoría:')}",
             text=entry.category,
         )
         if ok and new_cat:
@@ -876,11 +878,11 @@ class DataExplorerDialog(QDialog):
     def _browse_delete_entry(self):
         entry = self._get_selected_entry()
         if not entry:
-            QMessageBox.information(self, "Sin Selección", "Selecciona una entrada en la lista primero.")
+            QMessageBox.information(self, T("Sin Selección"), T("Selecciona una entrada en la lista primero."))
             return
         reply = QMessageBox.question(
-            self, "Eliminar Entrada",
-            f"¿Eliminar '{entry.title[:60]}'?",
+            self, T("Eliminar Entrada"),
+            f"{T('¿Eliminar')} '{entry.title[:60]}'?",
             QMessageBox.Yes | QMessageBox.No,
         )
         if reply == QMessageBox.Yes:
@@ -892,9 +894,9 @@ class DataExplorerDialog(QDialog):
         if not self.kb or not self.kb.entries:
             return
         reply = QMessageBox.question(
-            self, "Eliminar Todas las Entradas",
-            f"¿Eliminar TODAS las {len(self.kb.entries)} entradas de la base de conocimiento?\n\n"
-            "¡Esto no se puede deshacer!",
+            self, T("Eliminar Todas las Entradas"),
+            f"{T('¿Eliminar TODAS las')} {len(self.kb.entries)} {T('entradas de la base de conocimiento?')}\n\n"
+            + T("¡Esto no se puede deshacer!"),
             QMessageBox.Yes | QMessageBox.No,
             QMessageBox.No,
         )
@@ -975,7 +977,7 @@ class DataExplorerDialog(QDialog):
 
     def _export_rag(self):
         if not self.kb or not self.kb.entries:
-            QMessageBox.information(self, "BC Vacía", "Nada que exportar.")
+            QMessageBox.information(self, T("BC Vacía"), T("Nada que exportar."))
             return
         export_dir = QFileDialog.getExistingDirectory(
             self, "Seleccionar carpeta de exportación", str(Path("data").resolve())

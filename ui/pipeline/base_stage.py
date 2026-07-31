@@ -24,6 +24,7 @@ from src.troubleshooting import (
 from src.llm_integration import LocalLLM, ForumKnowledgeBase
 from src.rag_config import RAGSettings
 from ui.knowledge.settings_dialog import RAGSettingsDialog
+from core.translations import T
 
 
 class TroubleshootingPanel(QWidget):
@@ -40,27 +41,27 @@ class TroubleshootingPanel(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(4, 4, 4, 4)
 
-        title = QLabel("Guía de Solución de Problemas")
+        title = QLabel(T("Guía de Solución de Problemas"))
         title.setStyleSheet("font-weight: bold; font-size: 14px;")
         layout.addWidget(title)
 
         search_row = QHBoxLayout()
         self.search_input = QLineEdit()
-        self.search_input.setPlaceholderText("Buscar síntomas, causas, defectos...")
-        self.search_input.setToolTip("Busca defectos por nombre o síntoma. Filtra la lista en tiempo real")
+        self.search_input.setPlaceholderText(T("Buscar síntomas, causas, defectos..."))
+        self.search_input.setToolTip(T("Busca defectos por nombre o síntoma. Filtra la lista en tiempo real"))
         self.search_input.textChanged.connect(self._filter_defects)
         search_row.addWidget(self.search_input)
 
-        self.all_stage_btn = QPushButton("Todas las Etapas")
+        self.all_stage_btn = QPushButton(T("Todas las Etapas"))
         self.all_stage_btn.setCheckable(True)
-        self.all_stage_btn.setToolTip("Alterna entre ver defectos de todas las etapas o solo de la etapa actual")
+        self.all_stage_btn.setToolTip(T("Alterna entre ver defectos de todas las etapas o solo de la etapa actual"))
         self.all_stage_btn.toggled.connect(self._filter_defects)
         search_row.addWidget(self.all_stage_btn)
         layout.addLayout(search_row)
 
         self.defect_tree = QTreeWidget()
-        self.defect_tree.setHeaderLabels(["Defecto", "Severidad"])
-        self.defect_tree.setToolTip("Árbol de defectos con severidad (🟢 baja, 🟡 media, 🔴 alta). Haz clic para ver detalles")
+        self.defect_tree.setHeaderLabels([T("Defecto"), T("Severidad")])
+        self.defect_tree.setToolTip(T("Árbol de defectos con severidad (🟢 baja, 🟡 media, 🔴 alta). Haz clic para ver detalles"))
         self.defect_tree.setAlternatingRowColors(True)
         self.defect_tree.itemClicked.connect(self._on_defect_clicked)
         layout.addWidget(self.defect_tree, 1)
@@ -68,7 +69,7 @@ class TroubleshootingPanel(QWidget):
         self.detail_area = QTextEdit()
         self.detail_area.setReadOnly(True)
         self.detail_area.setMaximumHeight(200)
-        self.detail_area.setToolTip("Descripción detallada del defecto: síntomas, causas, soluciones y referencias del foro")
+        self.detail_area.setToolTip(T("Descripción detallada del defecto: síntomas, causas, soluciones y referencias del foro"))
         layout.addWidget(self.detail_area)
 
         self._populate()
@@ -166,23 +167,23 @@ class KnowledgeQAPanel(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(4, 4, 4, 4)
 
-        title = QLabel("Conocimiento y P&R")
+        title = QLabel(T("Conocimiento y P&R"))
         title.setStyleSheet("font-weight: bold; font-size: 14px;")
         layout.addWidget(title)
 
-        self.kb_status = QLabel("Base de conocimiento: no cargada")
-        self.kb_status.setToolTip("Estado de la base de conocimiento: número de entradas cargadas")
+        self.kb_status = QLabel(T("Base de conocimiento: no cargada"))
+        self.kb_status.setToolTip(T("Estado de la base de conocimiento: número de entradas cargadas"))
         self.kb_status.setStyleSheet("color: #aaa; font-style: italic;")
         layout.addWidget(self.kb_status)
 
         self.knowledge_list = QListWidget()
         self.knowledge_list.setAlternatingRowColors(True)
-        self.knowledge_list.setToolTip("Entradas de conocimiento relevantes para la consulta actual")
+        self.knowledge_list.setToolTip(T("Entradas de conocimiento relevantes para la consulta actual"))
         layout.addWidget(self.knowledge_list, 1)
 
         # ── RAG Details (collapsible) ──
-        self.rag_details_btn = QPushButton("▶ Mostrar detalles del pipeline RAG")
-        self.rag_details_btn.setToolTip("Muestra/oculta los detalles del pipeline RAG (fragmentos, prompt, contexto)")
+        self.rag_details_btn = QPushButton(T("▶ Mostrar detalles del pipeline RAG"))
+        self.rag_details_btn.setToolTip(T("Muestra/oculta los detalles del pipeline RAG (fragmentos, prompt, contexto)"))
         self.rag_details_btn.setStyleSheet("text-align: left; border: none; color: #999;")
         self.rag_details_btn.setCheckable(True)
         self.rag_details_btn.toggled.connect(self._toggle_rag_details)
@@ -192,27 +193,27 @@ class KnowledgeQAPanel(QWidget):
         rag_details_layout = QVBoxLayout(self.rag_details_area)
         rag_details_layout.setContentsMargins(8, 0, 0, 0)
 
-        self.rag_chunks_label = QLabel("Fragmentos recuperados: ninguno")
+        self.rag_chunks_label = QLabel(T("Fragmentos recuperados: ninguno"))
         self.rag_chunks_label.setStyleSheet("font-size: 11px; color: #aaa;")
         rag_details_layout.addWidget(self.rag_chunks_label)
 
         self.rag_chunks_area = QTextEdit()
         self.rag_chunks_area.setReadOnly(True)
         self.rag_chunks_area.setMaximumHeight(100)
-        self.rag_chunks_area.setToolTip("Fragmentos de conocimiento recuperados por el pipeline RAG para la consulta")
-        self.rag_chunks_area.setPlaceholderText("Fragmentos de conocimiento recuperados para la última pregunta...")
+        self.rag_chunks_area.setToolTip(T("Fragmentos de conocimiento recuperados por el pipeline RAG para la consulta"))
+        self.rag_chunks_area.setPlaceholderText(T("Fragmentos de conocimiento recuperados para la última pregunta..."))
         self.rag_chunks_area.setStyleSheet("font-size: 10px; color: #999;")
         rag_details_layout.addWidget(self.rag_chunks_area)
 
-        self.rag_prompt_label = QLabel("Prompt enviado al modelo:")
+        self.rag_prompt_label = QLabel(T("Prompt enviado al modelo:"))
         self.rag_prompt_label.setStyleSheet("font-size: 11px; color: #aaa;")
         rag_details_layout.addWidget(self.rag_prompt_label)
 
         self.rag_prompt_area = QTextEdit()
         self.rag_prompt_area.setReadOnly(True)
         self.rag_prompt_area.setMaximumHeight(120)
-        self.rag_prompt_area.setToolTip("Prompt completo enviado al LLM, incluyendo el contexto recuperado")
-        self.rag_prompt_area.setPlaceholderText("El array completo de mensajes enviado a /v1/chat/completions...")
+        self.rag_prompt_area.setToolTip(T("Prompt completo enviado al LLM, incluyendo el contexto recuperado"))
+        self.rag_prompt_area.setPlaceholderText(T("El array completo de mensajes enviado a /v1/chat/completions..."))
         self.rag_prompt_area.setStyleSheet("font-size: 10px; color: #999;")
         rag_details_layout.addWidget(self.rag_prompt_area)
 
@@ -220,51 +221,51 @@ class KnowledgeQAPanel(QWidget):
         layout.addWidget(self.rag_details_area)
 
         # ── Q&A ──
-        qa_group = QGroupBox("Haz una pregunta sobre esta etapa")
+        qa_group = QGroupBox(T("Haz una pregunta sobre esta etapa"))
         qa_layout = QVBoxLayout(qa_group)
         self.question_input = QLineEdit()
-        self.question_input.setPlaceholderText("Ej: ¿Qué grado de NC es mejor para 30% de sólidos?")
-        self.question_input.setToolTip("Escribe tu pregunta sobre el proceso o los defectos. El LLM responderá usando la base de conocimiento")
+        self.question_input.setPlaceholderText(T("Ej: ¿Qué grado de NC es mejor para 30% de sólidos?"))
+        self.question_input.setToolTip(T("Escribe tu pregunta sobre el proceso o los defectos. El LLM responderá usando la base de conocimiento"))
         self.question_input.returnPressed.connect(self._ask_question)
         qa_layout.addWidget(self.question_input)
 
         btn_row = QHBoxLayout()
-        self.ask_btn = QPushButton("Preguntar al LLM")
-        self.ask_btn.setToolTip("Envía la pregunta al LLM usando el contexto RAG de la base de conocimiento")
+        self.ask_btn = QPushButton(T("Preguntar al LLM"))
+        self.ask_btn.setToolTip(T("Envía la pregunta al LLM usando el contexto RAG de la base de conocimiento"))
         self.ask_btn.clicked.connect(self._ask_question)
         btn_row.addWidget(self.ask_btn)
 
-        self.settings_btn = QPushButton("⚙ Configuración")
-        self.settings_btn.setToolTip("Abre la configuración del RAG: API URL, modelo, parámetros de generación y recuperación")
+        self.settings_btn = QPushButton(T("⚙ Configuración"))
+        self.settings_btn.setToolTip(T("Abre la configuración del RAG: API URL, modelo, parámetros de generación y recuperación"))
         self.settings_btn.clicked.connect(self._open_settings)
         btn_row.addWidget(self.settings_btn)
 
         self.agent_combo = QComboBox()
-        self.agent_combo.setToolTip("Selecciona el agente LLM especializado para el dominio (formulación, galvanoplastia, prensado, etc.)")
+        self.agent_combo.setToolTip(T("Selecciona el agente LLM especializado para el dominio (formulación, galvanoplastia, prensado, etc.)"))
         self.agent_combo.currentIndexChanged.connect(self._on_agent_changed)
         btn_row.addWidget(self.agent_combo)
 
-        self.kb_refresh_btn = QPushButton("Actualizar BC")
-        self.kb_refresh_btn.setToolTip("Recarga la base de conocimiento desde el disco")
+        self.kb_refresh_btn = QPushButton(T("Actualizar BC"))
+        self.kb_refresh_btn.setToolTip(T("Recarga la base de conocimiento desde el disco"))
         self.kb_refresh_btn.clicked.connect(self._refresh_kb)
         btn_row.addWidget(self.kb_refresh_btn)
 
         self.llm_status = QLabel("")
-        self.llm_status.setToolTip("Estado de conexión con el LLM (conectado/desconectado)")
+        self.llm_status.setToolTip(T("Estado de conexión con el LLM (conectado/desconectado)"))
         self.llm_status.setStyleSheet("color: #aaa;")
         btn_row.addWidget(self.llm_status, 1)
         qa_layout.addLayout(btn_row)
 
         self.answer_area = QTextEdit()
         self.answer_area.setReadOnly(True)
-        self.answer_area.setPlaceholderText("La respuesta aparecerá aquí...")
+        self.answer_area.setPlaceholderText(T("La respuesta aparecerá aquí..."))
         self.answer_area.setMaximumHeight(160)
-        self.answer_area.setToolTip("Respuesta del LLM basada en el contexto recuperado de la base de conocimiento")
+        self.answer_area.setToolTip(T("Respuesta del LLM basada en el contexto recuperado de la base de conocimiento"))
         qa_layout.addWidget(self.answer_area)
 
         inspect_row = QHBoxLayout()
-        self.inspect_btn = QPushButton("🔍 Inspeccionar contexto RAG")
-        self.inspect_btn.setToolTip("Abre el inspector RAG para ver en detalle los fragmentos recuperados y el contexto enviado al LLM")
+        self.inspect_btn = QPushButton(T("🔍 Inspeccionar contexto RAG"))
+        self.inspect_btn.setToolTip(T("Abre el inspector RAG para ver en detalle los fragmentos recuperados y el contexto enviado al LLM"))
         self.inspect_btn.clicked.connect(self._open_rag_inspector)
         self.inspect_btn.setVisible(False)
         inspect_row.addWidget(self.inspect_btn)
@@ -276,8 +277,8 @@ class KnowledgeQAPanel(QWidget):
     def _toggle_rag_details(self, visible: bool):
         self.rag_details_area.setVisible(visible)
         self.rag_details_btn.setText(
-            "▼ Ocultar detalles del pipeline RAG" if visible
-            else "▶ Mostrar detalles del pipeline RAG"
+            T("▼ Ocultar detalles del pipeline RAG") if visible
+            else T("▶ Mostrar detalles del pipeline RAG")
         )
 
     def set_llm(self, llm: LocalLLM):
@@ -286,12 +287,12 @@ class KnowledgeQAPanel(QWidget):
         if llm:
             llm.api_url = self.settings.api_url
             llm.model = self.settings.model
-        self.llm_status.setText("LLM conectado")
+        self.llm_status.setText(T("LLM conectado"))
         self._populate_agents()
 
     def set_knowledge_base(self, kb: ForumKnowledgeBase):
         self.kb = kb
-        self.kb_status.setText(f"Base de conocimiento: {len(kb.entries)} entradas")
+        self.kb_status.setText(T("Base de conocimiento: {count} entradas").format(count=len(kb.entries)))
         self._populate_knowledge()
 
     def set_settings(self, settings: RAGSettings):
@@ -370,11 +371,11 @@ class KnowledgeQAPanel(QWidget):
                     item.setToolTip(entry.content[:200])
                     self.knowledge_list.addItem(item)
         if self.knowledge_list.count() == 0:
-            self.knowledge_list.addItem("No se encontró conocimiento relevante para esta etapa. Prueba a duplicar el foro primero.")
+                    self.knowledge_list.addItem(T("No se encontró conocimiento relevante para esta etapa. Prueba a duplicar el foro primero."))
 
     def _refresh_kb(self):
         self._populate_knowledge()
-        self.kb_status.setText(f"Base de conocimiento actualizada ({len(self.knowledge_list)} entradas)")
+        self.kb_status.setText(T("Base de conocimiento actualizada ({count} entradas)").format(count=len(self.knowledge_list)))
 
     def _ask_question(self):
         q = self.question_input.text().strip()
@@ -388,7 +389,7 @@ class KnowledgeQAPanel(QWidget):
         top_k = self.settings.top_k
         matches = self.kb.search(q, max_results=top_k) if self.kb else []
         self.rag_chunks_label.setText(
-            f"Fragmentos recuperados: {len(matches)} (top-{top_k})"
+            T("Fragmentos recuperados: {count} (top-{top_k})").format(count=len(matches), top_k=top_k)
         )
 
         # Store RAG context for the inspector
@@ -410,7 +411,7 @@ class KnowledgeQAPanel(QWidget):
                 )
             )
         else:
-            self.rag_chunks_area.setPlainText("(no se encontró conocimiento coincidente)")
+            self.rag_chunks_area.setPlainText(T("(no se encontró conocimiento coincidente)"))
 
         self._last_context = context_str
 
@@ -431,7 +432,7 @@ class KnowledgeQAPanel(QWidget):
         )
         if self.settings.show_rag_details:
             self.rag_details_area.setVisible(True)
-            self.rag_details_btn.setText("▼ Ocultar detalles del pipeline RAG")
+            self.rag_details_btn.setText(T("▼ Ocultar detalles del pipeline RAG"))
 
         # 4. Check LLM
         if not self.llm or not self.llm.is_available():
@@ -514,7 +515,7 @@ class StageParamEditDialog(QDialog):
     def __init__(self, stage: str, parent=None):
         super().__init__(parent)
         self.stage = stage
-        self.setWindowTitle(f"Editar Parámetros — {stage.title()}")
+        self.setWindowTitle(T("Editar Parámetros — {stage}").format(stage=stage.title()))
         self.setMinimumWidth(400)
         self._init_ui()
 
@@ -534,11 +535,11 @@ class StageParamEditDialog(QDialog):
 
         btn_row = QHBoxLayout()
         btn_row.addStretch()
-        save_btn = QPushButton("Guardar")
+        save_btn = QPushButton(T("Guardar"))
         save_btn.clicked.connect(self._save)
         save_btn.setStyleSheet("background: #4CAF50; color: white;")
         btn_row.addWidget(save_btn)
-        cancel_btn = QPushButton("Cancelar")
+        cancel_btn = QPushButton(T("Cancelar"))
         cancel_btn.clicked.connect(self.reject)
         btn_row.addWidget(cancel_btn)
         layout.addLayout(btn_row)
@@ -566,13 +567,13 @@ class PipelineStageWidget(QWidget):
 
         info = STAGE_INFO.get(self.stage, {})
         header_row = QHBoxLayout()
-        header = QLabel(f"{info.get('icon', '')} {info.get('title', self.stage.title())}")
+        header = QLabel(T("{icon} {title}").format(icon=info.get('icon', ''), title=info.get('title', self.stage.title())))
         header.setStyleSheet("font-weight: bold; font-size: 16px; padding: 4px;")
         header.setToolTip(info.get("description", ""))
         header_row.addWidget(header)
         header_row.addStretch()
-        edit_params_btn = QPushButton("Editar Parámetros")
-        edit_params_btn.setToolTip("Edita los parámetros clave de esta etapa del proceso")
+        edit_params_btn = QPushButton(T("Editar Parámetros"))
+        edit_params_btn.setToolTip(T("Edita los parámetros clave de esta etapa del proceso"))
         edit_params_btn.clicked.connect(self._edit_parameters)
         edit_params_btn.setMaximumWidth(120)
         header_row.addWidget(edit_params_btn)
@@ -584,7 +585,7 @@ class PipelineStageWidget(QWidget):
         desc.setStyleSheet("color: #999; padding: 2px 4px 8px 4px;")
         layout.addWidget(desc)
 
-        self._param_box = QGroupBox("Parámetros Clave")
+        self._param_box = QGroupBox(T("Parámetros Clave"))
         self._param_layout = QFormLayout(self._param_box)
         layout.addWidget(self._param_box)
         self._refresh_params()

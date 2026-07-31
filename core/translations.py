@@ -627,6 +627,9 @@ class Translator(QObject):
 
         # ── Ventana de Fórmulas (formula_window.py) ──
         _("Ventana de Fórmulas", "Formula Window")
+        _("Ventana de Fórmulas...", "Formula Window...")
+        _("🧪 Formula Studio", "🧪 Formula Studio")
+        _("Abre el estudio de fórmulas: biblioteca, versiones con restauración y capturas", "Opens the formula studio: library, versions with restore and snapshots")
         _("Nueva Fórmula", "New Formula")
         _("Nombre de la nueva fórmula:", "Name of the new formula:")
         _("Guardar Versión", "Save Version")

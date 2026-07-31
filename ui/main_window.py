@@ -13,6 +13,7 @@ from PySide6.QtGui import QAction, QIcon, QFont
 
 from ui.pipeline.cutting_stage import CuttingStageWidget
 from ui.pipeline.base_stage import PipelineStageWidget
+from ui.formula.formula_window import FormulaWindow
 from ui.workspace.galvanics_workspace import GalvanicsWorkspace
 from ui.workspace.pressing_workspace import PressingWorkspace
 from ui.workspace.knowledge_hub import KnowledgeHub
@@ -45,6 +46,7 @@ class MainWindow(QMainWindow):
         )
         self.current_recipe_path: Optional[str] = None
         self._data_import_dialog: Optional[DataImportDialog] = None
+        self._formula_window: Optional[FormulaWindow] = None
         self._init_ui()
         self._init_menu()
         self._load_data()
@@ -93,6 +95,13 @@ class MainWindow(QMainWindow):
         self.gen_btn.clicked.connect(self._generate_from_spec)
         self.gen_btn.setToolTip(T("Genera una formulación automática a partir de especificaciones (viscosidad, sólidos, curado)"))
         toolbar.addWidget(self.gen_btn)
+
+        toolbar.addSeparator()
+
+        self.formula_btn = QPushButton(T("🧪 Formula Studio"))
+        self.formula_btn.clicked.connect(self._open_formula_window)
+        self.formula_btn.setToolTip(T("Abre el estudio de fórmulas: biblioteca, versiones con restauración y capturas"))
+        toolbar.addWidget(self.formula_btn)
 
         toolbar.addSeparator()
 
@@ -198,9 +207,14 @@ class MainWindow(QMainWindow):
         self.tools_menu.addSeparator()
 
         self.gen_action = QAction(T("Generar Formulación desde Especificación..."), self)
-        self.gen_action.setToolTip(T("Genera una receta automática a partir de especificaciones técnicas"))
+        self.gen_action.setToolTip(T("Genera una formulación automática a partir de especificaciones (viscosidad, sólidos, curado)"))
         self.gen_action.triggered.connect(self._generate_from_spec)
         self.tools_menu.addAction(self.gen_action)
+
+        self.formula_action = QAction(T("Ventana de Fórmulas..."), self)
+        self.formula_action.setToolTip(T("Abre el estudio de fórmulas: biblioteca, versiones con restauración y capturas"))
+        self.formula_action.triggered.connect(self._open_formula_window)
+        self.tools_menu.addAction(self.formula_action)
 
         self.settings_action = QAction(T("Configuración RAG..."), self)
         self.settings_action.setToolTip(T("Configura el pipeline RAG, los agentes LLM y los parámetros de búsqueda"))
@@ -230,6 +244,8 @@ class MainWindow(QMainWindow):
         self.expert_btn.setText(T("📝 Notas de Experto"))
         self.rag_btn.setText(T("⚙ Configuración RAG"))
         self.gen_btn.setText(T("🎯 Generar Receta"))
+        self.formula_btn.setText(T("🧪 Formula Studio"))
+        self.formula_btn.setToolTip(T("Abre el estudio de fórmulas: biblioteca, versiones con restauración y capturas"))
         self.lang_selector.setToolTip(T("Cambia el idioma de la interfaz entre Español e Inglés"))
         self.main_tabs.setTabText(0, T("🏠 Inicio"))
         self.main_tabs.setTabText(1, T("🧪 Formulación"))
@@ -248,6 +264,8 @@ class MainWindow(QMainWindow):
         self.plating_action.setText(T("Editor de Reglas de Galvánica..."))
         self.defect_action.setText(T("Editor de Defectos..."))
         self.gen_action.setText(T("Generar Formulación desde Especificación..."))
+        self.formula_action.setText(T("Ventana de Fórmulas..."))
+        self.formula_action.setToolTip(T("Abre el estudio de fórmulas: biblioteca, versiones con restauración y capturas"))
         self.settings_action.setText(T("Configuración RAG..."))
         self.help_menu.setTitle(T("Ayuda"))
         self.guide_action.setText(T("📖 Guía de uso"))
@@ -337,6 +355,15 @@ class MainWindow(QMainWindow):
             self.cutting_stage.recipe_editor.set_recipe(recipe)
             self.main_tabs.setCurrentIndex(1)
             self.statusBar().showMessage(T("Formulación generada cargada en etapa de Formulación"))
+
+    def _open_formula_window(self):
+        if self._formula_window is None:
+            self._formula_window = FormulaWindow(
+                loader=self.ingredient_loader
+            )
+        self._formula_window.show()
+        self._formula_window.raise_()
+        self._formula_window.activateWindow()
 
     def _check_llm(self):
         if self.llm.is_available():
@@ -551,4 +578,6 @@ class MainWindow(QMainWindow):
                 w.abort_llm()
         if self._data_import_dialog:
             self._data_import_dialog.cleanup()
+        if self._formula_window is not None:
+            self._formula_window.close()
         super().closeEvent(event)

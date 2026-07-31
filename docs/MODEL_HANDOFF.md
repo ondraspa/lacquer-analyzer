@@ -6,23 +6,14 @@
 
 ## ⚡ QUICK STATUS (read first)
 
-**Branch**: `ui-refinement` (all prior work pushed; new work uncommitted)
+**Branch**: `ui-refinement` — ALL work pushed. Latest commit: `6d43b92 feat: implement live EN/ES language switching via retranslate() on all tabs`
 
-**DONE & PUSHED** (8 commits, last: `0f1ce19`):
-- Initial app (formulation analysis, RAG, importers)
-- Critical bug fixes (ingredient save path, signals, dataclass conflicts, LLM sync)
-- Tooltips (450+) + usage guide dialog
-- Welcome screen (first tab)
-- Dark blue theme (353-line QSS)
-- Signal-slot audit (~220 connections, 2 broken fixed)
+**COMPLETED** (9 commits total):
+- Initial app, bug fixes, tooltips, welcome screen, dark theme, signal-slot audit
+- Process manuals popup (4 processes, history tabs)
+- Full T() translation wrapping + live EN/ES switching (`retranslate()` on all tabs)
 
-**UNCOMMITTED WORK (in progress — MUST COMMIT)**:
-- 🆕 `ui/dialogs/process_manual_dialog.py` — process manuals popup (4 processes, history tabs)
-- Manual buttons in cutting_stage/galvanics/pressing headers
-- Full T() translation wrapping (welcome_screen, galvanics, pressing) + translation dict expanded (~700 lines in translations.py)
-- `AGENTS.md`, `docs/MODEL_HANDOFF.md` (this file)
-
-**NEXT ACTION**: commit + push → then implement `_retranslate_ui()` for live language switching (see §5).
+**NEXT ACTION**: nothing pending — suggest updating `docs/UI_MAP.md` with new features, or wire `WelcomeScreen.update_status()` to real data (currently a no-op `pass`).
 
 ---
 
@@ -140,6 +131,15 @@ Support modules:
 - `core/translations.py` expanded: welcome, galvanics, pressing labels/combos/tooltips, analysis panel strings (solvent system, coating properties HTML fragments, risk levels LOW/MEDIUM/HIGH/CRITICAL, quality descriptors), pressing HTML defect list, process manual titles/tabs/buttons
 - New strings added for: "🖱️ Haz clic para abrir", "No verificado", all card descriptions/features, form labels, spinbox suffixes (" °C", " bar", " s", " mm", " g", " prensadas", " A/dm²", " μm", " min"), combo items (mold types, release agents, disc sizes, surface prep methods), tab titles, HTML content
 
+### 3.11 DONE — Live language switching (`6d43b92`)
+- **`retranslate()` methods added** to: `WelcomeScreen`, `CuttingStageWidget`, `GalvanicsWorkspace`, `PressingWorkspace`, `KnowledgeHub`
+- **`SectionCard`/`StatusIndicator`** (welcome_screen): store original string keys, `retranslate()` re-sets text via T()
+- **`GalvanicsWorkspace`/`PressingWorkspace`**: all widgets stored as `self.*` (groups, forms, buttons, combos); form labels found via `_label_for(widget)` static helper (widget.parentWidget().layout().labelForField())
+- **`CuttingStageWidget`**: fixed no-op `lambda: None` → `translator.language_changed.connect(self.retranslate)`; `left_tabs`/`right_tabs` stored
+- **`MainWindow._retranslate_ui()` implemented** (was `pass`): retitles window, toolbar buttons (`self.expert_btn`, `self.rag_btn`, `self.gen_btn`), 6 tab titles, all menu titles/actions (stored as `self.*_menu`/`self.*_action`), calls `retranslate()` on 5 tab widgets, refreshes LLM/KB status, resets statusbar
+- **Translation dict additions**: emoji-prefixed KH button keys ("📂 Importar Markdown" etc. — note: emoji versions are SEPARATE keys from plain versions), full pressing HTML block as exact-match key, "Centro de Conocimiento" full header
+- Verified: EN→ES→EN cycles, form labels, combos, suffixes, HTML, menus, tabs all switch live
+
 ## 4. TRANSLATION SYSTEM (CRITICAL TO UNDERSTAND)
 
 ```python
@@ -159,17 +159,9 @@ translator.language_changed.connect(self._retranslate_ui)   # live refresh
 
 ## 5. NEXT STEPS (in priority order)
 
-1. **COMMIT & PUSH** current work:
-   ```bash
-   cd /home/ondra/lacquer_analyzer
-   git add -A && git commit -m "feat: add process manual dialog with historical evolution; complete T() translation wrapping" && git push origin ui-refinement
-   ```
-2. **Live language switching** (`_retranslate_ui()`):
-   - Add `retranslate()` methods to each tab widget (welcome, cutting, galvanics, pressing, knowledge_hub)
-   - MainWindow: connect `translator.language_changed` → call each tab's `retranslate()`
-   - Fix cutting_stage.py no-op lambda (line ~519)
-   - Watch out: dynamic content (log_text, status labels with data) should not be overwritten
-3. **End-to-end run**: `QT_QPA_PLATFORM=offscreen python3 -c "import sys; sys.path.insert(0,'.'); from ui.main_window import MainWindow; ..."`
+1. **Wire `WelcomeScreen.update_status()`** — currently a no-op `pass`; feed real data (ingredient count, recipe count, KB entries, LLM status) from MainWindow
+2. **Update `docs/UI_MAP.md`** — add process manuals + retranslate features
+3. **Optional**: `retranslate()` for `PipelineStageWidget` (qc_stage tab) if its labels need switching
 4. Update this file (MODEL_HANDOFF.md) after each milestone
 
 ## 6. GOTCHAS / TRAPS (memorize these)

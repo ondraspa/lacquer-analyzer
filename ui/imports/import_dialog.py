@@ -285,6 +285,10 @@ class DataImportWidget(QWidget):
 
         tabs = QTabWidget()
         self.tabs = tabs
+        tabs.setTabPosition(QTabWidget.West)
+        tabs.setDocumentMode(True)
+        tabs.setStyleSheet("QTabBar { alignment: left; }")
+        tabs.setToolTip(T("Fuentes de importación organizadas por flujo de trabajo (sidebar)."))
 
         # === Tab 1: Lathe Trolls Scraper ===
         troll_tab = QWidget()

@@ -91,6 +91,8 @@ class DataExplorerDialog(QDialog):
 
         # ── Main tabs ─────────────────────────────────────────
         tabs = QTabWidget()
+        tabs.setTabPosition(QTabWidget.West)
+        tabs.setDocumentMode(True)
 
         # Tab 0: Map View (mind-map navigation)
         map_tab = QWidget()

@@ -120,9 +120,12 @@ class MainWindow(QMainWindow):
         toolbar.addWidget(self.lang_selector)
 
         layout.addWidget(toolbar)
+
         # Main area tabs
         self.main_tabs = QTabWidget()
-        self.main_tabs.setToolTip(T("Pestañas principales del flujo de trabajo:\n• Inicio — panel de navegación\n• Formulación — formulación de lacas\n• Galvánica — parámetros de baños\n• Prensado — parámetros de prensado\n• Control de Calidad — defectos y solución de problemas\n• Conocimiento — base de conocimiento y RAG"))
+        self.main_tabs.setTabPosition(QTabWidget.West)
+        self.main_tabs.setDocumentMode(True)
+        self.main_tabs.setToolTip(T("Pestañas principales ordenadas verticalmente por el flujo de trabajo:\n• Inicio — panel de navegación\n• Formulación — formulación de lacas\n• Galvánica — parámetros de baños\n• Prensado — parámetros de prensado\n• Control de Calidad — defectos y solución de problemas\n• Conocimiento — base de conocimiento y RAG"))
         self.main_tabs.currentChanged.connect(self._on_tab_changed)
 
         # Tab 0: Inicio (Welcome)
@@ -238,6 +241,24 @@ class MainWindow(QMainWindow):
         self._update_stage_settings()
         self._check_llm()
         self._retranslate_ui()
+        self._update_welcome_status()
+
+    def _update_welcome_status(self):
+        if not hasattr(self, 'welcome_screen'):
+            return
+        ingredients = len(self.ingredient_loader._ingredients) if self.ingredient_loader else 0
+        recipes = 0
+        if hasattr(self, 'cutting_stage') and hasattr(self.cutting_stage, 'recipe_editor'):
+            re_ = self.cutting_stage.recipe_editor
+            recipes = len(getattr(re_, '_presets', []) or [])
+        kb = self.kb.total_chunks if self.kb else 0
+        llm = 'connected' if (self.llm and self.llm.is_available()) else 'offline'
+        self.welcome_screen.update_status({
+            'ingredients': ingredients,
+            'recipes': recipes,
+            'kb': kb,
+            'llm': llm,
+        })
 
     def _retranslate_ui(self):
         self.setWindowTitle(T("Analizador de Laca — Fabricación de Discos de Laca"))
@@ -380,6 +401,7 @@ class MainWindow(QMainWindow):
                 "background: #f44336; color: white; padding: 4px 8px; border-radius: 4px;")
         self._update_kb_status()
         self._update_stage_knowledge()
+        self._update_welcome_status()
 
     def _update_kb_status(self):
         n = self.kb.total_chunks if self.kb else 0

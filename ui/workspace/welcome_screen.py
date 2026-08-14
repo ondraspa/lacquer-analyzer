@@ -265,5 +265,32 @@ class WelcomeScreen(QWidget):
         self.navigate_requested.emit(tab_index)
 
     def update_status(self, status_data: dict):
-        """Update status indicators: {'ingredients': N, 'recipes': N, 'kb': N, 'llm': str}"""
-        pass  # TODO wire up with actual data
+        """Update status indicators: {'ingredients': N, 'recipes': N, 'kb': N, 'llm': str}
+        The llm value should be 'connected', 'checking' or 'offline'."""
+        status_map = {
+            'ingredients': 0,
+            'recipes': 1,
+            'kb': 2,
+            'llm': 3,
+        }
+        for key, idx in status_map.items():
+            if key not in status_data:
+                continue
+            s = self.status_indicators[idx]
+            if key == 'llm':
+                state = status_data[key]
+                if state == 'connected':
+                    s.status_lbl.setText(T("Conectado"))
+                    s.status_lbl.setStyleSheet("font-size: 13px; font-weight: bold; color: #4CAF50;")
+                elif state == 'checking':
+                    s.status_lbl.setText(T("Verificando..."))
+                    s.status_lbl.setStyleSheet("font-size: 13px; font-weight: bold; color: #ff9800;")
+                else:
+                    s.status_lbl.setText(T("Desconectado"))
+                    s.status_lbl.setStyleSheet("font-size: 13px; font-weight: bold; color: #f44336;")
+            else:
+                value = status_data[key]
+                s.status_lbl.setText(str(value))
+                s.status_lbl.setStyleSheet(
+                    "font-size: 13px; font-weight: bold; color: #4CAF50;" if value and value != "—"
+                    else "font-size: 13px; font-weight: bold; color: #ff9800;")

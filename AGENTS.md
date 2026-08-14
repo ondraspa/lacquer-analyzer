@@ -35,4 +35,12 @@ Lacquer disc formulation & mastering assistant: recipes, analysis, plating (galv
 - Welcome screen, dark theme, signal-slot fixes, tooltips, EN/ES translations all done and pushed
 - Process Manual Dialog: `ui/dialogs/process_manual_dialog.py` — 4 manuals (formulation, electroplating, pressing, cutting) with history tabs; buttons in cutting_stage/galvanics/pressing headers
 - Translation T() wrapping complete for welcome_screen, galvanics, pressing; analysis_panel.py does NOT exist at ui/pipeline/ (legacy `gui/analysis_panel.py` only)
-- Pending: end-to-end run test, commit/push of process manual work
+- UX pass: vertical (West) workflow sidebar; live `WelcomeScreen.update_status()` via `MainWindow._update_welcome_status()`; import dialog + knowledge explorer mega-tabs use sidebar (West) orientation
+- **Formula pipeline redesign (Steps 1–3 DONE, all pushed)**: design doc `docs/FORMULA_PIPELINE_REDESIGN.md` (commits `cea5af5`, `1a55c6b`, `b369a11`)
+  - `core/formula_store.py`: git-like store at `data/formulas/{library,history,snapshots}/` + `formula_log.json`; create/list/get/save/commit/list/get_version/restore/diff/snapshot image save/list/delete/get_thumbnail/set_favorite/update_meta/rename/delete; `_slug()` ID derivation; opaque dict recipe shape (preset YAML shape)
+  - `ui/formula/formula_window.py`: FormulaWindow (MDI), FormulaEditorWidget (ingredient combo + table, RecipeAnalysisPanel tab, QUndoStack, autosave, dirty tracking), FormulaSubWindow (closeEvent dirty prompt), version history + diff, snapshot gallery (IconMode, compare/delete), info dialog; EN/ES retranslate; QSettings geometry
+  - MainWindow: toolbar "🧪 Formula Studio" btn + menu action "Ventana de Fórmulas...", single instance `_open_formula_window()`
+  - Tests: `tests/test_formula_store.py` (10), `tests/test_formula_window.py` (7, offscreen; cannot monkeypatch QMessageBox — call `store.restore_version` + `editor.load_from_store` directly)
+  - Gotchas: `IngredientLoader.load_all()` must be called explicitly; dirty baseline = `get_data()` after load; Spanish keys ARE keys; emoji-prefixed strings are separate translation keys
+- **Research (NEW)**: `docs/SCIENTIFIC_FORMULATION_AI.md` — modern AI/science for lacquer prediction + de-novo formulation (physics UNIFAC/Jouyban–Acree/HSP/Tg, GNN+COSMO-RS, PEGAT/HASolGNN, FDS2S/FG graphs, Bgolearn BO, active learning, ToolMol/AI4S-SDS, tooling table, hybrid architecture). AI answers: Mistral full; Perplexity flaky sign-in wall
+- Remaining: Step 4 (translations verification), optional `./run.sh` smoke test, final commit

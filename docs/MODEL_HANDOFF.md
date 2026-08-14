@@ -6,14 +6,20 @@
 
 ## ⚡ QUICK STATUS (read first)
 
-**Branch**: `ui-refinement` — ALL work pushed. Latest commit: `6d43b92 feat: implement live EN/ES language switching via retranslate() on all tabs`
+**Branch**: `ui-refinement` — ALL work pushed. Latest commit: `b369a11 feat: integrate FormulaWindow into main app (toolbar + menu)`
 
-**COMPLETED** (9 commits total):
+**COMPLETED** (14 commits, all pushed):
 - Initial app, bug fixes, tooltips, welcome screen, dark theme, signal-slot audit
 - Process manuals popup (4 processes, history tabs)
 - Full T() translation wrapping + live EN/ES switching (`retranslate()` on all tabs)
+- UX pass: vertical (West) workflow sidebar, live `WelcomeScreen.update_status()` via `MainWindow._update_welcome_status()`, sidebar orientation for import dialog + knowledge explorer
+- **Formula pipeline redesign (Steps 1–3 done)**: `docs/FORMULA_PIPELINE_REDESIGN.md` design doc; `core/formula_store.py` git-like store (library/history/snapshots + `formula_log.json`); `ui/formula/formula_window.py` FormulaWindow (MDI editors, version history, snapshot gallery, undo, autosave, dirty tracking); MainWindow toolbar "🧪 Formula Studio" + menu action; translations added. 17 tests green (plain asserts, `QT_QPA_PLATFORM=offscreen`)
+- **Research doc (NEW)**: `docs/SCIENTIFIC_FORMULATION_AI.md` — modern AI/science approaches for lacquer/coater prediction + de-novo formulation (physics: UNIFAC/Jouyban–Acree/HSP/Tg; ML: GNN+COSMO-RS, PEGAT/HASolGNN, FDS2S/FG formulation graphs, Bgolearn BO, active learning, ToolMol/AI4S-SDS agentic design; tooling table; hybrid architecture proposal). Mistral answered fully; Perplexity hit sign-in wall (flaky free tier)
 
-**NEXT ACTION**: nothing pending — suggest updating `docs/UI_MAP.md` with new features, or wire `WelcomeScreen.update_status()` to real data (currently a no-op `pass`).
+**REMAINING**:
+- Step 4 of pipeline: verify formula translations + final polish
+- Optional end-to-end manual run (`./run.sh`)
+- Update AGENTS.md/MODEL_HANDOFF (this file) at end of each session
 
 ---
 

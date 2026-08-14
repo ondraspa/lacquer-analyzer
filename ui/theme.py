@@ -95,11 +95,9 @@ QTabWidget::pane {
 QTabBar::tab {
     background: rgba(255,255,255,0.05);
     border: 1px solid transparent;
-    border-bottom: none;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    padding: 8px 18px;
-    margin-right: 2px;
+    border-radius: 8px;
+    padding: 10px 18px;
+    margin: 2px;
     color: #888;
     font-size: 12px;
 }

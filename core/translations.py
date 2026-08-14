@@ -301,6 +301,9 @@ class Translator(QObject):
         _("Escribe tu pregunta...", "Type your question...")
         _("Conectado", "Connected")
         _("Desconectado", "Disconnected")
+        _("Verificando...", "Checking...")
+        _("Flujo de trabajo", "Workflow")
+        _("Siguiente paso →", "Next step →")
 
         # ── Galvanics ──
         _("⚡ Galvánica — Metalizado y Baños Electrolíticos", "⚡ Galvanics — Metallizing & Electrolytic Baths")
